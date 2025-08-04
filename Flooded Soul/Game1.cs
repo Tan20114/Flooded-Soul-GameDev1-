@@ -1,17 +1,26 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Flooded_Soul.Screens;
+
+using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
+using Keys = Microsoft.Xna.Framework.Input.Keys;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace Flooded_Soul
 {
     public class Game1 : Game
     {
+        MonitorSize monitorSize = new MonitorSize();
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
+            _graphics.PreferredBackBufferWidth = monitorSize.GetScreenResolution().width;
+            _graphics.PreferredBackBufferHeight = 300;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
