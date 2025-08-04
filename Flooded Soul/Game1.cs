@@ -8,6 +8,7 @@ using Point = Microsoft.Xna.Framework.Point;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 using Color = Microsoft.Xna.Framework.Color;
 using System.Diagnostics;
+using Flooded_Soul.System;
 
 namespace Flooded_Soul
 {
@@ -15,8 +16,18 @@ namespace Flooded_Soul
     {
         MonitorSize monitorSize = new MonitorSize();
 
+        int monitorWidth => monitorSize.GetScreenResolution().width;
+        int monitorHeight => monitorSize.GetScreenResolution().height;
+
+        int viewPortWidth => _graphics.PreferredBackBufferWidth;
+        int viewPortHeight => _graphics.PreferredBackBufferHeight;
+
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+
+        ParallaxLayer test;
+        Texture2D bg1 => Content.Load<Texture2D>("1");
 
         public Game1()
         {
@@ -32,7 +43,9 @@ namespace Flooded_Soul
         {
             // TODO: Add your initialization logic here
             Window.IsBorderless = true;
-            Window.Position = new Point(0,monitorSize.GetScreenResolution().height -_graphics.PreferredBackBufferHeight);
+            Window.Position = new Point(0,monitorHeight -viewPortHeight);
+
+            Activated += (s, e) => WindowAPI.SetTopMost(true);
 
             base.Initialize();
         }
@@ -42,6 +55,7 @@ namespace Flooded_Soul
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            test = new ParallaxLayer(_spriteBatch,bg1,viewPortWidth,viewPortHeight,1000);
         }
 
         protected override void Update(GameTime gameTime)
@@ -50,8 +64,7 @@ namespace Flooded_Soul
                 Exit();
 
             // TODO: Add your update logic here
-            Debug.WriteLine(monitorSize.GetScreenResolution().height);
-            Debug.WriteLine(Window.Position);
+            test.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -61,6 +74,11 @@ namespace Flooded_Soul
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+
+            test.Draw();
+
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }

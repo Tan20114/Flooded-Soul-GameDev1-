@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Flooded_Soul.Screens
 {
@@ -19,7 +20,7 @@ namespace Flooded_Soul.Screens
         public ScreenResolution GetScreenResolution()
         {
             Screen primaryScreen = Screen.PrimaryScreen;
-            System.Drawing.Rectangle workingArea = primaryScreen.WorkingArea;
+            Rectangle workingArea = primaryScreen.WorkingArea;
 
             screenResolution.width = workingArea.Width;
             screenResolution.height = workingArea.Height;
