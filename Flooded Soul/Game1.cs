@@ -4,8 +4,10 @@ using Microsoft.Xna.Framework.Input;
 using Flooded_Soul.Screens;
 
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
+using Point = Microsoft.Xna.Framework.Point;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 using Color = Microsoft.Xna.Framework.Color;
+using System.Diagnostics;
 
 namespace Flooded_Soul
 {
@@ -20,7 +22,8 @@ namespace Flooded_Soul
         {
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = monitorSize.GetScreenResolution().width;
-            _graphics.PreferredBackBufferHeight = 300;
+            _graphics.PreferredBackBufferHeight = (int)(0.3f * monitorSize.GetScreenResolution().height);
+
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -28,6 +31,8 @@ namespace Flooded_Soul
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            Window.IsBorderless = true;
+            Window.Position = new Point(0,monitorSize.GetScreenResolution().height -_graphics.PreferredBackBufferHeight);
 
             base.Initialize();
         }
@@ -45,6 +50,8 @@ namespace Flooded_Soul
                 Exit();
 
             // TODO: Add your update logic here
+            Debug.WriteLine(monitorSize.GetScreenResolution().height);
+            Debug.WriteLine(Window.Position);
 
             base.Update(gameTime);
         }
