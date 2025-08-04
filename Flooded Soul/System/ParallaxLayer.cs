@@ -31,6 +31,7 @@ namespace Flooded_Soul.System
             this.screenWidth = screenWidth;
             this.screenHeight = screenHeight;
             GeneratePositions();
+            this.speed = speed;
         }
 
         void GeneratePositions()
