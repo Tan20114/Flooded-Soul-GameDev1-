@@ -8,12 +8,16 @@ using System.Threading.Tasks;
 
 using Color = Microsoft.Xna.Framework.Color;
 using System.Diagnostics;
+using MonoGame.Extended.Collisions.Layers;
+using Microsoft.Xna.Framework.Content;
 
 namespace Flooded_Soul.System
 {
     internal class ParallaxLayer
     {
         SpriteBatch spriteBatch;
+
+        SpriteFont font;
 
         private List<Vector2> positions = new List<Vector2>();
         private int textureWidth;
@@ -23,15 +27,17 @@ namespace Flooded_Soul.System
 
         int speed;
 
-        public ParallaxLayer(SpriteBatch sb,Texture2D texture,int screenWidth,int screenHeight,int speed)
+        public ParallaxLayer(ContentManager content,SpriteBatch sb,string texture,int screenWidth,int screenHeight,int speed)
         {
             this.spriteBatch = sb;
-            this.texture = texture;
-            textureWidth = texture.Width;
+            this.texture = content.Load<Texture2D>(texture);
+            textureWidth = this.texture.Width;
             this.screenWidth = screenWidth;
             this.screenHeight = screenHeight;
             GeneratePositions();
             this.speed = speed;
+
+            font = content.Load<SpriteFont>("font");
         }
 
         void GeneratePositions()
@@ -54,7 +60,6 @@ namespace Flooded_Soul.System
                 Vector2 p = positions[i];
                 p.X -= delta;
                 positions[i] = p;
-                Debug.WriteLine($"Parallax first X: {positions[0].X:F2}");
             }
 
             if (positions.Count > 0 && positions[0].X <= -textureWidth)
@@ -73,6 +78,7 @@ namespace Flooded_Soul.System
             foreach (var pos in positions)
             {
                 spriteBatch.Draw(texture, pos, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+                //spriteBatch.DrawString(font, $"Layer {pos}", pos, Color.White);
             }
         }
     }

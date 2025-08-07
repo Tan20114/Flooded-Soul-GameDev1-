@@ -26,8 +26,10 @@ namespace Flooded_Soul
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        ParallaxLayer test;
-        Texture2D bg1 => Content.Load<Texture2D>("1");
+        ParallaxManager bg;
+
+        List<string> layer = new List<string>() {"1","10","11"};
+        List<int> speeds = new List<int>() {1000,800,100};
 
         public Game1()
         {
@@ -45,7 +47,7 @@ namespace Flooded_Soul
             Window.IsBorderless = true;
             Window.Position = new Point(0,monitorHeight -viewPortHeight);
 
-            Activated += (s, e) => WindowAPI.SetTopMost(true);
+            //Activated += (s, e) => WindowAPI.SetTopMost(true);
 
             base.Initialize();
         }
@@ -55,7 +57,7 @@ namespace Flooded_Soul
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            test = new ParallaxLayer(_spriteBatch,bg1,viewPortWidth,viewPortHeight,1000);
+            bg = new ParallaxManager(Content, _spriteBatch, layer, viewPortWidth, viewPortHeight, speeds);
         }
 
         protected override void Update(GameTime gameTime)
@@ -64,7 +66,7 @@ namespace Flooded_Soul
                 Exit();
 
             // TODO: Add your update logic here
-            test.Update(gameTime);
+            bg.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -74,11 +76,8 @@ namespace Flooded_Soul
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            _spriteBatch.Begin();
 
-            test.Draw();
-
-            _spriteBatch.End();
+            bg.Draw();
 
             base.Draw(gameTime);
         }
