@@ -22,35 +22,41 @@ namespace Flooded_Soul.System
         private int screenWidth;
         private int screenHeight;
 
-        
+        int startSpeed;
+        float decrement;
+        bool isStop = false;
 
-        public ParallaxManager(ContentManager content, SpriteBatch sb, List<string> texture, int screenWidth, int screenHeight, List<int> speed)
+        public ParallaxManager(ContentManager content, List<string> texture, int screenWidth, int screenHeight, int speed)
         {
-            this.spriteBatch = sb;
-            this.layerSpeed = speed;
+            this.startSpeed = speed;
             this.screenWidth = screenWidth;
             this.screenHeight = screenHeight;
+
+            decrement = speed/texture.Count;
+
             for (int i = 0; i < texture.Count; i++)
             {
-                Debug.WriteLine($"Loading texture: {texture[i]} with speed {layerSpeed[i]}");
-                layer.Add(new ParallaxLayer(content, sb, texture[i], screenWidth, screenHeight, layerSpeed[i]));
+                //Debug.WriteLine($"Loading texture: {texture[i]} with speed {(int)(startSpeed - (decrement * i))}");
+                layer.Add(new ParallaxLayer(content, texture[i], screenWidth, screenHeight, (int)(startSpeed -(decrement * i))));
             }
         }
 
         public void Update(GameTime gameTime)
         {
+            if(isStop) return;
+
             foreach (ParallaxLayer l in layer)
                 l.Update(gameTime);
         }
 
         public void Draw()
         {
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             for (int i = layer.Count - 1; i >= 0; i--)
             {
                 layer[i].Draw();
             }
-            spriteBatch.End();
         }
+
+        public void ToggleStop() => isStop = !isStop;
     }
 }

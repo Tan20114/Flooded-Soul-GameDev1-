@@ -15,8 +15,6 @@ namespace Flooded_Soul.System
 {
     internal class ParallaxLayer
     {
-        SpriteBatch spriteBatch;
-
         SpriteFont font;
 
         private List<Vector2> positions = new List<Vector2>();
@@ -26,49 +24,59 @@ namespace Flooded_Soul.System
         private int screenHeight;
 
         int speed;
+        float scale;
+        bool isStop = false;
 
-        public ParallaxLayer(ContentManager content,SpriteBatch sb,string texture,int screenWidth,int screenHeight,int speed)
+        public ParallaxLayer(ContentManager content,string texture,int screenWidth,int screenHeight,int speed)
         {
-            this.spriteBatch = sb;
             this.texture = content.Load<Texture2D>(texture);
             textureWidth = this.texture.Width;
             this.screenWidth = screenWidth;
             this.screenHeight = screenHeight;
-            GeneratePositions();
             this.speed = speed;
+            scale = (float)screenHeight/ (float)this.texture.Height;
+            GeneratePositions();
+            Debug.WriteLine($"ScreenHeight: {screenHeight}");
+            Debug.WriteLine($"TextureHeight: {this.texture.Height}");
+            Debug.WriteLine($"Scale: {scale}");
 
             font = content.Load<SpriteFont>("font");
         }
 
         void GeneratePositions()
         {
-            int count = screenWidth/textureWidth + 2;
+            float scaledTextureWidth = textureWidth * scale;
+            float scaledTextureHeight = texture.Height * scale;
+            int count = screenWidth / (int)scaledTextureWidth + 2;
+
             positions.Clear();
 
-            for(int i = 0; i < count;i++)
+            float yPos = screenHeight - scaledTextureHeight;
+
+            for (int i = 0; i < count; i++)
             {
-                positions.Add(new Vector2(i * textureWidth, screenHeight - texture.Height));
+                positions.Add(new Vector2(i * scaledTextureWidth, yPos));
             }
         }
 
         public void Update(GameTime gameTime)
         {
+            if (isStop) return;
+
             float delta = speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             for (int i = 0; i < positions.Count; i++)
             {
-                Vector2 p = positions[i];
-                p.X -= delta;
-                positions[i] = p;
+                positions[i] = new Vector2(positions[i].X - delta, positions[i].Y);
             }
 
-            if (positions.Count > 0 && positions[0].X <= -textureWidth)
+            float scaledTextureWidth = textureWidth * scale;
+            if (positions.Count > 0 && positions[0].X <= -scaledTextureWidth)
             {
-                Debug.WriteLine("Move");
                 Vector2 first = positions[0];
                 positions.RemoveAt(0);
                 Vector2 last = positions[positions.Count - 1];
-                first.X = last.X + textureWidth;
+                first.X = last.X + scaledTextureWidth;
                 positions.Add(first);
             }
         }
@@ -77,9 +85,10 @@ namespace Flooded_Soul.System
         {
             foreach (var pos in positions)
             {
-                spriteBatch.Draw(texture, pos, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
-                //spriteBatch.DrawString(font, $"Layer {pos}", pos, Color.White);
+                Game1.instance._spriteBatch.Draw(texture, pos, null, Color.White, 0f, Vector2.Zero, new Vector2(scale, scale), SpriteEffects.None, 0f);
             }
         }
+
+        public void TogglePause() => isStop = !isStop;
     }
 }
