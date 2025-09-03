@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Flooded_Soul.System
 {
-    internal class InputHandler
+    public class InputHandler
     {
         public bool IsKeyPressed(Keys key) => Game1.instance.keyboardState.IsKeyDown(key) && Game1.instance.previousState.IsKeyUp(key);
         public bool IsKeyDown(Keys key) => Game1.instance.keyboardState.IsKeyDown(key);

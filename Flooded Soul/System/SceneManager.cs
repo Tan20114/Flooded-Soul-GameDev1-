@@ -25,13 +25,9 @@ namespace Flooded_Soul.System
             float distanceToMove = Vector2.Distance(startPoint, endPoint);
 
             if (distanceToMove > 30)
-            {
                 Game1.instance.mainCam.Move(moveDir * transitionSpeed * Game1.instance.deltaTime);
-            }
             else
-            {
                 Game1.instance.mainCam.Position = endPoint;
-            }
         }
     }
 }

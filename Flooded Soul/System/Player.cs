@@ -14,6 +14,8 @@ namespace Flooded_Soul.System
     internal class Player
     {
         int distanceTraveled;
+        public int fishPoint;
+
         int speed = 10;
 
         bool isStop = false;
@@ -21,15 +23,13 @@ namespace Flooded_Soul.System
         public Player()
         {
             distanceTraveled = 0;
+            fishPoint = 0;
         }
 
         public void Update(KeyboardState ks,int speed, GameTime gameTime)
         {
-            // Update the distance traveled based on speed and time
-            if(ks.IsKeyDown(Keys.S))
-            {
+            if(Game1.instance.Input.IsKeyPressed(Keys.S))
                 SailOrStop();
-            }
 
             if (!isStop)
                 distanceTraveled += (int)(speed * (float)gameTime.ElapsedGameTime.TotalSeconds);
@@ -39,14 +39,10 @@ namespace Flooded_Soul.System
 
         public void Draw(SpriteFont font)
         {
-            // Draw the distance traveled on the screen
             Game1.instance._spriteBatch.DrawString(font, $"Distance: {distanceTraveled} units", new Vector2(10, 10), Color.White);
         }
 
-        void SailOrStop()
-        {
-            isStop = !isStop;
-        }
+        void SailOrStop() => isStop = !isStop;
 
         public int GetDistance() => distanceTraveled;
     }
