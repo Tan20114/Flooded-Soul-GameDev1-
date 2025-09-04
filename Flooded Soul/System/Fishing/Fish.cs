@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Flooded_Soul.System.Collision;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,6 +20,7 @@ namespace Flooded_Soul.System.Fishing
     {
         protected Random random = new Random();
         public FishVision vision;
+        CollisionTracker tracker;
 
         FishingManager fishingManager;
 
@@ -44,7 +46,6 @@ namespace Flooded_Soul.System.Fishing
 
         public Fish(string textureName, float scale,FishingManager manager)
         {
-
             texture = Game1.instance.Content.Load<Texture2D>(textureName);
             fishingManager = manager;
 
@@ -53,9 +54,13 @@ namespace Flooded_Soul.System.Fishing
             RandomDir();
             RandomPos();
             _bounds = new RectangleF(pos, new SizeF(texture.Width * this.scale, texture.Height * this.scale));
-            _seeRange = new RectangleF(_bounds.Position.X,_bounds.Position.Y,_bounds.Width * 2,_bounds.Height);
+            _seeRange = new RectangleF(_bounds.Position.X,_bounds.Position.Y,_bounds.Width * 3,_bounds.Height);
 
             vision = new FishVision(this, _seeRange);
+
+            tracker = new CollisionTracker();
+
+            tracker.CollisionEnter += OnCollisionEnter;
 
             Game1.instance.collisionComponent.Insert(this);
             Game1.instance.collisionComponent.Insert(vision);
@@ -96,10 +101,16 @@ namespace Flooded_Soul.System.Fishing
 
         public void OnCollision(CollisionEventArgs collisionInfo)
         {
-            if (collisionInfo.Other is Hook hook)
-                pos.Y -= hook.hookUpSpeed * Game1.instance.deltaTime;
+            tracker.RegisterCollision(collisionInfo.Other);
         }
 
+        void OnCollisionEnter(ICollisionActor other)
+        {
+            if (other is Hook hook)
+            {
+                pos.Y -= hook.hookUpSpeed * Game1.instance.deltaTime;
+            }
+        }
 
         void RandomDir() => speed = random.Next(0, 2) == 0 ? speed : -speed;
 
@@ -112,6 +123,14 @@ namespace Flooded_Soul.System.Fishing
 
             pos.X = random.Next(0, Game1.instance.viewPortWidth - (int)(texture.Width * scale));
             pos.Y = random.Next(minSpawnHeight,maxSpawnHeight) + Game1.instance.viewPortHeight;
+        }
+
+        void StartMinigame()
+        {
+            foreach (Fish fish in fishingManager.fishInScreen)
+                Game1.instance.collisionComponent.Remove(fish);
+
+            Game1.instance.collisionComponent.Insert(this);
         }
     }
 }

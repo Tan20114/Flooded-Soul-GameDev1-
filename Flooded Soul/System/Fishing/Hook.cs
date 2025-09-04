@@ -22,7 +22,7 @@ namespace Flooded_Soul.System.Fishing
         Texture2D texture;
         Vector2 pos;
         float scale = 0.2f;
-        int followSpeed = 300;
+        int followSpeed = 100;
 
         public int hookUpSpeed = 100;
 
@@ -44,7 +44,7 @@ namespace Flooded_Soul.System.Fishing
             PositionRestrict();
             if (Game1.instance.sceneState != Scene.Fishing)
             {
-                ResetPositon();
+                ResetPosition();
                 return;
             }
             _bounds.Position = pos;
@@ -73,7 +73,7 @@ namespace Flooded_Soul.System.Fishing
             Game1.instance._spriteBatch.Draw(texture, pos, null, Color.White, 0f, Vector2.Zero, new Vector2(scale), SpriteEffects.None, 0f);
         }
 
-        void ResetPositon() => pos = new Vector2(Game1.instance.viewPortWidth / 2, Game1.instance.viewPortHeight);
+        void ResetPosition() => pos = new Vector2(Game1.instance.viewPortWidth / 2, Game1.instance.viewPortHeight);
 
         void PositionRestrict()
         {

@@ -16,8 +16,6 @@ namespace Flooded_Soul.System
         int distanceTraveled;
         public int fishPoint;
 
-        int speed = 10;
-
         bool isStop = false;
 
         public Player()

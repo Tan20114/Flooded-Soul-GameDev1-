@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Flooded_Soul.System.Collision;
+using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 using MonoGame.Extended.Collisions;
 using System;
@@ -14,58 +15,44 @@ namespace Flooded_Soul.System.Fishing
     class FishVision : ICollisionActor
     {
         private Fish parent;
-        private HashSet<ICollisionActor> _currentlyColliding = new HashSet<ICollisionActor>();
-        private HashSet<ICollisionActor> _collidingThisFrame = new HashSet<ICollisionActor>();
+        CollisionTracker tracker;
 
         public RectangleF _bound;
         public IShapeF Bounds => _bound;
+
+        int speedMultiplier = 3;
 
         public FishVision(Fish fish, RectangleF rect)
         {
             parent = fish;
             _bound = rect;
+
+            tracker = new CollisionTracker();
+
+            tracker.CollisionEnter += OnCollisionEnter;
+            tracker.CollisionExit += OnCollisionExit;
         }
 
         public void OnCollision(CollisionEventArgs collisionInfo)
         {
-            var other = collisionInfo.Other;
-
-            // Register collision this frame
-            _collidingThisFrame.Add(other);
-
-            // Trigger enter only once
-            if (!_currentlyColliding.Contains(other))
-            {
-                _currentlyColliding.Add(other);
-                OnCollisionEnter(other);
-            }
+            tracker.RegisterCollision(collisionInfo.Other);
         }
 
         public void Update()
         {
-            // Find actors that stopped colliding
-            var exited = _currentlyColliding.Except(_collidingThisFrame).ToList();
-            foreach (var actor in exited)
-            {
-                _currentlyColliding.Remove(actor);
-                OnCollisionExit(actor);
-            }
-
-            // Clear for next frame
-            _collidingThisFrame.Clear();
+            tracker.Update();
         }
 
         private void OnCollisionEnter(ICollisionActor other)
         {
             if (other is Hook)
-                parent.speed *= 2;
+                parent.speed *= speedMultiplier;
         }
 
         private void OnCollisionExit(ICollisionActor other)
         {
             if (other is Hook)
-                parent.speed /= 2;
+                parent.speed /= speedMultiplier;
         }
     }
-
 }

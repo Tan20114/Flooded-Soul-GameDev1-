@@ -14,10 +14,7 @@ namespace Flooded_Soul.System.BG
 {
     internal class ParallaxManager
     {
-        SpriteBatch spriteBatch;
-
         List<ParallaxLayer> layer = new List<ParallaxLayer>();
-        List<int> layerSpeed;
 
         Vector2 posOffset;
 
