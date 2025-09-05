@@ -1,4 +1,4 @@
-﻿using Flooded_Soul.System.Collision;
+﻿using Flooded_Soul.System.Collision_System;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 using MonoGame.Extended.Collisions;
@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Color = Microsoft.Xna.Framework.Color;
 using RectangleF = MonoGame.Extended.RectangleF;
 using SizeF = MonoGame.Extended.SizeF;
 
@@ -15,7 +16,7 @@ namespace Flooded_Soul.System.Fishing
     class FishVision : ICollisionActor
     {
         private Fish parent;
-        CollisionTracker tracker;
+        public CollisionTracker Collider;
 
         public RectangleF _bound;
         public IShapeF Bounds => _bound;
@@ -27,20 +28,20 @@ namespace Flooded_Soul.System.Fishing
             parent = fish;
             _bound = rect;
 
-            tracker = new CollisionTracker();
+            Collider = new CollisionTracker();
 
-            tracker.CollisionEnter += OnCollisionEnter;
-            tracker.CollisionExit += OnCollisionExit;
+            Collider.CollisionEnter += OnCollisionEnter;
+            Collider.CollisionExit += OnCollisionExit;
         }
 
-        public void OnCollision(CollisionEventArgs collisionInfo)
-        {
-            tracker.RegisterCollision(collisionInfo.Other);
-        }
+        public void OnCollision(CollisionEventArgs collisionInfo) => Collider.RegisterCollision(collisionInfo.Other);
 
-        public void Update()
+        public void Update() => Collider.Update();
+
+        public void Draw()
         {
-            tracker.Update();
+            if (Collider.Collideable)
+                Game1.instance._spriteBatch.DrawRectangle(_bound, Color.Yellow, 2);
         }
 
         private void OnCollisionEnter(ICollisionActor other)

@@ -30,10 +30,7 @@ namespace Flooded_Soul.System.Fishing
             this.mousePos.Position = mousePos;
         }
 
-        public void Draw()
-        {
-            Game1.instance._spriteBatch.DrawCircle(mousePos, 3, Color.Red, 3);
-        }
+        public void Draw() => Game1.instance._spriteBatch.DrawCircle(mousePos, 3, Color.Red, 3);
 
         public void OnCollision(CollisionEventArgs collisionInfo)
         {

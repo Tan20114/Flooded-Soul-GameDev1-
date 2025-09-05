@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Flooded_Soul.System.Collision;
+using Flooded_Soul.System.Collision_System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,6 +13,7 @@ using MonoGame.Extended.Collisions;
 using Color = Microsoft.Xna.Framework.Color;
 using RectangleF = MonoGame.Extended.RectangleF;
 using SizeF = MonoGame.Extended.SizeF;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace Flooded_Soul.System.Fishing
 {
@@ -20,9 +21,10 @@ namespace Flooded_Soul.System.Fishing
     {
         protected Random random = new Random();
         public FishVision vision;
-        CollisionTracker tracker;
+        CollisionTracker Collider;
 
         FishingManager fishingManager;
+        Queue<Fish> fishToRemove = new Queue<Fish>();
 
         protected Texture2D texture;
         public Vector2 pos;
@@ -44,6 +46,10 @@ namespace Flooded_Soul.System.Fishing
         public IShapeF Bounds => _bounds;
         public IShapeF seeRange => _seeRange;
 
+        FishingGameArea minigame = null;
+        bool isMinigame = false;
+        public bool otherMinigame = false;
+
         public Fish(string textureName, float scale,FishingManager manager)
         {
             texture = Game1.instance.Content.Load<Texture2D>(textureName);
@@ -58,9 +64,10 @@ namespace Flooded_Soul.System.Fishing
 
             vision = new FishVision(this, _seeRange);
 
-            tracker = new CollisionTracker();
+            Collider = new CollisionTracker();
 
-            tracker.CollisionEnter += OnCollisionEnter;
+            Collider.CollisionEnter += OnCollisionEnter;
+            Collider.CollisionExit += OnCollisionExit;
 
             Game1.instance.collisionComponent.Insert(this);
             Game1.instance.collisionComponent.Insert(vision);
@@ -68,6 +75,10 @@ namespace Flooded_Soul.System.Fishing
 
         public void Update()
         {
+            Collider.Update();
+            if(minigame != null)
+                minigame.Update();
+
             _bounds.Position = pos;
             vision._bound.Position = _seeRange.Position;
 
@@ -92,26 +103,37 @@ namespace Flooded_Soul.System.Fishing
 
         public void Draw()
         {
-            Game1.instance._spriteBatch.DrawRectangle(_bounds, Color.Green, 3);
-            Game1.instance._spriteBatch.DrawRectangle(_seeRange, Color.Blue, 3);
             Game1.instance._spriteBatch.Draw(texture, pos, null, Color.White, 0f, Vector2.Zero, new Vector2(scale), SetFaceDir(), 0f);
+
+            if (Collider.Collideable)
+                Game1.instance._spriteBatch.DrawRectangle(_bounds, Color.Green, 3);
+
+            vision.Draw();
+
+            if (isMinigame)
+                minigame.Draw();
         }
 
         SpriteEffects SetFaceDir() => speed > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
-        public void OnCollision(CollisionEventArgs collisionInfo)
-        {
-            tracker.RegisterCollision(collisionInfo.Other);
-        }
+        #region Collision
+        public void OnCollision(CollisionEventArgs collisionInfo) => Collider.RegisterCollision(collisionInfo.Other);
 
         void OnCollisionEnter(ICollisionActor other)
         {
-            if (other is Hook hook)
+            if (other is Hook)
             {
-                pos.Y -= hook.hookUpSpeed * Game1.instance.deltaTime;
+                StartMinigame();
             }
         }
 
+        void OnCollisionExit(ICollisionActor other)
+        {
+
+        }
+        #endregion
+
+        #region Initialize
         void RandomDir() => speed = random.Next(0, 2) == 0 ? speed : -speed;
 
         protected virtual void RandomPos()
@@ -124,13 +146,40 @@ namespace Flooded_Soul.System.Fishing
             pos.X = random.Next(0, Game1.instance.viewPortWidth - (int)(texture.Width * scale));
             pos.Y = random.Next(minSpawnHeight,maxSpawnHeight) + Game1.instance.viewPortHeight;
         }
+        #endregion
 
         void StartMinigame()
         {
-            foreach (Fish fish in fishingManager.fishInScreen)
-                Game1.instance.collisionComponent.Remove(fish);
+            if (isMinigame) return;
 
-            Game1.instance.collisionComponent.Insert(this);
+            fishToRemove = new Queue<Fish>(fishingManager.fishInScreen.Where(f => f != this));
+            Collider.EnableCollision();
+            vision.Collider.DisableCollision();
+
+            foreach (Fish f in fishToRemove)
+            {
+                f.Collider.DisableCollision();
+                f.vision.Collider.DisableCollision();
+            }
+
+            minigame = new FishingGameArea(pos);
+            isMinigame = true;
+        }
+
+        public void EndMinigame()
+        {
+            foreach (Fish f in fishToRemove)
+            {
+                f.Collider.EnableCollision();
+                f.vision.Collider.EnableCollision();
+            }
+
+            Collider.EnableCollision();
+            vision.Collider.EnableCollision();
+
+            minigame = null;
+            isMinigame = false;
+            fishToRemove.Clear();
         }
     }
 }

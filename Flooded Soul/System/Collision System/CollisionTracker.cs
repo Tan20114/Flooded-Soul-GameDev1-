@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Flooded_Soul.System.Collision
+namespace Flooded_Soul.System.Collision_System
 {
     class CollisionTracker
     {
+        bool collideable = true;
+        public bool Collideable { get => collideable; }
+
         private HashSet<ICollisionActor> _currentlyColliding = new HashSet<ICollisionActor>();
         private HashSet<ICollisionActor> _collidingThisFrame = new HashSet<ICollisionActor>();
 
@@ -16,6 +19,7 @@ namespace Flooded_Soul.System.Collision
 
         public void RegisterCollision(ICollisionActor other)
         {
+            if (!Collideable) return;
             _collidingThisFrame.Add(other);
 
             if (!_currentlyColliding.Contains(other))
@@ -40,5 +44,8 @@ namespace Flooded_Soul.System.Collision
 
             _collidingThisFrame.Clear();
         }
+
+        public void EnableCollision() => collideable = true;
+        public void DisableCollision() => collideable = false;
     }
 }

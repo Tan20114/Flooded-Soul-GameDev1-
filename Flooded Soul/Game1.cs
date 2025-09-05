@@ -138,8 +138,6 @@ namespace Flooded_Soul
 
         Player player;
 
-        FishPointer test;
-
         public Game1()
         {
             instance = this;
@@ -176,8 +174,6 @@ namespace Flooded_Soul
 
             // TODO: use this.Content to load your game content here
 
-            test = new FishPointer();
-
             #region System
             var viewportAdaptor = new BoxingViewportAdapter(Window,GraphicsDevice,viewPortWidth,viewPortHeight);
             mainCam = new OrthographicCamera(viewportAdaptor);
@@ -206,8 +202,6 @@ namespace Flooded_Soul
 
             // TODO: Add your update logic here
 
-            test.Update();
-
             #region System
             SceneState();
             CamTest();
@@ -222,7 +216,6 @@ namespace Flooded_Soul
             #endregion
 
             #region Collision
-            collisionComponent.Insert(test);
             collisionComponent.Update(gameTime);
             #endregion
 
@@ -250,7 +243,6 @@ namespace Flooded_Soul
             player.Draw(Content.Load<SpriteFont>("font"));
             #endregion
 
-            test.Draw(); 
             _spriteBatch.End();
             base.Draw(gameTime);
         }
