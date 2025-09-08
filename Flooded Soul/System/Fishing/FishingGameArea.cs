@@ -15,6 +15,8 @@ namespace Flooded_Soul.System.Fishing
 {
     internal class FishingGameArea : ICollisionActor
     {
+        FishingManager fishingManager;
+
         CollisionTracker Collider;
 
         RectangleF bound;
@@ -22,11 +24,15 @@ namespace Flooded_Soul.System.Fishing
 
         FishingGameArea boundToCreate= null;
 
+        public bool fishInArea = true;
+
         int areaWidth = 2000;
         int areaHeight = 1600;
 
-        public FishingGameArea(Vector2 pos)
+        public FishingGameArea(Vector2 pos, FishingManager fishingManager)
         {
+            this.fishingManager = fishingManager;
+
             Collider = new CollisionTracker();
 
             Collider.CollisionEnter += OnCollisionEnter;
@@ -36,9 +42,9 @@ namespace Flooded_Soul.System.Fishing
             float spawnWidth = areaWidth * Game1.instance.screenRatio;
             float spawnHeight = areaHeight * Game1.instance.screenRatio;
 
-            Vector2 spawnPos = new Vector2(pos.X - (spawnWidth/2),pos.Y - (spawnHeight/2));
+            Vector2 spawnPos = new Vector2(pos.X - (spawnWidth / 2), pos.Y - (spawnHeight / 2));
 
-            bound = new RectangleF(spawnPos.X,spawnPos.Y, spawnWidth, spawnHeight);
+            bound = new RectangleF(spawnPos.X, spawnPos.Y, spawnWidth, spawnHeight);
 
             boundToCreate = this;
         }
@@ -58,18 +64,18 @@ namespace Flooded_Soul.System.Fishing
         public void OnCollision(CollisionEventArgs collisionInfo) => Collider.RegisterCollision(collisionInfo.Other);
         private void OnCollisionEnter(ICollisionActor other)
         {
-            if(other is Fish)
-                Debug.WriteLine("Fish entered area");
+            if (other == fishingManager.targetFish)
+                fishInArea = true;
         }
         private void OnCollisionStay(ICollisionActor other)
         {
-            if(other is Fish)
-                Debug.WriteLine("Fish in area");
+            if(other == fishingManager.targetFish)
+                fishInArea = true;
         }
         private void OnCollisionExit(ICollisionActor other)
         {
-            if(other is Fish)
-                Debug.WriteLine("Fish exited area");
+            if (other == fishingManager.targetFish)
+                fishInArea = false;
         }
     }
 }

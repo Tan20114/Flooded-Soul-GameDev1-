@@ -19,6 +19,8 @@ namespace Flooded_Soul.System.Fishing
 {
     internal class Hook : ICollisionActor
     {
+        FishingManager fishingManager;
+
         Texture2D texture;
         Vector2 pos;
         float scale = 0.2f;
@@ -29,8 +31,10 @@ namespace Flooded_Soul.System.Fishing
         RectangleF _bounds;
         public IShapeF Bounds => _bounds;
 
-        public Hook()
+        public Hook(FishingManager f)
         {
+            fishingManager = f;
+
             scale *= Game1.instance.screenRatio;
 
             texture = Game1.instance.Content.Load<Texture2D>("hook_test");
@@ -42,11 +46,7 @@ namespace Flooded_Soul.System.Fishing
         public void Update()
         {
             PositionRestrict();
-            if (Game1.instance.sceneState != Scene.Fishing)
-            {
-                ResetPosition();
-                return;
-            }
+
             _bounds.Position = pos;
 
             Vector2 mousePos = new Vector2(Game1.instance.mouseState.X, Game1.instance.mouseState.Y + Game1.instance.viewPortHeight);
@@ -56,10 +56,15 @@ namespace Flooded_Soul.System.Fishing
             Vector2 moveDir = Vector2.Normalize(distance);
             
             if (Game1.instance.sceneState == Scene.Fishing)
-                if(distance.Length() > 10)
-                    pos += moveDir * followSpeed * Game1.instance.deltaTime;
+            {
+                if (fishingManager.isMinigame)
+                    pos = fishingManager.targetFish.pos;
                 else
-                    pos = mousePos;
+                    if (distance.Length() > 10)
+                        pos += moveDir * followSpeed * Game1.instance.deltaTime;
+                    else
+                        pos = mousePos;
+            }   
         }
 
         public void OnCollision(CollisionEventArgs collisionInfo)
@@ -73,7 +78,7 @@ namespace Flooded_Soul.System.Fishing
             Game1.instance._spriteBatch.Draw(texture, pos, null, Color.White, 0f, Vector2.Zero, new Vector2(scale), SpriteEffects.None, 0f);
         }
 
-        void ResetPosition() => pos = new Vector2(Game1.instance.viewPortWidth / 2, Game1.instance.viewPortHeight);
+        public void ResetPosition() => pos = new Vector2(Game1.instance.viewPortWidth / 2, Game1.instance.viewPortHeight);
 
         void PositionRestrict()
         {

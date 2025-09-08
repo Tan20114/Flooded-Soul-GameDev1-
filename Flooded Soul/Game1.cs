@@ -27,6 +27,9 @@ namespace Flooded_Soul
     public enum Scene
     {
         Default,
+        Default_Stop,
+        Shop,
+        Collection,
         Fishing
     }
 
@@ -49,7 +52,7 @@ namespace Flooded_Soul
         #region Scene Management
         public OrthographicCamera mainCam;
         MonitorSize monitorSize = new MonitorSize();
-        SceneManager scene = new SceneManager();
+        public SceneManager scene = new SceneManager();
         #endregion
 
         #region Work Space
@@ -67,7 +70,10 @@ namespace Flooded_Soul
 
         public Scene sceneState = Scene.Default;
         #region Scene Point
+        Vector2 defaultPoint => Vector2.Zero;
         Vector2 fishingPoint => new Vector2(0, viewPortHeight);
+        Vector2 shopPoint => new Vector2(viewPortWidth, 0);
+        Vector2 CollectionPoint => new Vector2(-viewPortWidth, 0);
         #endregion
 
         #region Game System
@@ -76,6 +82,7 @@ namespace Flooded_Soul
         public KeyboardState keyboardState;
         public KeyboardState previousState;
         public MouseState mouseState;
+        public MouseState prevMouse;
 
         FishingManager fm;
         #endregion
@@ -119,6 +126,7 @@ namespace Flooded_Soul
                     "ParallaxBG/OceanBiome/05_ocean_biome_clound_1",
                     "ParallaxBG/OceanBiome/05_ocean_biome_clound_2",
                     "ParallaxBG/OceanBiome/05_ocean_biome_clound_3",
+                    "ParallaxBG/OceanBiome/05_ocean_biome_moutain",
                     "ParallaxBG/OceanBiome/05_ocean_biome_moutain"
                 },
                 new List<string>()
@@ -180,7 +188,7 @@ namespace Flooded_Soul
             #endregion
 
             #region Background
-            bg = new ParallaxManager(ocean.overWater,Vector2.Zero, 500);
+            bg = new ParallaxManager(ocean.overWater,Vector2.Zero, 150);
             underSeaBg = new ParallaxManager(ocean.underWater, fishingPoint);
             #endregion
 
@@ -220,6 +228,7 @@ namespace Flooded_Soul
             #endregion
 
             previousState = keyboardState;
+            prevMouse = mouseState;
             base.Update(gameTime);
         }
 
@@ -249,10 +258,39 @@ namespace Flooded_Soul
 
         void SceneState()
         {
-            if (Input.IsKeyPressed(Keys.A))
-                sceneState = Scene.Fishing;
-            else if (Input.IsKeyPressed(Keys.B))         
-                sceneState = Scene.Default;
+            if (sceneState == Scene.Default)
+            {
+                if (Input.IsKeyPressed(Keys.A))
+                    sceneState = Scene.Default_Stop;
+                if (Input.IsKeyPressed(Keys.D))
+                    sceneState = Scene.Collection;
+            }    
+            else if (sceneState == Scene.Default_Stop)
+            {
+                if (Input.IsKeyPressed(Keys.A))
+                    sceneState = Scene.Default;
+                if (Input.IsKeyPressed(Keys.B))
+                    sceneState = Scene.Fishing;
+                if (Input.IsKeyPressed(Keys.C))
+                    sceneState = Scene.Shop;
+                if (Input.IsKeyPressed(Keys.D))
+                    sceneState = Scene.Collection;
+            }
+            else if (sceneState == Scene.Fishing)
+            {
+                if (Input.IsKeyPressed(Keys.B))
+                    sceneState = Scene.Default_Stop;
+            }
+            else if (sceneState == Scene.Shop)
+            {
+                if (Input.IsKeyPressed(Keys.C))
+                    sceneState = Scene.Default;
+            }
+            else if (sceneState == Scene.Collection)
+            {
+                if (Input.IsKeyPressed(Keys.D))
+                    sceneState = Scene.Default;
+            }
         }
 
         void CamTest()
@@ -268,7 +306,24 @@ namespace Flooded_Soul
                 case Scene.Default:
                     {
                         bg.Start();
-                        scene.CamMoveTo(Vector2.Zero, 1000);
+                        scene.CamMoveTo(defaultPoint, 1000);
+                        break;
+                    }
+                case Scene.Default_Stop:
+                    {
+                        bg.Stop();
+                        scene.CamMoveTo(defaultPoint, 1000);
+                        break;
+                    }
+                case Scene.Shop:
+                    {
+                        bg.Stop();
+                        scene.CamMoveTo(shopPoint, 1000);
+                        break;
+                    }
+                case Scene.Collection:
+                    {
+                        scene.CamMoveTo(CollectionPoint, 1000);
                         break;
                     }
             }

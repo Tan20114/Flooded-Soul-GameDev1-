@@ -21,7 +21,7 @@ namespace Flooded_Soul.System.Fishing
     {
         protected Random random = new Random();
         public FishVision vision;
-        CollisionTracker Collider;
+        public CollisionTracker Collider;
 
         FishingManager fishingManager;
         Queue<Fish> fishToRemove = new Queue<Fish>();
@@ -30,6 +30,7 @@ namespace Flooded_Soul.System.Fishing
         public Vector2 pos;
         protected float scale = 0.05f;
         public int speed = 100;
+        int goDownSpeed = 50;
 
         protected int minSpawnHeight;
         protected int maxSpawnHeight;
@@ -45,10 +46,6 @@ namespace Flooded_Soul.System.Fishing
         RectangleF _seeRange;
         public IShapeF Bounds => _bounds;
         public IShapeF seeRange => _seeRange;
-
-        FishingGameArea minigame = null;
-        bool isMinigame = false;
-        public bool otherMinigame = false;
 
         public Fish(string textureName, float scale,FishingManager manager)
         {
@@ -76,20 +73,24 @@ namespace Flooded_Soul.System.Fishing
         public void Update()
         {
             Collider.Update();
-            if(minigame != null)
-                minigame.Update();
 
             _bounds.Position = pos;
             vision._bound.Position = _seeRange.Position;
 
             pos.X += speed * Game1.instance.deltaTime;
 
+            if(fishingManager.isMinigame)
+            {
+                if (fishingManager.targetFish == this)
+                    pos.Y += goDownSpeed * Game1.instance.deltaTime;
+            }
+
             if (pos.X > Game1.instance.viewPortWidth - texture.Width * scale)
                 speed = -speed;
             else if (pos.X < 0)
                 speed = -speed;
 
-            if(pos.Y < Game1.instance.viewPortHeight)
+            if(pos.Y < Game1.instance.viewPortHeight * .1f + Game1.instance.viewPortHeight)
             {
                 RandomPos();
                 RandomDir();
@@ -109,9 +110,6 @@ namespace Flooded_Soul.System.Fishing
                 Game1.instance._spriteBatch.DrawRectangle(_bounds, Color.Green, 3);
 
             vision.Draw();
-
-            if (isMinigame)
-                minigame.Draw();
         }
 
         SpriteEffects SetFaceDir() => speed > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
@@ -123,7 +121,11 @@ namespace Flooded_Soul.System.Fishing
         {
             if (other is Hook)
             {
-                StartMinigame();
+                fishingManager.targetFish = this;
+                fishingManager.otherFishes = fishingManager.fishInScreen.Where(f => f != this).ToList();
+
+                Collider.EnableCollision();
+                vision.Collider.DisableCollision();
             }
         }
 
@@ -148,24 +150,6 @@ namespace Flooded_Soul.System.Fishing
         }
         #endregion
 
-        void StartMinigame()
-        {
-            if (isMinigame) return;
-
-            fishToRemove = new Queue<Fish>(fishingManager.fishInScreen.Where(f => f != this));
-            Collider.EnableCollision();
-            vision.Collider.DisableCollision();
-
-            foreach (Fish f in fishToRemove)
-            {
-                f.Collider.DisableCollision();
-                f.vision.Collider.DisableCollision();
-            }
-
-            minigame = new FishingGameArea(pos);
-            isMinigame = true;
-        }
-
         public void EndMinigame()
         {
             foreach (Fish f in fishToRemove)
@@ -177,9 +161,17 @@ namespace Flooded_Soul.System.Fishing
             Collider.EnableCollision();
             vision.Collider.EnableCollision();
 
-            minigame = null;
-            isMinigame = false;
+            fishingManager.minigameArea = null;
+            fishingManager.isMinigame = false;
             fishToRemove.Clear();
+        }
+
+        public void Reset()
+        {
+            RandomPos();
+            RandomDir();
+            _bounds.Position = pos;
+            _seeRange.Position = new Vector2(_bounds.Right, _bounds.Y);
         }
     }
 }

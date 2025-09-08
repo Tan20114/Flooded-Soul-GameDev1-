@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace Flooded_Soul.System
 {
-    internal class SceneManager
+    public class SceneManager
     {
+        public bool moveSuccess = true;
+
         public SceneManager()
         {
 
@@ -16,6 +18,7 @@ namespace Flooded_Soul.System
 
         public void CamMoveTo(Vector2 point, int transitionSpeed)
         {
+            moveSuccess = false;
             Vector2 startPoint = Game1.instance.mainCam.Position;
             Vector2 endPoint = point;
 
@@ -27,7 +30,10 @@ namespace Flooded_Soul.System
             if (distanceToMove > 30)
                 Game1.instance.mainCam.Move(moveDir * transitionSpeed * Game1.instance.deltaTime);
             else
+            {
                 Game1.instance.mainCam.Position = endPoint;
+                moveSuccess = true;
+            }
         }
     }
 }

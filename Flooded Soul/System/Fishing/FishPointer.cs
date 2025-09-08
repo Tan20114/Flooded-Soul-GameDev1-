@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Flooded_Soul.System.Collision_System;
+using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 using MonoGame.Extended.Collisions;
 using System;
@@ -13,14 +14,26 @@ namespace Flooded_Soul.System.Fishing
 {
     internal class FishPointer : ICollisionActor
     {
+        FishingManager fishingManager;
+
         CircleF mousePos;
         public IShapeF Bounds => mousePos;
 
-        public FishPointer()
+        public bool canClick = false;
+
+        CollisionTracker Collider;
+
+        public FishPointer(FishingManager fishingManager)
         {
+            this.fishingManager = fishingManager;
             Vector2 mousePos = new Vector2(Game1.instance.mouseState.X, Game1.instance.mouseState.Y + Game1.instance.viewPortHeight);
 
-            this.mousePos = new CircleF(mousePos, 1);
+            this.mousePos = new CircleF(mousePos, 3);
+            Collider = new CollisionTracker();
+
+            Collider.CollisionEnter += OnCollisionEnter;
+            Collider.CollisionStay += OnCollisionStay;
+            Collider.CollisionExit += OnCollisionExit;
         }
 
         public void Update()
@@ -28,13 +41,32 @@ namespace Flooded_Soul.System.Fishing
             Vector2 mousePos = new Vector2(Game1.instance.mouseState.X, Game1.instance.mouseState.Y + Game1.instance.viewPortHeight);
 
             this.mousePos.Position = mousePos;
+
+            Collider.Update();
         }
 
         public void Draw() => Game1.instance._spriteBatch.DrawCircle(mousePos, 3, Color.Red, 3);
 
-        public void OnCollision(CollisionEventArgs collisionInfo)
+        public void OnCollision(CollisionEventArgs collisionInfo) => Collider.RegisterCollision(collisionInfo.Other);
+
+        void OnCollisionEnter(ICollisionActor other)
         {
-            Debug.WriteLine("Collide With" + collisionInfo.Other);
+            if (other == fishingManager.targetFish)
+                canClick = true;
+        }
+
+        void OnCollisionStay(ICollisionActor other)
+        {
+            if(other == fishingManager.targetFish)
+                canClick = true;
+            Debug.WriteLine("STAY");
+        }
+
+        void OnCollisionExit(ICollisionActor other)
+        {
+            if(other == fishingManager.targetFish)
+                canClick = false;
+            Debug.WriteLine("EXIT");
         }
     }
 }
