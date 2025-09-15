@@ -29,6 +29,8 @@ namespace Flooded_Soul.System.BG
 
         int speed;
         float scale;
+        float scaleX;
+        float scaleY;
         bool isStop = false;
 
         void Initialize(Vector2 posOffset,int speed,Texture2D texture)
@@ -47,6 +49,9 @@ namespace Flooded_Soul.System.BG
             textureWidth = this.texture.Width;
 
             Initialize(posOffset,speed,this.texture);
+
+            scaleX = screenWidth / textureWidth;
+            scaleY = scale;
         }
 
         public ParallaxLayer(List<string> textures, Vector2 posOffset, int speed)
@@ -87,7 +92,7 @@ namespace Flooded_Soul.System.BG
             }
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, int speed)
         {
             if (isStop) return;
 
@@ -135,6 +140,35 @@ namespace Flooded_Soul.System.BG
             }
         }
 
+        public void Draw(int index)
+        {
+            Game1.instance._spriteBatch.Draw(
+                    texture,
+                    posOffset,
+                    null,
+                    Color.White,
+                    0f,
+                    Vector2.Zero,
+                    new Vector2(scaleX,scaleY),
+                    SpriteEffects.None,
+                    0f
+                );
+        }
+
+        public void Draw(Vector2 pos)
+        {
+            Game1.instance._spriteBatch.Draw(
+                    texture,
+                    pos,
+                    null,
+                    Color.White,
+                    0f,
+                    Vector2.Zero,
+                    new Vector2(scaleX, scaleY),
+                    SpriteEffects.None,
+                    0f
+                );
+        }
 
         public void TogglePause() => isStop = !isStop;
     }

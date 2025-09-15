@@ -8,40 +8,176 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
+using Flooded_Soul.System.BG;
+using System.Diagnostics;
 
 namespace Flooded_Soul.System
 {
-    internal class Player
+    public class Player
     {
+        int minSpeed = 0;
+        public int maxSpeed = 100;
+
+        public int speed = 100;
+        public int Speed
+        {
+            get => speed;
+            set
+            {
+                speed = MathHelper.Clamp(value, minSpeed, maxSpeed);
+            }
+        }
+
         int distanceTraveled;
         public int fishPoint;
 
         bool isStop = false;
 
+        public int hookLevel = 1;
+        public int boatLevel = 1;
+
+        int ySpeed = 5;
+        float yTravelled = 0;
+
+        List<ParallaxLayer> currentTex = new List<ParallaxLayer>();
+
+        Vector2 pos;
+
         public Player()
         {
             distanceTraveled = 0;
             fishPoint = 0;
+
+            currentTex = LV1Draw();
+
+            pos = Vector2.Zero;
         }
 
-        public void Update(KeyboardState ks,int speed, GameTime gameTime)
+        public void Update(KeyboardState ks, GameTime gameTime)
         {
-            if(Game1.instance.Input.IsKeyPressed(Keys.S))
-                SailOrStop();
+            TestBoat();
+            LevelVisualize();
+            WaveMovement();
 
             if (!isStop)
-                distanceTraveled += (int)(speed * (float)gameTime.ElapsedGameTime.TotalSeconds);
-            else
-                distanceTraveled += 0;
+                distanceTraveled += (int)(Speed * (float)gameTime.ElapsedGameTime.TotalSeconds);
         }
 
         public void Draw(SpriteFont font)
         {
-            Game1.instance._spriteBatch.DrawString(font, $"Distance: {distanceTraveled} units", new Vector2(10, 10), Color.White);
+            for (int i = 0; i< currentTex.Count; i++)
+            {
+                currentTex[i].Draw(pos);
+            }
+            //Game1.instance._spriteBatch.DrawString(font, $"Distance: {distanceTraveled} units", new Vector2(10, 10), Color.White);
         }
 
-        void SailOrStop() => isStop = !isStop;
+        public void Sail()
+        {
+            speed = maxSpeed;
+            isStop = false;
+        }
+
+        public void Stop()
+        {
+            speed = minSpeed;
+            isStop = true;
+        }
 
         public int GetDistance() => distanceTraveled;
+
+        void LevelVisualize()
+        {
+            switch(boatLevel)
+            {
+                case 1:
+                    currentTex = LV1Draw();
+                    break;
+                case 2:
+                    currentTex = LV2Draw();
+                    break;
+                case 3:
+                    currentTex = LV3Draw();
+                    break;
+            }
+        }
+
+        void WaveMovement()
+        {
+            int speed = isStop ? ySpeed / 3 : ySpeed;
+
+            pos.Y += speed * Game1.instance.deltaTime;
+            yTravelled += MathF.Abs(speed) * Game1.instance.deltaTime;
+
+            int RestrictArea = isStop ? 3 : 10;
+
+            if(yTravelled > RestrictArea)
+            {
+                yTravelled = 0;
+                ySpeed *= -1;
+            }
+        }
+
+        List<ParallaxLayer> LV1Draw()
+        {
+            ParallaxLayer l1 = new ParallaxLayer("Boat/LV1/1_seperate_anchor_LV1",Vector2.Zero,0);
+            ParallaxLayer l2 = new ParallaxLayer("Boat/LV1/2_seperate_boat_LV1",Vector2.Zero,0);
+            ParallaxLayer l3 = new ParallaxLayer("Boat/LV1/3_seperate_front_home_LV1",Vector2.Zero,0);
+            ParallaxLayer l4 = new ParallaxLayer("Boat/LV1/4_seperate_home_LV1",Vector2.Zero,0);
+
+            return new List<ParallaxLayer> 
+            { 
+                l4, 
+                l3, 
+                l2, 
+                l1, 
+            };
+        }
+
+        List<ParallaxLayer> LV2Draw()
+        {
+            ParallaxLayer l1 = new ParallaxLayer("Boat/LV2/1_seperate_anchor_LV2",Vector2.Zero,0);
+            ParallaxLayer l2 = new ParallaxLayer("Boat/LV2/2_seperate_boat_LV2", Vector2.Zero, 0);
+            ParallaxLayer l3 = new ParallaxLayer("Boat/LV2/3_seperate_front_sailing_LV2", Vector2.Zero, 0);
+            ParallaxLayer l4 = new ParallaxLayer("Boat/LV2/4_seperate_sailing_LV2", Vector2.Zero, 0);
+            ParallaxLayer l5 = new ParallaxLayer("Boat/LV2/5_seperate_things_LV2", Vector2.Zero, 0);
+
+            return new List<ParallaxLayer> 
+            { 
+                l5,
+                l4, 
+                l3, 
+                l2, 
+                l1, 
+            };
+        }
+
+        List<ParallaxLayer> LV3Draw()
+        {
+            ParallaxLayer l1 = new ParallaxLayer("Boat/LV3/1_seperate_anchor_LV3",Vector2.Zero,0);
+            ParallaxLayer l2 = new ParallaxLayer("Boat/LV3/2_seperate_boat_LV3", Vector2.Zero, 0);
+            ParallaxLayer l3 = new ParallaxLayer("Boat/LV3/3_seperate_front_sailing_LV3", Vector2.Zero, 0);
+            ParallaxLayer l4 = new ParallaxLayer("Boat/LV3/4_seperate_front_home_LV3", Vector2.Zero, 0);
+            ParallaxLayer l5 = new ParallaxLayer("Boat/LV3/5_seperate_home_LV3", Vector2.Zero, 0);
+            ParallaxLayer l6 = new ParallaxLayer("Boat/LV3/6_seperate_sailing_LV3", Vector2.Zero, 0);
+
+            return new List<ParallaxLayer> 
+            { 
+                l6,
+                l5, 
+                l4, 
+                l3, 
+                l2, 
+                l1, 
+            };
+        }
+
+        void TestBoat()
+        {
+            if (Game1.instance.Input.IsKeyPressed(Keys.L))
+                boatLevel++;
+            else if (Game1.instance.Input.IsKeyPressed(Keys.O))
+                boatLevel--;
+        }
     }
 }

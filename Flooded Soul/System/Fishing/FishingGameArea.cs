@@ -26,8 +26,8 @@ namespace Flooded_Soul.System.Fishing
 
         public bool fishInArea = true;
 
-        int areaWidth = 2000;
-        int areaHeight = 1600;
+        int areaWidth = 1500;
+        int heightOffset = 400;
 
         public FishingGameArea(Vector2 pos, FishingManager fishingManager)
         {
@@ -40,9 +40,9 @@ namespace Flooded_Soul.System.Fishing
             Collider.CollisionExit += OnCollisionExit;
 
             float spawnWidth = areaWidth * Game1.instance.screenRatio;
-            float spawnHeight = areaHeight * Game1.instance.screenRatio;
+            float spawnHeight = Game1.instance.viewPortHeight + heightOffset;
 
-            Vector2 spawnPos = new Vector2(pos.X - (spawnWidth / 2), pos.Y - (spawnHeight / 2));
+            Vector2 spawnPos = new Vector2(pos.X - (spawnWidth / 2), Game1.instance.viewPortHeight - heightOffset);
 
             bound = new RectangleF(spawnPos.X, spawnPos.Y, spawnWidth, spawnHeight);
 

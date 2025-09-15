@@ -45,7 +45,7 @@ namespace Flooded_Soul.System.Fishing
             Collider.Update();
         }
 
-        public void Draw() => Game1.instance._spriteBatch.DrawCircle(mousePos, 3, Color.Red, 3);
+        //public void Draw() => Game1.instance._spriteBatch.DrawCircle(mousePos, 3, Color.Red, 3);
 
         public void OnCollision(CollisionEventArgs collisionInfo) => Collider.RegisterCollision(collisionInfo.Other);
 
@@ -59,14 +59,12 @@ namespace Flooded_Soul.System.Fishing
         {
             if(other == fishingManager.targetFish)
                 canClick = true;
-            Debug.WriteLine("STAY");
         }
 
         void OnCollisionExit(ICollisionActor other)
         {
             if(other == fishingManager.targetFish)
                 canClick = false;
-            Debug.WriteLine("EXIT");
         }
     }
 }

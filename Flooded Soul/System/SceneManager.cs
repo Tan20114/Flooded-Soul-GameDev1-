@@ -11,11 +11,6 @@ namespace Flooded_Soul.System
     {
         public bool moveSuccess = true;
 
-        public SceneManager()
-        {
-
-        }
-
         public void CamMoveTo(Vector2 point, int transitionSpeed)
         {
             moveSuccess = false;

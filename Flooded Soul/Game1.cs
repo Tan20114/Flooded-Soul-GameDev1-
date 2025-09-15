@@ -6,10 +6,6 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
 
-using Gum.Forms;
-using Gum.Forms.Controls;
-using MonoGameGum;
-
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Point = Microsoft.Xna.Framework.Point;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
@@ -21,6 +17,9 @@ using Flooded_Soul.System.BG;
 using Flooded_Soul.System.Fishing;
 using MonoGame.Extended.Collisions;
 using RectangleF = MonoGame.Extended.RectangleF;
+using Flooded_Soul.System.Shop;
+using Flooded_Soul.System.UI.Scene;
+using SizeF = MonoGame.Extended.SizeF;
 
 namespace Flooded_Soul
 {
@@ -76,6 +75,11 @@ namespace Flooded_Soul
         Vector2 CollectionPoint => new Vector2(-viewPortWidth, 0);
         #endregion
 
+        #region UI
+        DefaultUI dui;
+        FishingUI fui;
+        #endregion
+
         #region Game System
         public GraphicsDeviceManager _graphics;
         public SpriteBatch _spriteBatch;
@@ -84,7 +88,10 @@ namespace Flooded_Soul
         public MouseState mouseState;
         public MouseState prevMouse;
 
+        public Flooded_Soul.System.UI.Mouse mouse;
+
         FishingManager fm;
+        ShopManager sm;
         #endregion
 
         #region Background
@@ -119,6 +126,7 @@ namespace Flooded_Soul
                 new List<string>()
                 {
                     "ParallaxBG/OceanBiome/04_ocean_biome_building",
+                    "ParallaxBG/OceanBiome/04_ocean_biome_moutain",
                     "ParallaxBG/115_trans"
                 },
                 new List<string>()
@@ -126,11 +134,10 @@ namespace Flooded_Soul
                     "ParallaxBG/OceanBiome/05_ocean_biome_clound_1",
                     "ParallaxBG/OceanBiome/05_ocean_biome_clound_2",
                     "ParallaxBG/OceanBiome/05_ocean_biome_clound_3",
-                    "ParallaxBG/OceanBiome/05_ocean_biome_moutain",
-                    "ParallaxBG/OceanBiome/05_ocean_biome_moutain"
                 },
                 new List<string>()
                 {
+                    "ParallaxBG/OceanBiome/shop_ocean_biome_shop",
                     "ParallaxBG/OceanBiome/bg_ocean_biome_sky",
                     "ParallaxBG/OceanBiome/foreground_ocean_biome_wave"
                 }
@@ -141,10 +148,10 @@ namespace Flooded_Soul
         {
         };
 
-        int speed = 100;
+        public int speed = 100;
         #endregion
 
-        Player player;
+        public Player player;
 
         public Game1()
         {
@@ -157,7 +164,7 @@ namespace Flooded_Soul
             #endregion
 
             #region Collision
-            collisionRect = new RectangleF(0, viewPortHeight, viewPortWidth, viewPortHeight);
+            collisionRect = new RectangleF(CollectionPoint,new SizeF(viewPortWidth * 3,viewPortHeight * 2));
             collisionComponent = new CollisionComponent(collisionRect);
             #endregion
 
@@ -185,6 +192,13 @@ namespace Flooded_Soul
             #region System
             var viewportAdaptor = new BoxingViewportAdapter(Window,GraphicsDevice,viewPortWidth,viewPortHeight);
             mainCam = new OrthographicCamera(viewportAdaptor);
+
+            mouse = new System.UI.Mouse();
+            #endregion
+
+            #region UI
+            dui = new DefaultUI(defaultPoint);
+            fui = new FishingUI(fishingPoint);
             #endregion
 
             #region Background
@@ -193,9 +207,13 @@ namespace Flooded_Soul
             #endregion
 
             #region Entity
-            fm = new FishingManager(3,1,1);
+            fm = new FishingManager();
 
             player = new Player();
+            #endregion
+
+            #region Shop
+            sm = new ShopManager(shopPoint,player);
             #endregion
         }
 
@@ -212,15 +230,21 @@ namespace Flooded_Soul
 
             #region System
             SceneState();
-            CamTest();
+            SceneManagement();
+
+            mouse.Update();
+            #endregion
+            #region UI
+            dui.Update();
+            fui.Update();
             #endregion
             #region Background
-            bg.Update(gameTime);
+            bg.Update(gameTime, player.speed);
             #endregion
             #region Entity
             fm.Update();
 
-            player.Update(keyboardState,speed, gameTime);
+            player.Update(keyboardState, gameTime);
             #endregion
 
             #region Collision
@@ -240,18 +264,24 @@ namespace Flooded_Soul
             // TODO: Add your drawing code here
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,transformMatrix : transformMatrix);
 
-
             #region Background
             bg.Draw();
-            underSeaBg.Draw();
+            underSeaBg.Draw(1);
+            sm.Draw();
             #endregion
 
             #region Entity
             fm.Draw();
 
-            player.Draw(Content.Load<SpriteFont>("font"));
+            player.Draw(Content.Load<SpriteFont>("Fonts/fipps"));
             #endregion
 
+            #region UI
+            dui.Draw();
+            fui.Draw();
+            #endregion
+
+            _spriteBatch.DrawRectangle(collisionRect, Color.Red);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
@@ -260,6 +290,8 @@ namespace Flooded_Soul
         {
             if (sceneState == Scene.Default)
             {
+                player.Sail();
+
                 if (Input.IsKeyPressed(Keys.A))
                     sceneState = Scene.Default_Stop;
                 if (Input.IsKeyPressed(Keys.D))
@@ -267,10 +299,15 @@ namespace Flooded_Soul
             }    
             else if (sceneState == Scene.Default_Stop)
             {
+                player.Stop();
+
                 if (Input.IsKeyPressed(Keys.A))
                     sceneState = Scene.Default;
                 if (Input.IsKeyPressed(Keys.B))
+                {
                     sceneState = Scene.Fishing;
+                    fm.EnterSea();
+                }
                 if (Input.IsKeyPressed(Keys.C))
                     sceneState = Scene.Shop;
                 if (Input.IsKeyPressed(Keys.D))
@@ -284,7 +321,7 @@ namespace Flooded_Soul
             else if (sceneState == Scene.Shop)
             {
                 if (Input.IsKeyPressed(Keys.C))
-                    sceneState = Scene.Default;
+                    sceneState = Scene.Default_Stop;
             }
             else if (sceneState == Scene.Collection)
             {
@@ -293,7 +330,7 @@ namespace Flooded_Soul
             }
         }
 
-        void CamTest()
+        void SceneManagement()
         {
             switch(sceneState)
             {
@@ -301,32 +338,39 @@ namespace Flooded_Soul
                     {
                         bg.Stop();
                         scene.CamMoveTo(fishingPoint, 1000);
+                        MouseOffset(fishingPoint);
                         break;
                     }
                 case Scene.Default:
                     {
                         bg.Start();
                         scene.CamMoveTo(defaultPoint, 1000);
+                        MouseOffset(defaultPoint);
                         break;
                     }
                 case Scene.Default_Stop:
                     {
                         bg.Stop();
                         scene.CamMoveTo(defaultPoint, 1000);
+                        MouseOffset(defaultPoint);
                         break;
                     }
                 case Scene.Shop:
                     {
                         bg.Stop();
                         scene.CamMoveTo(shopPoint, 1000);
+                        MouseOffset(shopPoint);
                         break;
                     }
                 case Scene.Collection:
                     {
                         scene.CamMoveTo(CollectionPoint, 1000);
+                        MouseOffset(CollectionPoint);
                         break;
                     }
             }
         }
+
+        void MouseOffset(Vector2 posOffset) => mouse.posOffset = posOffset;
     }
 }

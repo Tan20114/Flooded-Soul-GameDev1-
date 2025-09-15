@@ -20,10 +20,11 @@ namespace Flooded_Soul.System.Fishing
     internal class Fish : ICollisionActor
     {
         protected Random random = new Random();
+        Hook hook;
         public FishVision vision;
         public CollisionTracker Collider;
 
-        FishingManager fishingManager;
+        protected FishingManager fishingManager;
         Queue<Fish> fishToRemove = new Queue<Fish>();
 
         protected Texture2D texture;
@@ -31,6 +32,9 @@ namespace Flooded_Soul.System.Fishing
         protected float scale = 0.05f;
         public int speed = 100;
         int goDownSpeed = 50;
+        protected float strength = 1;
+        public float Strength { get => strength; set => strength = value; }
+        public bool isClicked = false;
 
         protected int minSpawnHeight;
         protected int maxSpawnHeight;
@@ -41,6 +45,9 @@ namespace Flooded_Soul.System.Fishing
         protected float legendMaxSpawnRatio = .9f;
 
         protected int point = 0;
+        int visionRange = 5;
+
+        protected Color test = Color.White;
 
         RectangleF _bounds;
         RectangleF _seeRange;
@@ -57,7 +64,7 @@ namespace Flooded_Soul.System.Fishing
             RandomDir();
             RandomPos();
             _bounds = new RectangleF(pos, new SizeF(texture.Width * this.scale, texture.Height * this.scale));
-            _seeRange = new RectangleF(_bounds.Position.X,_bounds.Position.Y,_bounds.Width * 3,_bounds.Height);
+            _seeRange = new RectangleF(_bounds.Position.X,_bounds.Position.Y,_bounds.Width * visionRange,_bounds.Height);
 
             vision = new FishVision(this, _seeRange);
 
@@ -73,7 +80,7 @@ namespace Flooded_Soul.System.Fishing
         public void Update()
         {
             Collider.Update();
-
+            
             _bounds.Position = pos;
             vision._bound.Position = _seeRange.Position;
 
@@ -82,7 +89,10 @@ namespace Flooded_Soul.System.Fishing
             if(fishingManager.isMinigame)
             {
                 if (fishingManager.targetFish == this)
-                    pos.Y += goDownSpeed * Game1.instance.deltaTime;
+                    if(!isClicked)
+                        pos.Y += goDownSpeed * Game1.instance.deltaTime;
+                    else
+                        pos.Y = MathHelper.Lerp(pos.Y, targetY, 0.05f);
             }
 
             if (pos.X > Game1.instance.viewPortWidth - texture.Width * scale)
@@ -104,12 +114,12 @@ namespace Flooded_Soul.System.Fishing
 
         public void Draw()
         {
-            Game1.instance._spriteBatch.Draw(texture, pos, null, Color.White, 0f, Vector2.Zero, new Vector2(scale), SetFaceDir(), 0f);
+            Game1.instance._spriteBatch.Draw(texture, pos, null, test, 0f, Vector2.Zero, new Vector2(scale), SetFaceDir(), 0f);
 
-            if (Collider.Collideable)
-                Game1.instance._spriteBatch.DrawRectangle(_bounds, Color.Green, 3);
+            //if (Collider.Collideable)
+            //    Game1.instance._spriteBatch.DrawRectangle(_bounds, Color.Green, 3);
 
-            vision.Draw();
+            //vision.Draw();
         }
 
         SpriteEffects SetFaceDir() => speed > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
@@ -121,6 +131,7 @@ namespace Flooded_Soul.System.Fishing
         {
             if (other is Hook)
             {
+                hook = other as Hook;
                 fishingManager.targetFish = this;
                 fishingManager.otherFishes = fishingManager.fishInScreen.Where(f => f != this).ToList();
 
@@ -172,6 +183,29 @@ namespace Flooded_Soul.System.Fishing
             RandomDir();
             _bounds.Position = pos;
             _seeRange.Position = new Vector2(_bounds.Right, _bounds.Y);
+        }
+
+        int targetY;
+
+        public int MoveToY(int targetY) => this.targetY = targetY;
+
+        public void OnAlert()
+        {
+            int ranVal = random.Next(1, 101);
+
+            if (ranVal > 90)
+                speed *= 1;
+            else
+                speed *= -1;
+        }
+
+        public virtual void Destroy(bool Success)
+        {
+            fishingManager.fishInScreen.Remove(this);
+            Collider.DisableCollision();
+            vision.Collider.DisableCollision();
+            if (Success)
+                Game1.instance.player.fishPoint += point;
         }
     }
 }

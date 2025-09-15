@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Flooded_Soul.System.Fishing.Fishes;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 
@@ -19,8 +20,6 @@ namespace Flooded_Soul.System.Fishing
 
     internal class FishingManager
     {
-        InputHandler Input;
-
         Hook hook;
 
         public bool isMinigame = false;
@@ -29,29 +28,22 @@ namespace Flooded_Soul.System.Fishing
         public FishingGameArea minigameArea;
         public FishPointer mousePos;
 
+        int maxFish = 6;
+
         public int nCount = 5;
+        int maxNCount = 0;
         public int rCount = 5;
+        int maxRCount = 0;
         public int lCount = 5;
+        int maxLCount = 0;
 
         public List<Fish> fishInScreen = new List<Fish>();
 
-        public FishingManager(int normalCount, int rareCount, int legendCount)
+        public FishingManager()
         {
-            Input = new InputHandler();
-
-            nCount = normalCount;
-            rCount = rareCount;
-            lCount = legendCount;
-
             hook = new Hook(this);
             Game1.instance.collisionComponent.Insert(hook);
-            for (int i = 0; i < nCount; i++)
-                FishSpawn(FishType.Normal);
-            for (int i = 0; i < rCount; i++)
-                FishSpawn(FishType.Rare);
-            for (int i = 0; i < lCount; i++)
-                FishSpawn(FishType.Legend);
-
+            
             mousePos = new FishPointer(this);
         }
 
@@ -68,7 +60,6 @@ namespace Flooded_Soul.System.Fishing
                     targetFish = null;
                 }
                 hook.ResetPosition();
-                ResetAllFish();
                 return;
             }
             foreach (Fish fish in fishInScreen)
@@ -89,8 +80,23 @@ namespace Flooded_Soul.System.Fishing
             if (isMinigame)
             {
                 minigameArea.Draw();
-                mousePos.Draw();
             }
+        }
+
+        public void EnterSea()
+        {
+            RandomFishPossibilities();
+
+            nCount = maxNCount;
+            rCount = maxRCount;
+            lCount = maxLCount;
+
+            for (int i = 0; i < maxNCount; i++)
+                FishSpawn(FishType.Normal);
+            for (int i = 0; i < maxRCount; i++)
+                FishSpawn(FishType.Rare);
+            for (int i = 0; i < maxLCount; i++)
+                FishSpawn(FishType.Legend);
         }
 
         void StartMinigame()
@@ -112,8 +118,10 @@ namespace Flooded_Soul.System.Fishing
             }
         }
 
+
         void Minigame()
         {
+            int targetY = 0;
             if (isMinigame)
             {
                 minigameArea.Update();
@@ -121,19 +129,25 @@ namespace Flooded_Soul.System.Fishing
 
                 if (!minigameArea.fishInArea)
                     EndMinigame(false);
-                else if(targetFish.pos.Y < Game1.instance.viewPortHeight * .2f + Game1.instance.viewPortHeight)
-                {
-                    fishInScreen.Remove(targetFish);
+                else if(targetFish.pos.Y < Game1.instance.viewPortHeight * .15f + Game1.instance.viewPortHeight)
                     EndMinigame(true);
-                }
                 else
                 {
+                    float distance = MathF.Abs(targetFish.pos.Y - targetY);
+
+                    if (distance <= 20)
+                        targetFish.isClicked = false;
+
                     if (mousePos.canClick)
-                        if (Input.IsLeftMouse())
+                        if (Game1.instance.Input.IsLeftMouse())
                         {
-                            targetFish.pos.Y -= hook.hookUpSpeed;
-                            targetFish.speed *= -1;
-                        }
+                            targetY = (int)(targetFish.pos.Y - (int)(hook.hookUpSpeed / targetFish.Strength));
+                            targetFish.isClicked = true;
+
+                            targetFish.MoveToY(targetY);
+
+                            targetFish.OnAlert();
+                        }                           
                 }
             }
         }
@@ -156,9 +170,12 @@ namespace Flooded_Soul.System.Fishing
             mousePos.canClick = false;
 
             if (success)
-                fishInScreen.Remove(targetFish);
+            {
+                targetFish.Destroy(success);
+                hook.ResetPosition();
+            }
             else
-                targetFish.vision.Collider.EnableCollision();
+                targetFish.Destroy(success);
 
             targetFish = null;
             otherFishes.Clear();
@@ -173,23 +190,34 @@ namespace Flooded_Soul.System.Fishing
                     fishInScreen.Add(normalFish);
                     break;
                 case FishType.Rare:
-                    Fish rareFish = new Rare("Legend_fish", 0.07f, this);
+                    Fish rareFish = new Rare("Legend_fish", .1f, this);
                     fishInScreen.Add(rareFish);
                     break;
                 case FishType.Legend:
-                    Fish legendFish = new Legend("Legend_fish", 0.05f, this);
+                    Fish legendFish = new Legend("Legend_fish", .1f, this);
                     fishInScreen.Add(legendFish);
                     break;
             }
         }
 
-        void ResetAllFish()
+        public void RandomFishPossibilities()
         {
-            foreach (Fish fish in fishInScreen)
+            fishInScreen.Clear();
+
+            maxLCount = 0;
+            maxRCount = 0;
+            maxNCount = 0;
+
+            for(int i = 0; i< maxFish; i++)
             {
-                fish.Reset();
-                fish.Collider.EnableCollision();
-                fish.vision.Collider.EnableCollision();
+                int ranVal = new Random().Next(1, 101);
+
+                if(ranVal <= 5)
+                    maxLCount++;
+                else if(ranVal > 2 && ranVal <= 40)
+                    maxRCount++;
+                else
+                    maxNCount++;
             }
         }
     }

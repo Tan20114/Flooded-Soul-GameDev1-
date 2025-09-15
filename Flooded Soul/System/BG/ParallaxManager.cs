@@ -61,7 +61,6 @@ namespace Flooded_Soul.System.BG
         {
             int speed = (int)(startSpeed - decrement * layerCount);
             layer.Add(new ParallaxLayer(textures[^1], posOffset, speed));
-            Debug.WriteLine(speed);
             layerCount++;
         }
 
@@ -69,7 +68,6 @@ namespace Flooded_Soul.System.BG
         { 
             int speed = (int)(startSpeed - decrement * layerCount);
             layer.Add(new ParallaxLayer(textures, posOffset, speed));
-            Debug.WriteLine(speed);
             layerCount++;
         }
 
@@ -77,21 +75,26 @@ namespace Flooded_Soul.System.BG
         {
             int speed = (int)(startSpeed - decrement * layerCount);
             layer.Add(new ParallaxLayer(textures[^2], posOffset, speed));
-            Debug.WriteLine(speed);
             layerCount++;
         } 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, int speed)
         {
             if(isStop) return;
 
             foreach (ParallaxLayer l in layer)
-                l.Update(gameTime);
+                l.Update(gameTime, speed);
         }
 
         public void Draw()
         {
             for (int i = layer.Count - 1; i >= 0; i--)
                 layer[i].Draw();
+        }
+
+        public void Draw(int index)
+        {
+            for (int i = layer.Count - 1; i >= 0; i--)
+                layer[i].Draw(1);
         }
 
         public void Stop() => isStop = true;

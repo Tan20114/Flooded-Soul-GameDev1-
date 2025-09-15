@@ -13,7 +13,7 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin AnimationPixelWithBG (0).png
+#begin Boat/LV1/1_seperate_anchor_LV1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -23,9 +23,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:AnimationPixelWithBG (0).png
+/build:Boat/LV1/1_seperate_anchor_LV1.png
 
-#begin AnimationPixelWithBG (1).png
+#begin Boat/LV1/2_seperate_boat_LV1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -35,9 +35,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:AnimationPixelWithBG (1).png
+/build:Boat/LV1/2_seperate_boat_LV1.png
 
-#begin AnimationPixelWithBG (2).png
+#begin Boat/LV1/3_seperate_front_home_LV1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -47,9 +47,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:AnimationPixelWithBG (2).png
+/build:Boat/LV1/3_seperate_front_home_LV1.png
 
-#begin AnimationPixelWithBG (3).png
+#begin Boat/LV1/4_seperate_home_LV1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -59,9 +59,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:AnimationPixelWithBG (3).png
+/build:Boat/LV1/4_seperate_home_LV1.png
 
-#begin AnimationPixelWithBG (4).png
+#begin Boat/LV2/1_seperate_anchor_LV2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -71,9 +71,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:AnimationPixelWithBG (4).png
+/build:Boat/LV2/1_seperate_anchor_LV2.png
 
-#begin AnimationPixelWithBG (5).png
+#begin Boat/LV2/2_seperate_boat_LV2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -83,9 +83,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:AnimationPixelWithBG (5).png
+/build:Boat/LV2/2_seperate_boat_LV2.png
 
-#begin AnimationPixelWithBG (6).png
+#begin Boat/LV2/3_seperate_front_sailing_LV2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -95,14 +95,110 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:AnimationPixelWithBG (6).png
+/build:Boat/LV2/3_seperate_front_sailing_LV2.png
 
-#begin font.spritefont
+#begin Boat/LV2/4_seperate_sailing_LV2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Boat/LV2/4_seperate_sailing_LV2.png
+
+#begin Boat/LV2/5_seperate_things_LV2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Boat/LV2/5_seperate_things_LV2.png
+
+#begin Boat/LV3/1_seperate_anchor_LV3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Boat/LV3/1_seperate_anchor_LV3.png
+
+#begin Boat/LV3/2_seperate_boat_LV3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Boat/LV3/2_seperate_boat_LV3.png
+
+#begin Boat/LV3/3_seperate_front_sailing_LV3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Boat/LV3/3_seperate_front_sailing_LV3.png
+
+#begin Boat/LV3/4_seperate_front_home_LV3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Boat/LV3/4_seperate_front_home_LV3.png
+
+#begin Boat/LV3/5_seperate_home_LV3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Boat/LV3/5_seperate_home_LV3.png
+
+#begin Boat/LV3/6_seperate_sailing_LV3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Boat/LV3/6_seperate_sailing_LV3.png
+
+#begin Fonts/fipps.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:font.spritefont
+/build:Fonts/fipps.spritefont
 
 #begin hook_test.png
 /importer:TextureImporter
@@ -127,6 +223,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Legend_fish.png
+
+#begin mockup_Collection.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:mockup_Collection.png
+
+#begin mockup_Shop.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:mockup_Shop.png
 
 #begin ParallaxBG/115_trans.png
 /importer:TextureImporter
@@ -272,6 +392,18 @@
 /processorParam:TextureFormat=Color
 /build:ParallaxBG/OceanBiome/04_ocean_biome_building.png;ParallaxBG/OceanBiome/04_ocean_biome_building
 
+#begin ParallaxBG/OceanBiome/04_ocean_biome_moutain.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:ParallaxBG/OceanBiome/04_ocean_biome_moutain.png
+
 #begin ParallaxBG/OceanBiome/05_ocean_biome_clound_1.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -308,18 +440,6 @@
 /processorParam:TextureFormat=Color
 /build:ParallaxBG/OceanBiome/05_ocean_biome_clound_3.png;ParallaxBG/OceanBiome/05_ocean_biome_clound_3
 
-#begin ParallaxBG/OceanBiome/05_ocean_biome_moutain.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:ParallaxBG/OceanBiome/05_ocean_biome_moutain.png;ParallaxBG/OceanBiome/05_ocean_biome_moutain
-
 #begin ParallaxBG/OceanBiome/bg_ocean_biome_sky.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -344,6 +464,18 @@
 /processorParam:TextureFormat=Color
 /build:ParallaxBG/OceanBiome/foreground_ocean_biome_wave.png;ParallaxBG/OceanBiome/foreground_ocean_biome_wave
 
+#begin ParallaxBG/OceanBiome/shop_ocean_biome_shop.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:ParallaxBG/OceanBiome/shop_ocean_biome_shop.png
+
 #begin ParallaxBG/OceanBiome/undersea_biome_ocean.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -355,4 +487,76 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:ParallaxBG/OceanBiome/undersea_biome_ocean.png;ParallaxBG/OceanBiome/undersea_biome_ocean
+
+#begin UI_Icon/ui_autodrive_mainmenu.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI_Icon/ui_autodrive_mainmenu.png
+
+#begin UI_Icon/ui_collection_mainmenu.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI_Icon/ui_collection_mainmenu.png
+
+#begin UI_Icon/ui_fishunit_mainmenu.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI_Icon/ui_fishunit_mainmenu.png
+
+#begin UI_Icon/ui_pause_mainmenu.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI_Icon/ui_pause_mainmenu.png
+
+#begin UI_Icon/ui_return.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI_Icon/ui_return.png
+
+#begin UI_Icon/ui_unpause_mainmenu.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI_Icon/ui_unpause_mainmenu.png
 

@@ -74,7 +74,7 @@ namespace Flooded_Soul.System.Fishing
 
         public void Draw()
         {
-            Game1.instance._spriteBatch.DrawRectangle(_bounds, Color.Red, 3);
+            //Game1.instance._spriteBatch.DrawRectangle(_bounds, Color.Red, 3);
             Game1.instance._spriteBatch.Draw(texture, pos, null, Color.White, 0f, Vector2.Zero, new Vector2(scale), SpriteEffects.None, 0f);
         }
 
