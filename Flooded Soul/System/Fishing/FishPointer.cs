@@ -12,7 +12,7 @@ using Color = Microsoft.Xna.Framework.Color;
 
 namespace Flooded_Soul.System.Fishing
 {
-    internal class FishPointer : ICollisionActor
+    public class FishPointer : ICollisionActor
     {
         FishingManager fishingManager;
 

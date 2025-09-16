@@ -10,6 +10,7 @@ using Color = Microsoft.Xna.Framework.Color;
 using System.Diagnostics;
 using MonoGame.Extended.Collisions.Layers;
 using Microsoft.Xna.Framework.Content;
+using MonoGame.Extended.Content;
 
 namespace Flooded_Soul.System.BG
 {
@@ -64,6 +65,20 @@ namespace Flooded_Soul.System.BG
             Initialize(posOffset, speed, this.textures[0]);
         }
 
+        public ParallaxLayer(string tex,Vector2 posOffset, int speed, int count)
+        {
+            this.texture = Game1.instance.Content.Load<Texture2D>(tex);
+            textureWidth = this.texture.Width;
+
+            Initialize(posOffset, speed, this.texture);
+            positions.Clear();
+            slotTextures.Clear();
+            GeneratePositions(count);
+
+            scaleX = screenWidth / textureWidth;
+            scaleY = scale;
+        }
+
         void GeneratePositions()
         {
             positions.Clear();
@@ -74,6 +89,33 @@ namespace Flooded_Soul.System.BG
             float texHeightScaled = firstTex.Height * scale;
 
             int count = screenWidth / (int)texWidthScaled + 2;
+            float yPos = screenHeight - texHeightScaled + posOffset.Y;
+
+            for (int i = 0; i < count; i++)
+            {
+                positions.Add(new Vector2(i * texWidthScaled + posOffset.X, yPos));
+
+                if (textures.Count > 0)
+                {
+                    int index = random.Next(textures.Count);
+                    slotTextures.Add(textures[index]);
+                }
+                else
+                {
+                    slotTextures.Add(texture);
+                }
+            }
+        }
+
+        void GeneratePositions(int count)
+        {
+            positions.Clear();
+            slotTextures.Clear();
+
+            Texture2D firstTex = textures.Count > 0 ? textures[0] : texture;
+            float texWidthScaled = firstTex.Width * scale;
+            float texHeightScaled = firstTex.Height * scale;
+
             float yPos = screenHeight - texHeightScaled + posOffset.Y;
 
             for (int i = 0; i < count; i++)

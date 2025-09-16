@@ -17,10 +17,8 @@ namespace Flooded_Soul.System.UI.Scene
         #endregion
         #region Back Button
         Button backButton;
-        Vector2 backButtPos = new Vector2(.9f * Game1.instance.viewPortWidth, .05f * Game1.instance.viewPortHeight);
+        Vector2 backButtPos = new Vector2(.02f * Game1.instance.viewPortWidth, .8f * Game1.instance.viewPortHeight);
         #endregion
-
-        bool isPause = false;
 
         public FishingUI(Vector2 offset)
         {
@@ -31,7 +29,7 @@ namespace Flooded_Soul.System.UI.Scene
             pauseButton.OnClick += PauseButtClick;
             #endregion
             #region BackButton
-            backButton = new Button("UI_Icon/ui_return", backButtPos, posOffset, 7);
+            backButton = new Button("UI_Icon/ui_return", backButtPos, posOffset, 5);
             backButton.OnClick += BackButtClick;
             #endregion
         }
@@ -40,7 +38,7 @@ namespace Flooded_Soul.System.UI.Scene
         {
             #region PauseButton
             pauseButton.Update();
-            if (isPause)
+            if (Game1.instance.fm.isPause)
                 pauseButton.ChangeSprite("UI_Icon/ui_unpause_mainmenu");
             else
                 pauseButton.ChangeSprite("UI_Icon/ui_pause_mainmenu");
@@ -58,13 +56,14 @@ namespace Flooded_Soul.System.UI.Scene
 
         void PauseButtClick()
         {
-            isPause = !isPause;
+            Game1.instance.fm.isPause = !Game1.instance.fm.isPause;
         }
 
         void BackButtClick()
         {
             Game1.instance.sceneState = Flooded_Soul.Scene.Default_Stop;
-            isPause = false;
+            Game1.instance.fm.ExitSea();
+            Game1.instance.fm.isPause = false;
         }
     }
 }

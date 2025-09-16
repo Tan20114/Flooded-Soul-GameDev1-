@@ -22,10 +22,7 @@ namespace Flooded_Soul.System
         public int Speed
         {
             get => speed;
-            set
-            {
-                speed = MathHelper.Clamp(value, minSpeed, maxSpeed);
-            }
+            set => speed = MathHelper.Clamp(value, minSpeed, maxSpeed);
         }
 
         int distanceTraveled;

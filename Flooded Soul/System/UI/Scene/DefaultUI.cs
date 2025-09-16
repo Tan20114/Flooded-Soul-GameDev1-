@@ -36,11 +36,11 @@ namespace Flooded_Soul.System.UI.Scene
             posOffset = offset;
 
             #region Collection Button
-            collectionButton = new Button("UI_Icon/ui_collection_mainmenu", collectionButtPos, posOffset, 7);
+            collectionButton = new Button("UI_Icon/ui_collection_mainmenu", collectionButtPos, posOffset, 6);
             collectionButton.OnClick += CollectionButtClick;
             #endregion
             #region Toggle Button
-            toggleAutoSailButton = new Button("UI_Icon/ui_autodrive_mainmenu", toggleAutoSailButtPos, posOffset,8,2,1);
+            toggleAutoSailButton = new Button("UI_Icon/ui_autodrive_mainmenu", toggleAutoSailButtPos, posOffset,7,2,1);
             toggleAutoSailButton.OnClick += ToggleAutoSailButtClick;
             toggleAutoSailButton.ChangeSprite(1);
             #endregion

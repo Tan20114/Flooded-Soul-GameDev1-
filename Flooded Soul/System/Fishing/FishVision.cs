@@ -13,7 +13,7 @@ using SizeF = MonoGame.Extended.SizeF;
 
 namespace Flooded_Soul.System.Fishing
 {
-    class FishVision : ICollisionActor
+    public class FishVision : ICollisionActor
     {
         private Fish parent;
         public CollisionTracker Collider;

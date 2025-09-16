@@ -18,7 +18,7 @@ namespace Flooded_Soul.System.Fishing
         Legend
     }
 
-    internal class FishingManager
+    public class FishingManager
     {
         Hook hook;
 
@@ -39,6 +39,8 @@ namespace Flooded_Soul.System.Fishing
 
         public List<Fish> fishInScreen = new List<Fish>();
 
+        public bool isPause = false;
+
         public FishingManager()
         {
             hook = new Hook(this);
@@ -49,6 +51,8 @@ namespace Flooded_Soul.System.Fishing
 
         public void Update()
         {
+            if (isPause) return;
+
             hook.Update();
             if (Game1.instance.sceneState != Scene.Fishing && Game1.instance.scene.moveSuccess)
             {
@@ -99,6 +103,16 @@ namespace Flooded_Soul.System.Fishing
                 FishSpawn(FishType.Legend);
         }
 
+        public void ExitSea()
+        {
+            for (int i = 0; i< fishInScreen.Count; i++)
+            {
+                fishInScreen[i].Collider.DisableCollision();
+                fishInScreen[i].vision.Collider.DisableCollision();
+                fishInScreen[i].Destroy(false);
+            }
+        }
+
         void StartMinigame()
         {
             if (isMinigame) return;
@@ -117,7 +131,6 @@ namespace Flooded_Soul.System.Fishing
                 isMinigame = true;
             }
         }
-
 
         void Minigame()
         {

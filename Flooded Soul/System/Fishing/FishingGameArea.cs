@@ -13,7 +13,7 @@ using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace Flooded_Soul.System.Fishing
 {
-    internal class FishingGameArea : ICollisionActor
+    public class FishingGameArea : ICollisionActor
     {
         FishingManager fishingManager;
 

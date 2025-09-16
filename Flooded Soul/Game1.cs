@@ -88,9 +88,9 @@ namespace Flooded_Soul
         public MouseState mouseState;
         public MouseState prevMouse;
 
-        public Flooded_Soul.System.UI.Mouse mouse;
+        public System.UI.Mouse mouse;
 
-        FishingManager fm;
+        public FishingManager fm;
         ShopManager sm;
         #endregion
 
@@ -153,6 +153,8 @@ namespace Flooded_Soul
 
         public Player player;
 
+        ParallaxLayer mockCollection ;
+
         public Game1()
         {
             instance = this;
@@ -178,7 +180,7 @@ namespace Flooded_Soul
             Window.IsBorderless = true;
             Window.Position = new Point(0,monitorHeight -viewPortHeight);
 
-            //Activated += (s, e) => WindowAPI.SetTopMost(true);
+            Activated += (s, e) => WindowAPI.SetTopMost(true);
 
             base.Initialize();
         }
@@ -215,6 +217,8 @@ namespace Flooded_Soul
             #region Shop
             sm = new ShopManager(shopPoint,player);
             #endregion
+
+            mockCollection = new ParallaxLayer("mockup_Collection",CollectionPoint,0,1);
         }
 
         protected override void Update(GameTime gameTime)
@@ -268,6 +272,7 @@ namespace Flooded_Soul
             bg.Draw();
             underSeaBg.Draw(1);
             sm.Draw();
+            mockCollection.Draw(1);
             #endregion
 
             #region Entity
@@ -280,8 +285,6 @@ namespace Flooded_Soul
             dui.Draw();
             fui.Draw();
             #endregion
-
-            _spriteBatch.DrawRectangle(collisionRect, Color.Red);
             _spriteBatch.End();
             base.Draw(gameTime);
         }

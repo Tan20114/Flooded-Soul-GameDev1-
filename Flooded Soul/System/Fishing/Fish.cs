@@ -17,7 +17,7 @@ using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace Flooded_Soul.System.Fishing
 {
-    internal class Fish : ICollisionActor
+    public class Fish : ICollisionActor
     {
         protected Random random = new Random();
         Hook hook;
@@ -46,6 +46,8 @@ namespace Flooded_Soul.System.Fishing
 
         protected int point = 0;
         int visionRange = 5;
+
+        public bool isPause = false;
 
         protected Color test = Color.White;
 
@@ -79,6 +81,8 @@ namespace Flooded_Soul.System.Fishing
 
         public void Update()
         {
+            if (isPause) return;
+
             Collider.Update();
             
             _bounds.Position = pos;
@@ -131,6 +135,7 @@ namespace Flooded_Soul.System.Fishing
         {
             if (other is Hook)
             {
+                Debug.WriteLine("Hooked");
                 hook = other as Hook;
                 fishingManager.targetFish = this;
                 fishingManager.otherFishes = fishingManager.fishInScreen.Where(f => f != this).ToList();

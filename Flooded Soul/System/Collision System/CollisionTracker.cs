@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Flooded_Soul.System.Collision_System
 {
-    class CollisionTracker
+    public class CollisionTracker
     {
         bool collideable = true;
         public bool Collideable { get => collideable; }

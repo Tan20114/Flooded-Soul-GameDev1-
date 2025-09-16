@@ -73,7 +73,7 @@ namespace Flooded_Soul.System.UI
             Collider.CollisionStay += OnCollisionStay;
             Collider.CollisionExit += OnCollisionExit;
 
-            rect = new RectangleF(pos.X,pos.Y, tex.Width * this.scale,tex.Height * this.scale);
+            rect = new RectangleF(pos.X,pos.Y, tex.Width * this.scale / frameColumn,tex.Height * this.scale / frameRow);
 
             Game1.instance.collisionComponent.Insert(this);
         }
