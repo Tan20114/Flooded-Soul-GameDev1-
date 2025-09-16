@@ -1,5 +1,6 @@
 ﻿using Flooded_Soul.System.BG;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,9 @@ namespace Flooded_Soul.System.Shop
         Button upgradeHook2Button;
         Vector2 hook2Pos;
 
-        public ShopManager(Vector2 posOffset, Player player)
+        ParallaxLayer shopLayer;
+
+        public ShopManager(string shop,Vector2 posOffset, Player player)
         {
             this.player = player;
 

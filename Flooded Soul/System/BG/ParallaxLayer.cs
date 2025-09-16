@@ -21,18 +21,18 @@ namespace Flooded_Soul.System.BG
         private List<Vector2> positions = new List<Vector2>();
         private List<Texture2D> slotTextures = new List<Texture2D>();
         private int textureWidth;
-        private Texture2D texture;
+        public Texture2D texture;
         private List<Texture2D> textures = new List<Texture2D>();
         private int screenWidth;
         private int screenHeight;
 
-        Vector2 posOffset;
+        protected Vector2 posOffset;
 
         int speed;
-        float scale;
-        float scaleX;
-        float scaleY;
-        bool isStop = false;
+        protected float scale;
+        protected float scaleX;
+        protected float scaleY;
+        protected bool isStop = false;
 
         void Initialize(Vector2 posOffset,int speed,Texture2D texture)
         {

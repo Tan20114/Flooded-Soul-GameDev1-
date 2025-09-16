@@ -91,7 +91,9 @@ namespace Flooded_Soul
         public System.UI.Mouse mouse;
 
         public FishingManager fm;
+
         ShopManager sm;
+        public bool autoStopAtShop = false;
         #endregion
 
         #region Background
@@ -153,7 +155,8 @@ namespace Flooded_Soul
 
         public Player player;
 
-        ParallaxLayer mockCollection ;
+        ParallaxLayer mockCollection;
+        ShopLayer shopLayer;
 
         public Game1()
         {
@@ -215,7 +218,8 @@ namespace Flooded_Soul
             #endregion
 
             #region Shop
-            sm = new ShopManager(shopPoint,player);
+            sm = new ShopManager(ocean.overWater[5][0],shopPoint,player);
+            shopLayer = new ShopLayer(ocean.overWater[5][0], shopPoint, 100);
             #endregion
 
             mockCollection = new ParallaxLayer("mockup_Collection",CollectionPoint,0,1);
@@ -255,6 +259,8 @@ namespace Flooded_Soul
             collisionComponent.Update(gameTime);
             #endregion
 
+            shopLayer.Update(gameTime,speed);
+
             previousState = keyboardState;
             prevMouse = mouseState;
             base.Update(gameTime);
@@ -278,6 +284,7 @@ namespace Flooded_Soul
             #region Entity
             fm.Draw();
 
+            shopLayer.Draw(1);
             player.Draw(Content.Load<SpriteFont>("Fonts/fipps"));
             #endregion
 
@@ -285,6 +292,7 @@ namespace Flooded_Soul
             dui.Draw();
             fui.Draw();
             #endregion
+
             _spriteBatch.End();
             base.Draw(gameTime);
         }

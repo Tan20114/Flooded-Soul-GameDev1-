@@ -10,11 +10,18 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
 using Flooded_Soul.System.BG;
 using System.Diagnostics;
+using MonoGame.Extended.Collisions;
+using MonoGame.Extended;
+using RectangleF = MonoGame.Extended.RectangleF;
+using Flooded_Soul.System.Collision_System;
+using Flooded_Soul.System.Shop;
 
 namespace Flooded_Soul.System
 {
-    public class Player
+    public class Player : ICollisionActor
     {
+        CollisionTracker Collider;
+
         int minSpeed = 0;
         public int maxSpeed = 100;
 
@@ -24,6 +31,10 @@ namespace Flooded_Soul.System
             get => speed;
             set => speed = MathHelper.Clamp(value, minSpeed, maxSpeed);
         }
+
+        RectangleF bound;
+
+        public IShapeF Bounds => bound;
 
         int distanceTraveled;
         public int fishPoint;
@@ -42,12 +53,23 @@ namespace Flooded_Soul.System
 
         public Player()
         {
+            Collider = new CollisionTracker();
+
+            Collider.CollisionEnter += OnCollisionEnter;
+
             distanceTraveled = 0;
             fishPoint = 0;
 
             currentTex = LV1Draw();
 
+            Texture2D tex = Game1.instance.Content.Load<Texture2D>("Boat/LV1/2_seperate_boat_LV1");
+            float scaleX = Game1.instance.viewPortWidth / tex.Width;
+            float scaleY = Game1.instance.viewPortHeight / tex.Height;
+            bound = new RectangleF(.13f * tex.Width * scaleX,0,.05f * tex.Width,Game1.instance.viewPortHeight);
+
             pos = Vector2.Zero;
+
+            Game1.instance.collisionComponent.Insert(this);
         }
 
         public void Update(KeyboardState ks, GameTime gameTime)
@@ -55,6 +77,7 @@ namespace Flooded_Soul.System
             TestBoat();
             LevelVisualize();
             WaveMovement();
+            Collider.Update();
 
             if (!isStop)
                 distanceTraveled += (int)(Speed * (float)gameTime.ElapsedGameTime.TotalSeconds);
@@ -66,7 +89,7 @@ namespace Flooded_Soul.System
             {
                 currentTex[i].Draw(pos);
             }
-            //Game1.instance._spriteBatch.DrawString(font, $"Distance: {distanceTraveled} units", new Vector2(10, 10), Color.White);
+            Game1.instance._spriteBatch.DrawRectangle(bound,Color.White);
         }
 
         public void Sail()
@@ -175,6 +198,16 @@ namespace Flooded_Soul.System
                 boatLevel++;
             else if (Game1.instance.Input.IsKeyPressed(Keys.O))
                 boatLevel--;
+        }
+
+        public void OnCollision(CollisionEventArgs collisionInfo) => Collider.RegisterCollision(collisionInfo.Other);
+
+        public void OnCollisionEnter(ICollisionActor other)
+        {
+            if(other is ShopLayer && Game1.instance.autoStopAtShop)
+            {
+                Game1.instance.sceneState = Scene.Default_Stop;
+            }
         }
     }
 }

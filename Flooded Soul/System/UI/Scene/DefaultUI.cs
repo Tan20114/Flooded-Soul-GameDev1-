@@ -10,7 +10,7 @@ using Color = Microsoft.Xna.Framework.Color;
 
 namespace Flooded_Soul.System.UI.Scene
 {
-    internal class DefaultUI
+    public class DefaultUI
     {
         Vector2 posOffset;
 
@@ -28,8 +28,6 @@ namespace Flooded_Soul.System.UI.Scene
         Texture2D fishPointIcon => Game1.instance.Content.Load<Texture2D>("UI_Icon/ui_fishunit_mainmenu");
         Vector2 fishIconPos = new Vector2(.01f * Game1.instance.viewPortWidth, .2f * Game1.instance.viewPortHeight);
         #endregion
-
-        bool isAuto = false;
 
         public DefaultUI(Vector2 offset)
         {
@@ -82,14 +80,14 @@ namespace Flooded_Soul.System.UI.Scene
 
         void ToggleAutoSailButtClick()
         {
-            if(isAuto)
+            if(Game1.instance.autoStopAtShop)
             {
-                isAuto = false;
+                Game1.instance.autoStopAtShop = false;
                 toggleAutoSailButton.ChangeSprite(1);
             }
             else
             {
-                isAuto = true;
+                Game1.instance.autoStopAtShop = true;
                 toggleAutoSailButton.ChangeSprite(0);
             }
         }
