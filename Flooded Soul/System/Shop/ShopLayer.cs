@@ -20,7 +20,7 @@ namespace Flooded_Soul.System.Shop
     {
         CollisionTracker Collider;
 
-        Vector2 pos;
+        public Vector2 pos;
 
         RectangleF bound;
         public IShapeF Bounds => bound;
@@ -29,27 +29,27 @@ namespace Flooded_Soul.System.Shop
         {
             Collider = new CollisionTracker();
 
+            isStop = true;
+
             Collider.CollisionEnter += OnCollisionEnter;
 
             texture = Game1.instance.Content.Load<Texture2D>(path);
 
-            pos = new Vector2(posOffset.X * 2, posOffset.Y);
+            pos = new Vector2(posOffset.X * 1, posOffset.Y);
 
-            bound = new RectangleF(.59f * texture.Width * scaleX + posOffset.X * 2, posOffset.Y, .27f * texture.Width * scaleX, texture.Height * scaleY);
+            bound = new RectangleF(.59f * texture.Width * scaleX + posOffset.X * 1, posOffset.Y, .27f * texture.Width * scaleX, texture.Height * scaleY);
 
             Game1.instance.collisionComponent.Insert(this);
         }
 
         public void Update(GameTime gt, int speed)
         {
-            if (isStop) return;
-
-            if (pos.X + texture.Width * scaleX < 0)
-            {
-                pos = new Vector2(posOffset.X * 2, posOffset.Y);
+            if (Game1.instance.sceneState == Scene.Default_Stop)
                 isStop = true;
-                bound.Position = new Vector2(.59f * texture.Width * scaleX + posOffset.X * 2, posOffset.Y);
-            }
+            else if (Game1.instance.sceneState == Scene.Default)
+                isStop = false;
+
+            if (isStop) return;
 
             pos -= new Vector2(speed * Game1.instance.deltaTime, 0);
             bound.Position -= new Vector2(speed * Game1.instance.deltaTime,0);
@@ -80,6 +80,16 @@ namespace Flooded_Soul.System.Shop
             if (other is Player && Game1.instance.autoStopAtShop)
             {
                 TogglePause();
+            }
+        }
+
+        public void ResetShop()
+        {
+            if (pos.X + texture.Width * scaleX < 0)
+            {
+                pos = new Vector2(posOffset.X * 2, posOffset.Y);
+                isStop = true;
+                bound.Position = new Vector2(.59f * texture.Width * scaleX + posOffset.X * 2, posOffset.Y);
             }
         }
     }

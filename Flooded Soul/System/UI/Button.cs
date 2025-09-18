@@ -35,16 +35,18 @@ namespace Flooded_Soul.System.UI
 
         Vector2 pos;
         float scale = 5f;
+        float rotation = 0;
 
         public bool canClick = false;
 
 
-        public Button(string texture,Vector2 pos,Vector2 posOffset, float scale)
+        public Button(string texture,Vector2 pos,Vector2 posOffset, float scale, float rotation = 0)
         {
             tex = Game1.instance.Content.Load<Texture2D>(texture);
 
             this.pos = pos + posOffset;
             this.scale = scale * Game1.instance.screenRatio;
+            this.rotation = rotation;
 
             Collider.CollisionEnter += OnCollisionEnter;
             Collider.CollisionStay += OnCollisionStay;
@@ -55,7 +57,7 @@ namespace Flooded_Soul.System.UI
             Game1.instance.collisionComponent.Insert(this);
         }
 
-        public Button(string texture,Vector2 pos,Vector2 posOffset, float scale, int frameColumn,int frameRow)
+        public Button(string texture,Vector2 pos,Vector2 posOffset, float scale , int frameColumn,int frameRow, float rotation = 0)
         {
             tex = Game1.instance.Content.Load<Texture2D>(texture);
             int frameHeight = tex.Height / frameRow;
@@ -68,6 +70,7 @@ namespace Flooded_Soul.System.UI
 
             this.pos = pos + posOffset;
             this.scale = scale * Game1.instance.screenRatio;
+            this.rotation = rotation;
 
             Collider.CollisionEnter += OnCollisionEnter;
             Collider.CollisionStay += OnCollisionStay;
@@ -86,9 +89,9 @@ namespace Flooded_Soul.System.UI
             Collider.Update();
         }
 
-        public void Draw() => Game1.instance._spriteBatch.Draw(tex, pos,null, buttonColor,0,Vector2.Zero,scale,SpriteEffects.None,0);
+        public void Draw() => Game1.instance._spriteBatch.Draw(tex, pos,null, buttonColor,rotation,Vector2.Zero,scale,SpriteEffects.None,0);
 
-        public void Draw(int i) => Game1.instance._spriteBatch.Draw(frameToDraw,pos,buttonColor, 0f,Vector2.Zero,new Vector2(scale),SpriteEffects.None,0);
+        public void Draw(int i) => Game1.instance._spriteBatch.Draw(frameToDraw,pos,buttonColor, rotation,Vector2.Zero,new Vector2(scale),SpriteEffects.None,0);
 
         public void OnCollision(CollisionEventArgs collisionInfo) => Collider.RegisterCollision(collisionInfo.Other);
 

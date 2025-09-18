@@ -36,7 +36,7 @@ namespace Flooded_Soul.System
 
         public IShapeF Bounds => bound;
 
-        int distanceTraveled;
+        public int distanceTraveled;
         public int fishPoint;
 
         bool isStop = false;

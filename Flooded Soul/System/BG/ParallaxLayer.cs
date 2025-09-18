@@ -32,7 +32,7 @@ namespace Flooded_Soul.System.BG
         protected float scale;
         protected float scaleX;
         protected float scaleY;
-        protected bool isStop = false;
+        public bool isStop = false;
 
         void Initialize(Vector2 posOffset,int speed,Texture2D texture)
         {

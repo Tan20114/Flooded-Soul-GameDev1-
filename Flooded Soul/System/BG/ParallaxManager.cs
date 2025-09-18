@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Flooded_Soul.System.Shop;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -83,6 +84,11 @@ namespace Flooded_Soul.System.BG
 
             foreach (ParallaxLayer l in layer)
                 l.Update(gameTime, speed);
+
+            SpawnShop();
+
+            if (layer[1] is ShopLayer shop)
+                shop.ResetShop();
         }
 
         public void Draw()
@@ -100,5 +106,14 @@ namespace Flooded_Soul.System.BG
         public void Stop() => isStop = true;
 
         public void Start() => isStop = false;
+
+        void SpawnShop()
+        {
+            Random random = new Random();
+            int ranVal = random.Next(1, 10001);
+
+            if (ranVal > 5000)
+                layer[1].isStop = false;
+        }
     }
 }

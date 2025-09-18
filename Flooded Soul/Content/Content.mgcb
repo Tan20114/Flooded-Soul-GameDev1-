@@ -488,6 +488,18 @@
 /processorParam:TextureFormat=Color
 /build:ParallaxBG/OceanBiome/undersea_biome_ocean.png;ParallaxBG/OceanBiome/undersea_biome_ocean
 
+#begin UI_Icon/sprite_anchor_LV3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI_Icon/sprite_anchor_LV3.png
+
 #begin UI_Icon/ui_autodrive_mainmenu.png
 /importer:TextureImporter
 /processor:TextureProcessor
