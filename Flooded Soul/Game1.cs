@@ -32,7 +32,7 @@ namespace Flooded_Soul
         Fishing
     }
 
-    struct Biome
+    public struct Biome
     {
         public List<List<string>> overWater;
         public string underWater;
@@ -71,6 +71,7 @@ namespace Flooded_Soul
         #region Scene Point
         Vector2 defaultPoint => Vector2.Zero;
         Vector2 fishingPoint => new Vector2(0, viewPortHeight);
+        Vector2 transitionPoint => new Vector2(0, -viewPortHeight);
         Vector2 shopPoint => new Vector2(viewPortWidth, 0);
         Vector2 CollectionPoint => new Vector2(-viewPortWidth, 0);
         #endregion
@@ -90,18 +91,21 @@ namespace Flooded_Soul
 
         public System.UI.Mouse mouse;
 
+        BiomeSystem bs;
+
         public FishingManager fm;
 
         ShopManager sm;
         public bool autoStopAtShop = false;
-        ShopLayer shop;
+        public ShopLayer shop;
         #endregion
 
         #region Background
-        ParallaxManager bg;
-        ParallaxManager underSeaBg;
 
-        Biome ocean = new Biome()
+        public ParallaxManager bg;
+        public ParallaxManager underSeaBg;
+
+        public static Biome ocean = new Biome()
         {
             overWater = new List<List<string>>()
             {
@@ -147,8 +151,103 @@ namespace Flooded_Soul
             },
             underWater = "ParallaxBG/OceanBiome/undersea_biome_ocean"
         };
-        Biome ice = new Biome
+        public static Biome ice = new Biome
         {
+            overWater = new List<List<string>>()
+            {
+                new List<string>()
+                {
+                    "ParallaxBG/IceBiome/01_snow_biome_ice_igloo_1",
+                    "ParallaxBG/115_trans",
+                    "ParallaxBG/115_trans",
+                },
+                new List<string>()
+                {
+                    "ParallaxBG/IceBiome/02_snow_biome_ice_igloo_2",
+                    "ParallaxBG/115_trans",
+                    "ParallaxBG/115_trans"
+                },
+                new List<string>()
+                {
+                    "ParallaxBG/IceBiome/03_snow_biome_ice_float_1",
+                    "ParallaxBG/IceBiome/03_snow_biome_ice_float_2",
+                    "ParallaxBG/115_trans",
+                },
+                new List<string>()
+                {
+                    "ParallaxBG/IceBiome/05_snow_biome_ice_bg_1",
+                    "ParallaxBG/IceBiome/05_snow_biome_ice_bg_3",
+                    "ParallaxBG/115_trans"
+                },
+                new List<string>()
+                {
+                    "ParallaxBG/IceBiome/05_snow_biome_ice_moutain",
+                    "ParallaxBG/115_trans"
+                },
+                new List<string>()
+                {
+                    "ParallaxBG/IceBiome/bg_snow_biome_sky",
+                    "ParallaxBG/IceBiome/bg_snow_biome_wave"
+                }
+            },
+            underWater = "ParallaxBG/IceBiome/under_Snow"
+        };
+        public static Biome forest = new Biome
+        {
+            overWater = new List<List<string>>()
+            {
+                new List<string>()
+                {
+                    "ParallaxBG/ForestBiome/01_forest_tree_1",
+                    "ParallaxBG/ForestBiome/01_forest_tree_2",
+                    "ParallaxBG/ForestBiome/01_forest_tree_3",
+                    "ParallaxBG/ForestBiome/01_forest_tree_group",
+                    "ParallaxBG/ForestBiome/01_forest_tree_no1",
+                    "ParallaxBG/ForestBiome/01_forest_tree_no2",
+                    "ParallaxBG/ForestBiome/01_forest_tree_no3",
+                },
+                new List<string>()
+                {
+                    "ParallaxBG/ForestBiome/02_forest_flylight_1",
+                    "ParallaxBG/ForestBiome/02_forest_flylight_2",
+                    "ParallaxBG/ForestBiome/02_forest_flylight_3",
+                    "ParallaxBG/ForestBiome/02_forest_flylight_group",
+                    "ParallaxBG/ForestBiome/02_forest_wood_1",
+                    "ParallaxBG/ForestBiome/02_forest_wood_2",
+                    "ParallaxBG/ForestBiome/02_forest_wood_3",
+                    "ParallaxBG/ForestBiome/02_forest_wood_group"
+                },
+                new List<string>()
+                {
+                    "ParallaxBG/ForestBiome/03_forest_tree_group",
+                    "ParallaxBG/ForestBiome/03_forest_tree_groupAll",
+                    "ParallaxBG/ForestBiome/03_forest_tree_no12",
+                    "ParallaxBG/ForestBiome/03_forest_tree_no23",
+                    "ParallaxBG/ForestBiome/03_forest_tree_no24",
+                },
+                new List<string>()
+                {
+                    "ParallaxBG/ForestBiome/04_forest_cloud_1",
+                    "ParallaxBG/ForestBiome/04_forest_island_1",
+                    "ParallaxBG/ForestBiome/04_forest_island_2",
+                    "ParallaxBG/ForestBiome/04_forest_island_group",
+                },
+                new List<string>()
+                {
+                    "ParallaxBG/ForestBiome/05_forest_cloud_1",
+                    "ParallaxBG/ForestBiome/05_forest_cloud_2",
+                    "ParallaxBG/ForestBiome/05_forest_cloud_group",
+                    "ParallaxBG/ForestBiome/05_forest_mountain_1",
+                    "ParallaxBG/ForestBiome/05_forest_mountain_2",
+                    "ParallaxBG/ForestBiome/05_forest_mountain_group",
+                },
+                new List<string>()
+                {
+                    "ParallaxBG/ForestBiome/bg_forest_biome_sky",
+                    "ParallaxBG/ForestBiome/bg_forest_biome_wave"
+                }
+            },
+            underWater = "ParallaxBG/ForestBiome/under_Forest"
         };
 
         public int speed = 100;
@@ -183,7 +282,7 @@ namespace Flooded_Soul
             Window.IsBorderless = true;
             Window.Position = new Point(0,monitorHeight -viewPortHeight);
 
-            Activated += (s, e) => WindowAPI.SetTopMost(true);
+            //Activated += (s, e) => WindowAPI.SetTopMost(true);
 
             base.Initialize();
         }
@@ -199,6 +298,8 @@ namespace Flooded_Soul
             mainCam = new OrthographicCamera(viewportAdaptor);
 
             mouse = new System.UI.Mouse();
+
+            bs = new BiomeSystem(transitionPoint);
             #endregion
 
             #region UI
@@ -241,6 +342,8 @@ namespace Flooded_Soul
             SceneManagement();
 
             mouse.Update();
+
+            bs.Update();
             #endregion
             #region UI
             dui.Update();
@@ -251,6 +354,11 @@ namespace Flooded_Soul
             #endregion
             #region Entity
             fm.Update();
+            if(fm.fishToRemove.Count > 0)
+            {
+                Fish f = fm.fishToRemove.Dequeue();
+                collisionComponent.Remove(f);
+            }
 
             player.Update(keyboardState, gameTime);
             #endregion
@@ -276,6 +384,7 @@ namespace Flooded_Soul
 
             #region Background
             bg.Draw();
+            shop.Draw(1);
             underSeaBg.Draw(1);
             sm.Draw();
             mockCollection.Draw(1);
@@ -284,13 +393,13 @@ namespace Flooded_Soul
             #region Entity
             fm.Draw();
 
-            shop.Draw(1);
             player.Draw(Content.Load<SpriteFont>("Fonts/fipps"));
             #endregion
 
             #region UI
             dui.Draw();
             fui.Draw();
+            bs.Draw();
             #endregion
 
             _spriteBatch.End();

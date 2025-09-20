@@ -7,6 +7,7 @@ using MonoGame.Extended;
 using MonoGame.Extended.Collisions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,11 +17,13 @@ using RectangleF = MonoGame.Extended.RectangleF;
 
 namespace Flooded_Soul.System.Shop
 {
-    internal class ShopLayer : ParallaxLayer , ICollisionActor
+    public class ShopLayer : ParallaxLayer , ICollisionActor
     {
         CollisionTracker Collider;
 
         public Vector2 pos;
+
+        bool isSpawned = false;
 
         RectangleF bound;
         public IShapeF Bounds => bound;
@@ -35,15 +38,21 @@ namespace Flooded_Soul.System.Shop
 
             texture = Game1.instance.Content.Load<Texture2D>(path);
 
-            pos = new Vector2(posOffset.X * 1, posOffset.Y);
+            pos = new Vector2(posOffset.X, posOffset.Y);
 
-            bound = new RectangleF(.59f * texture.Width * scaleX + posOffset.X * 1, posOffset.Y, .27f * texture.Width * scaleX, texture.Height * scaleY);
+            bound = new RectangleF(.59f * texture.Width * scaleX + posOffset.X, posOffset.Y, .27f * texture.Width * scaleX, texture.Height * scaleY);
 
             Game1.instance.collisionComponent.Insert(this);
         }
 
         public void Update(GameTime gt, int speed)
         {
+            SpawnShop();
+
+            ResetShop();
+
+            if (!isSpawned) return;
+
             if (Game1.instance.sceneState == Scene.Default_Stop)
                 isStop = true;
             else if (Game1.instance.sceneState == Scene.Default)
@@ -87,9 +96,25 @@ namespace Flooded_Soul.System.Shop
         {
             if (pos.X + texture.Width * scaleX < 0)
             {
-                pos = new Vector2(posOffset.X * 2, posOffset.Y);
+                pos = new Vector2(posOffset.X, posOffset.Y);
+                isSpawned = false;
                 isStop = true;
-                bound.Position = new Vector2(.59f * texture.Width * scaleX + posOffset.X * 2, posOffset.Y);
+                bound.Position = new Vector2(.59f * texture.Width * scaleX + posOffset.X, posOffset.Y);
+            }
+        }
+
+        void SpawnShop()
+        {
+            if (isSpawned) return;
+
+            Random random = new Random();
+            int ranVal = random.Next(1, 10001);
+            Debug.WriteLine(ranVal);
+
+            if (ranVal < 100)
+            {
+                Debug.WriteLine("Spawned");
+                isSpawned = true;
             }
         }
     }

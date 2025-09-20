@@ -142,6 +142,7 @@ namespace Flooded_Soul.System.Fishing
 
                 Collider.EnableCollision();
                 vision.Collider.DisableCollision();
+                hook.Collider.DisableCollision();
             }
         }
 
@@ -198,7 +199,7 @@ namespace Flooded_Soul.System.Fishing
         {
             int ranVal = random.Next(1, 101);
 
-            if (ranVal > 90)
+            if (ranVal > 95)
                 speed *= 1;
             else
                 speed *= -1;

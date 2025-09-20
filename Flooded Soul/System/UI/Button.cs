@@ -39,7 +39,6 @@ namespace Flooded_Soul.System.UI
 
         public bool canClick = false;
 
-
         public Button(string texture,Vector2 pos,Vector2 posOffset, float scale, float rotation = 0)
         {
             tex = Game1.instance.Content.Load<Texture2D>(texture);

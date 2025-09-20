@@ -14,7 +14,7 @@ using MonoGame.Extended.Content;
 
 namespace Flooded_Soul.System.BG
 {
-    internal class ParallaxLayer
+    public class ParallaxLayer
     {
         Random random = new Random();
 
@@ -204,6 +204,21 @@ namespace Flooded_Soul.System.BG
                     pos,
                     null,
                     Color.White,
+                    0f,
+                    Vector2.Zero,
+                    new Vector2(scaleX, scaleY),
+                    SpriteEffects.None,
+                    0f
+                );
+        }
+
+        public void Draw(Vector2 pos, Color color)
+        {
+            Game1.instance._spriteBatch.Draw(
+                    texture,
+                    pos,
+                    null,
+                    color,
                     0f,
                     Vector2.Zero,
                     new Vector2(scaleX, scaleY),

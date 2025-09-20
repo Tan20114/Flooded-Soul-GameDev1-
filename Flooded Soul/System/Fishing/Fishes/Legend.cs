@@ -13,7 +13,7 @@ namespace Flooded_Soul.System.Fishing.Fishes
     {
         public Legend(string textureName, float scale, FishingManager manager) : base(textureName, scale, manager)
         {
-            Strength = 2;
+            Strength = 3;
             speed = 200;
             point = 3;
             test = Color.Black;

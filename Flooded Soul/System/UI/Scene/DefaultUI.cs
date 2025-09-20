@@ -76,6 +76,7 @@ namespace Flooded_Soul.System.UI.Scene
             float padding = 3f * Game1.instance.screenRatio;
             fishIconPos = new Vector2(fishPointPos.X + fontSize.X / 1.5f + padding, fishPointPos.Y + .125f * fontSize.Y);
             #endregion
+            if (BiomeSystem.isTransition) return;
             #region Sail/Stop Button
             sailStopButton.Update();
             #endregion
@@ -92,6 +93,7 @@ namespace Flooded_Soul.System.UI.Scene
             Game1.instance._spriteBatch.DrawString(font, $"{Game1.instance.player.fishPoint}",fishPointPos, Color.White, 0, Vector2.Zero, 1.5f * Game1.instance.screenRatio, SpriteEffects.None, 0);
             Game1.instance._spriteBatch.Draw(fishPointIcon, fishIconPos, null, Color.White, 0, Vector2.Zero, 7f * Game1.instance.screenRatio, SpriteEffects.None, 0);
             #endregion
+            if (BiomeSystem.isTransition) return;
             sailStopButton.Draw();
             if (Game1.instance.sceneState == Flooded_Soul.Scene.Default_Stop)
                 goDownButton.Draw();

@@ -25,6 +25,7 @@ namespace Flooded_Soul.System.Fishing
         public bool isMinigame = false;
         public Fish targetFish;
         public List<Fish> otherFishes = new List<Fish>();
+        public Queue<Fish> fishToRemove = new Queue<Fish>();
         public FishingGameArea minigameArea;
         public FishPointer mousePos;
 
@@ -40,6 +41,7 @@ namespace Flooded_Soul.System.Fishing
         public List<Fish> fishInScreen = new List<Fish>();
 
         public bool isPause = false;
+        float catchLine = Game1.instance.viewPortHeight * 0.15f + Game1.instance.viewPortHeight;
 
         public FishingManager()
         {
@@ -82,9 +84,7 @@ namespace Flooded_Soul.System.Fishing
             foreach (Fish fish in fishInScreen)
                 fish.Draw();
             if (isMinigame)
-            {
                 minigameArea.Draw();
-            }
         }
 
         public void EnterSea()
@@ -105,12 +105,21 @@ namespace Flooded_Soul.System.Fishing
 
         public void ExitSea()
         {
-            for (int i = 0; i< fishInScreen.Count; i++)
+            targetFish = null;
+            otherFishes.Clear();
+
+            if (isMinigame)
+                EndMinigame(false);
+
+            var fishesToProcess = new List<Fish>(fishInScreen);
+
+            foreach (var fish in fishesToProcess)
             {
-                fishInScreen[i].Collider.DisableCollision();
-                fishInScreen[i].vision.Collider.DisableCollision();
-                fishInScreen[i].Destroy(false);
+                fish.Destroy(false);
+                fishToRemove.Enqueue(fish);
             }
+
+            fishInScreen.Clear();
         }
 
         void StartMinigame()
@@ -142,7 +151,7 @@ namespace Flooded_Soul.System.Fishing
 
                 if (!minigameArea.fishInArea)
                     EndMinigame(false);
-                else if(targetFish.pos.Y < Game1.instance.viewPortHeight * .15f + Game1.instance.viewPortHeight)
+                else if(targetFish.pos.Y <= catchLine)
                     EndMinigame(true);
                 else
                 {
@@ -186,9 +195,13 @@ namespace Flooded_Soul.System.Fishing
             {
                 targetFish.Destroy(success);
                 hook.ResetPosition();
+                hook.Collider.EnableCollision();
             }
             else
+            {
                 targetFish.Destroy(success);
+                hook.Collider.EnableCollision();
+            }
 
             targetFish = null;
             otherFishes.Clear();

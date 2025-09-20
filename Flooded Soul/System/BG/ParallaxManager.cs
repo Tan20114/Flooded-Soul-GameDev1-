@@ -13,7 +13,7 @@ using MonoGame.Extended.Timers;
 
 namespace Flooded_Soul.System.BG
 {
-    internal class ParallaxManager
+    public class ParallaxManager
     {
         List<ParallaxLayer> layer = new List<ParallaxLayer>();
 
@@ -84,11 +84,6 @@ namespace Flooded_Soul.System.BG
 
             foreach (ParallaxLayer l in layer)
                 l.Update(gameTime, speed);
-
-            SpawnShop();
-
-            if (layer[1] is ShopLayer shop)
-                shop.ResetShop();
         }
 
         public void Draw()
@@ -107,13 +102,25 @@ namespace Flooded_Soul.System.BG
 
         public void Start() => isStop = false;
 
-        void SpawnShop()
+        public void ChangeBiome(List<List<string>> texture)
         {
-            Random random = new Random();
-            int ranVal = random.Next(1, 10001);
+            layer.Clear();
 
-            if (ranVal > 5000)
-                layer[1].isStop = false;
+            layerCount = 0;
+
+            LoadLayer(texture[0]);
+            LoadLayer(texture[1]);
+            LoadLayer(texture[2]);
+            LoadLayer(texture[3]);
+            LoadWave(texture[^1]);
+            LoadLayer(texture[4]);
+            LoadSky(texture[^1]);
+        }
+
+        public void ChangeBiome(string texture)
+        {
+            layer.Clear();
+            layer.Add(new ParallaxLayer(texture, posOffset, 0));
         }
     }
 }

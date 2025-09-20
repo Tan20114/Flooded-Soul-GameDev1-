@@ -14,11 +14,14 @@ using System.Diagnostics;
 using Color = Microsoft.Xna.Framework.Color;
 using RectangleF = MonoGame.Extended.RectangleF;
 using SizeF = MonoGame.Extended.SizeF;
+using Flooded_Soul.System.Collision_System;
 
 namespace Flooded_Soul.System.Fishing
 {
     internal class Hook : ICollisionActor
     {
+        public CollisionTracker Collider;
+
         FishingManager fishingManager;
 
         Texture2D texture;
@@ -34,6 +37,8 @@ namespace Flooded_Soul.System.Fishing
         public Hook(FishingManager f)
         {
             fishingManager = f;
+
+            Collider = new CollisionTracker();
 
             scale *= Game1.instance.screenRatio;
 
@@ -54,27 +59,24 @@ namespace Flooded_Soul.System.Fishing
             Vector2 distance = mousePos - pos;
 
             Vector2 moveDir = Vector2.Normalize(distance);
-            
+
             if (Game1.instance.sceneState == Scene.Fishing)
             {
                 if (fishingManager.isMinigame)
                     pos = fishingManager.targetFish.pos;
                 else
                     if (distance.Length() > 10)
-                        pos += moveDir * followSpeed * Game1.instance.deltaTime;
-                    else
-                        pos = mousePos;
-            }   
+                    pos += moveDir * followSpeed * Game1.instance.deltaTime;
+                else
+                    pos = mousePos;
+            }
         }
 
-        public void OnCollision(CollisionEventArgs collisionInfo)
-        {
-            //Debug.WriteLine($"Hook collided with: {collisionInfo.Other}");
-        }
-
+        public void OnCollision(CollisionEventArgs collisionInfo) => Collider.RegisterCollision(collisionInfo.Other);
         public void Draw()
         {
-            //Game1.instance._spriteBatch.DrawRectangle(_bounds, Color.Red, 3);
+            //if(Collider.Collideable)
+            //    Game1.instance._spriteBatch.DrawRectangle(_bounds, Color.Red, 3);
             Game1.instance._spriteBatch.Draw(texture, pos, null, Color.White, 0f, Vector2.Zero, new Vector2(scale), SpriteEffects.None, 0f);
         }
 
@@ -82,7 +84,7 @@ namespace Flooded_Soul.System.Fishing
 
         void PositionRestrict()
         {
-            if(pos.X < 0)
+            if (pos.X < 0)
                 pos.X = 0;
             else if (pos.X > Game1.instance.viewPortWidth - texture.Width * scale)
                 pos.X = Game1.instance.viewPortWidth - texture.Width * scale;

@@ -13,7 +13,7 @@ namespace Flooded_Soul.System.Fishing.Fishes
     {
         public Rare(string textureName, float scale, FishingManager manager) : base(textureName, scale, manager)
         {
-            Strength = 1.5f;
+            Strength = 2f;
             speed = 150;
             point = 2;
             test = Color.Green;
