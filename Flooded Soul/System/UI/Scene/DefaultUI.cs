@@ -36,6 +36,10 @@ namespace Flooded_Soul.System.UI.Scene
         Button goDownButton;
         Vector2 goDownPos = new Vector2(.065f * Game1.instance.viewPortWidth, .8f * Game1.instance.viewPortHeight);
         #endregion
+        #region Shop Button
+        Button shopButton;
+        Vector2 shopButtPos = new Vector2(.065f * Game1.instance.viewPortWidth, .8f * Game1.instance.viewPortHeight);
+        #endregion
 
         public DefaultUI(Vector2 offset)
         {
@@ -61,6 +65,10 @@ namespace Flooded_Soul.System.UI.Scene
             goDownButton = new Button("UI_Icon/ui_fishunit_mainmenu", goDownPos, posOffset,9);
             goDownButton.OnClick += GoDown;
             #endregion
+            #region Shop Button
+            shopButton = new Button("Legend_fish", shopButtPos, posOffset, 1);
+            shopButton.OnClick += OpenShop;
+            #endregion
         }
 
         public void Update()
@@ -80,9 +88,17 @@ namespace Flooded_Soul.System.UI.Scene
             #region Sail/Stop Button
             sailStopButton.Update();
             #endregion
-            #region Go Down Button
-            goDownButton.Update();
-            #endregion
+            if (Game1.instance.sceneState == Flooded_Soul.Scene.Default_Stop)
+            {
+                #region Go Down Button
+                if (!Game1.instance.player.stopAtShop)
+                    goDownButton.Update();
+                #endregion
+                #region Shop Button
+                else
+                    shopButton.Update();
+                #endregion
+            }
         }
 
         public void Draw()
@@ -96,7 +112,12 @@ namespace Flooded_Soul.System.UI.Scene
             if (BiomeSystem.isTransition) return;
             sailStopButton.Draw();
             if (Game1.instance.sceneState == Flooded_Soul.Scene.Default_Stop)
-                goDownButton.Draw();
+            {
+                if(Game1.instance.player.stopAtShop)
+                    shopButton.Draw();
+                else
+                    goDownButton.Draw();
+            }
         }
 
         void CollectionButtClick()
@@ -125,12 +146,19 @@ namespace Flooded_Soul.System.UI.Scene
                 Game1.instance.sceneState = Flooded_Soul.Scene.Default_Stop;
             else if (Game1.instance.sceneState == Flooded_Soul.Scene.Default_Stop)
                 Game1.instance.sceneState = Flooded_Soul.Scene.Default;
+
+            Game1.instance.player.stopAtShop = false;
         }
 
         void GoDown()
         {
             Game1.instance.fm.EnterSea();
             Game1.instance.sceneState = Flooded_Soul.Scene.Fishing;
+        }
+
+        void OpenShop()
+        {
+            Game1.instance.sceneState = Flooded_Soul.Scene.Shop;
         }
     }
 }

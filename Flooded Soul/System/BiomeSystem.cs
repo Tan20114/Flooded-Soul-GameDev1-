@@ -1,11 +1,12 @@
 ﻿using Flooded_Soul.System.BG;
 using Microsoft.Xna.Framework;
 using System;
+using System.Diagnostics;
 using Color = Microsoft.Xna.Framework.Color;
 
 namespace Flooded_Soul.System
 {
-    enum BiomeType
+    public enum BiomeType
     {
         Ocean,
         Ice,
@@ -14,7 +15,7 @@ namespace Flooded_Soul.System
 
     internal class BiomeSystem
     {
-        float changeInterval = 5f;
+        float changeInterval = 120f;
         float elapsedTime = 0f;
 
         public static bool isTransition = false;
@@ -22,12 +23,14 @@ namespace Flooded_Soul.System
         float freezeTime = 2f;
         float transitionElapsed = 0f;
 
-        ParallaxLayer transitionLayer;
+        bool isRandomized = false;
+
+        AnimatedLayer transitionLayer;
         Vector2 pos;
 
         bool isStop = false;
 
-        BiomeType type;
+        public static BiomeType type;
 
         public BiomeSystem(Vector2 posOffset)
         {
@@ -35,11 +38,13 @@ namespace Flooded_Soul.System
 
             pos = Vector2.Zero;
 
-            transitionLayer = new ParallaxLayer("ParallaxBG/transition_Screen", posOffset, 0, 1);
+            transitionLayer = new AnimatedLayer("ParallaxBG/transition_SpriteSheet", posOffset, 0, 1,"trans",1280,230,10);
         }
 
-        public void Update()
+        public void Update(GameTime gt)
         {
+            transitionLayer?.Update(gt);
+
             if (Game1.instance.sceneState == Scene.Default_Stop)
                 isStop = true;
             else if (Game1.instance.sceneState == Scene.Default)
@@ -65,6 +70,7 @@ namespace Flooded_Soul.System
                 if (transitionElapsed >= transitionTime)
                 {
                     isTransition = false;
+                    isRandomized = false;
                     transitionElapsed = 0f;
                 }
             }
@@ -89,6 +95,7 @@ namespace Flooded_Soul.System
             else if (t < halfTime + freezeTime)
             {
                 RandomBiome();
+                Game1.instance.shop.ResetShop();
                 return Color.White;
             }
             else
@@ -100,43 +107,42 @@ namespace Flooded_Soul.System
 
         void RandomBiome()
         {
+            if (isRandomized) return;
+
             Random random = new Random();
 
-            int biomeIndex = random.Next(0, 3);
+            int biomeIndex = 0;
+
+            do
+            {
+                biomeIndex = random.Next(0, 3);
+            } while ((BiomeType)biomeIndex == type);
 
             switch (biomeIndex)
             {
                 case 0:
                 {
-                    if (type != BiomeType.Ocean)
-                    {
-                        Game1.instance.bg.ChangeBiome(Game1.ocean.overWater);
-                        Game1.instance.underSeaBg.ChangeBiome(Game1.ocean.underWater);
-                        type = BiomeType.Ocean;
-                        }
+                    Game1.instance.bg.ChangeBiome(Game1.ocean.overWater);
+                    Game1.instance.underSeaBg.ChangeBiome(Game1.ocean.underWater);
+                    type = BiomeType.Ocean;
                     break;
                 }
                 case 1:
                 {
-                    if (type != BiomeType.Ice)
-                    {
-                        Game1.instance.bg.ChangeBiome(Game1.ice.overWater);
-                        Game1.instance.underSeaBg.ChangeBiome(Game1.ice.underWater);
-                        type = BiomeType.Ice;
-                        }
+                    Game1.instance.bg.ChangeBiome(Game1.ice.overWater);
+                    Game1.instance.underSeaBg.ChangeBiome(Game1.ice.underWater);
+                    type = BiomeType.Ice;
                     break;
                 }
                 case 2:
                 {
-                    if (type != BiomeType.Forest)
-                    {
-                        Game1.instance.bg.ChangeBiome(Game1.forest.overWater);
-                        Game1.instance.underSeaBg.ChangeBiome(Game1.forest.underWater);
-                        type = BiomeType.Forest;
-                    }
+                    Game1.instance.bg.ChangeBiome(Game1.forest.overWater);
+                    Game1.instance.underSeaBg.ChangeBiome(Game1.forest.underWater);
+                    type = BiomeType.Forest;
                     break;
                 }
             }
+            isRandomized = true;
         }
     }
 }

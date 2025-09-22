@@ -28,6 +28,9 @@ namespace Flooded_Soul.System.Shop
         RectangleF bound;
         public IShapeF Bounds => bound;
 
+        float shopSpawnTime = 60f;
+        float elasped = 0;
+
         public ShopLayer(string path, Vector2 posOffset, int speed) : base(path, posOffset, speed, 1)
         {
             Collider = new CollisionTracker();
@@ -47,9 +50,12 @@ namespace Flooded_Soul.System.Shop
 
         public void Update(GameTime gt, int speed)
         {
+            if(BiomeSystem.type != BiomeType.Ocean) return;
+
             SpawnShop();
 
-            ResetShop();
+            if (pos.X + texture.Width * scaleX < 0)
+                ResetShop();
 
             if (!isSpawned) return;
 
@@ -89,32 +95,31 @@ namespace Flooded_Soul.System.Shop
             if (other is Player && Game1.instance.autoStopAtShop)
             {
                 TogglePause();
+                Game1.instance.player.stopAtShop = true;
             }
         }
 
         public void ResetShop()
         {
-            if (pos.X + texture.Width * scaleX < 0)
-            {
-                pos = new Vector2(posOffset.X, posOffset.Y);
-                isSpawned = false;
-                isStop = true;
-                bound.Position = new Vector2(.59f * texture.Width * scaleX + posOffset.X, posOffset.Y);
-            }
+            pos = new Vector2(posOffset.X, posOffset.Y);
+            isSpawned = false;
+            isStop = true;
+            bound.Position = new Vector2(.59f * texture.Width * scaleX + posOffset.X, posOffset.Y);
+            elasped = 0;
         }
 
         void SpawnShop()
         {
             if (isSpawned) return;
 
-            Random random = new Random();
-            int ranVal = random.Next(1, 10001);
-            Debug.WriteLine(ranVal);
+            Random r = new Random();
 
-            if (ranVal < 100)
+            elasped += Game1.instance.deltaTime;
+
+            if (elasped >= shopSpawnTime)
             {
-                Debug.WriteLine("Spawned");
-                isSpawned = true;
+                elasped = 0;
+                isSpawned = r.Next(0,2) == 0 ? true:false;
             }
         }
     }

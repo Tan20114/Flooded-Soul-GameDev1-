@@ -197,7 +197,7 @@ namespace Flooded_Soul.System.BG
                 );
         }
 
-        public void Draw(Vector2 pos)
+        public virtual void Draw(Vector2 pos)
         {
             Game1.instance._spriteBatch.Draw(
                     texture,
@@ -212,7 +212,7 @@ namespace Flooded_Soul.System.BG
                 );
         }
 
-        public void Draw(Vector2 pos, Color color)
+        public virtual void Draw(Vector2 pos, Color color)
         {
             Game1.instance._spriteBatch.Draw(
                     texture,

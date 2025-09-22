@@ -3,25 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using Color = Microsoft.Xna.Framework.Color;
-
 
 namespace Flooded_Soul.System.Fishing.Fishes
 {
-    internal class Rare : Fish
+    internal class Uncommon : Fish
     {
-        public Rare(string textureName, float scale, FishingManager manager) : base(textureName, scale, manager)
+        public Uncommon(string textureName, float scale, FishingManager manager) : base(textureName, scale, manager)
         {
-            Strength = 2.5f;
-            speed = 150;
-            point = 3;
+            Strength = 2;
+            speed = 125;
+            point = 2;
         }
 
         protected override void RandomPos()
         {
-            float minSpawnRatio = normalMaxSpawnRatio;
-            float maxSpawnRatio = rareMaxSpawnRatio;
+            float minSpawnRatio = normalMaxSpawnRatio - .1f;
+            float maxSpawnRatio = rareMaxSpawnRatio - .1f;
 
             minSpawnHeight = (int)(Game1.instance.viewPortHeight * minSpawnRatio);
             maxSpawnHeight = (int)(Game1.instance.viewPortHeight * maxSpawnRatio);
@@ -30,10 +28,10 @@ namespace Flooded_Soul.System.Fishing.Fishes
             pos.Y = random.Next(minSpawnHeight, maxSpawnHeight) + Game1.instance.viewPortHeight;
         }
 
-        public override void Destroy(bool S)
+        public override void Destroy(bool Success)
         {
-            base.Destroy(S);
-            fishingManager.rCount--;
+            base.Destroy(Success);
+            fishingManager.lCount--;
         }
     }
 }

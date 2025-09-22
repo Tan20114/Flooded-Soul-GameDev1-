@@ -330,7 +330,6 @@ namespace Flooded_Soul
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
             keyboardState = Keyboard.GetState();
             mouseState = Mouse.GetState();
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -343,7 +342,7 @@ namespace Flooded_Soul
 
             mouse.Update();
 
-            bs.Update();
+            bs.Update(gameTime);
             #endregion
             #region UI
             dui.Update();

@@ -15,8 +15,6 @@ namespace Flooded_Soul.System.Fishing.Fishes
         {
             Strength = 3;
             speed = 200;
-            point = 3;
-            test = Color.Black;
         }
 
         protected override void RandomPos()

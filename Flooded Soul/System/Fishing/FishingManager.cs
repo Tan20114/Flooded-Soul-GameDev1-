@@ -14,6 +14,7 @@ namespace Flooded_Soul.System.Fishing
     public enum FishType
     {
         Normal,
+        Uncommon,
         Rare,
         Legend
     }
@@ -29,12 +30,107 @@ namespace Flooded_Soul.System.Fishing
         public FishingGameArea minigameArea;
         public FishPointer mousePos;
 
-        int maxFish = 6;
+        List<string> NormalFishPool
+        {
+            get
+            {
+                List<string> normalFishPath = new List<string>() 
+                {
+                    "Fish/common_mudFish_AllBiome",
+                    "Fish/common_sacabambaspisFish_AllBiome",
+                };
+
+                switch (BiomeSystem.type)
+                {
+                    case BiomeType.Ocean:
+                        normalFishPath.Add("Fish/common_Wavefinfish_ocean");
+                        break;
+                    case BiomeType.Ice:
+                        normalFishPath.Add("Fish/common_Icefin_snow");
+                        break;
+                    case BiomeType.Forest:
+                        normalFishPath.Add("Fish/common_HydrascaleFish_forest");
+                        break;
+                }
+                return normalFishPath;
+            }
+        }
+
+        string UncommonFishPool
+        {
+            get
+            {
+                string path = "";
+
+                switch (BiomeSystem.type)
+                {
+                    case BiomeType.Ocean:
+                        path = "Fish/uncommon_dogFish_ocean";
+                        break;
+                    case BiomeType.Ice:
+                        path = "Fish/uncommon_frostPetalFish_snow";
+                        break;
+                    case BiomeType.Forest:
+                        path = "Fish/uncommon_goofslimeFish_forest";
+                        break;
+                }
+                return path;
+            }
+        }
+
+        string RareFishPool
+        {
+            get
+            {
+                string path = "";
+
+                switch (BiomeSystem.type)
+                {
+                    case BiomeType.Ocean:
+                        path = "Fish/rare_Seaturtle_ocean";
+                        break;
+                    case BiomeType.Ice:
+                        path = "Fish/rare_clingFish_snow";
+                        break;
+                    case BiomeType.Forest:
+                        path = "Fish/rare_red Jelllyfish_forest";
+                        break;
+                }
+                return path;
+            }
+        }
+
+        string LegendFishPool
+        {
+            get
+            {
+                string path = "";
+
+                switch (BiomeSystem.type)
+                {
+                    case BiomeType.Ocean:
+                        path = "Fish/legend_plabFish_ocean";
+                        break;
+                    case BiomeType.Ice:
+                        path = "Fish/legend_jollyFish_snow";
+                        break;
+                    case BiomeType.Forest:
+                        path = "Fish/legend_kelpboneFish_forest";
+                        break;
+                }
+                return path;
+            }
+        }
+
+        int maxFish = 8;
+        float fishScale = 4.5f;
 
         public int nCount = 5;
         int maxNCount = 0;
         public int rCount = 5;
         int maxRCount = 0;
+        public int uCount = 5;
+        int maxUCount = 0;
         public int lCount = 5;
         int maxLCount = 0;
 
@@ -47,7 +143,7 @@ namespace Flooded_Soul.System.Fishing
         {
             hook = new Hook(this);
             Game1.instance.collisionComponent.Insert(hook);
-            
+
             mousePos = new FishPointer(this);
         }
 
@@ -58,7 +154,7 @@ namespace Flooded_Soul.System.Fishing
             hook.Update();
             if (Game1.instance.sceneState != Scene.Fishing && Game1.instance.scene.moveSuccess)
             {
-                if(isMinigame)
+                if (isMinigame)
                 {
                     isMinigame = false;
                     minigameArea = null;
@@ -93,10 +189,13 @@ namespace Flooded_Soul.System.Fishing
 
             nCount = maxNCount;
             rCount = maxRCount;
+            uCount = maxUCount;
             lCount = maxLCount;
 
             for (int i = 0; i < maxNCount; i++)
                 FishSpawn(FishType.Normal);
+            for (int i = 0; i < maxUCount; i++)
+                FishSpawn(FishType.Uncommon);
             for (int i = 0; i < maxRCount; i++)
                 FishSpawn(FishType.Rare);
             for (int i = 0; i < maxLCount; i++)
@@ -151,15 +250,10 @@ namespace Flooded_Soul.System.Fishing
 
                 if (!minigameArea.fishInArea)
                     EndMinigame(false);
-                else if(targetFish.pos.Y <= catchLine)
+                else if (targetFish.pos.Y <= catchLine)
                     EndMinigame(true);
                 else
                 {
-                    float distance = MathF.Abs(targetFish.pos.Y - targetY);
-
-                    if (distance <= 20)
-                        targetFish.isClicked = false;
-
                     if (mousePos.canClick)
                         if (Game1.instance.Input.IsLeftMouse())
                         {
@@ -169,7 +263,7 @@ namespace Flooded_Soul.System.Fishing
                             targetFish.MoveToY(targetY);
 
                             targetFish.OnAlert();
-                        }                           
+                        }
                 }
             }
         }
@@ -209,18 +303,26 @@ namespace Flooded_Soul.System.Fishing
 
         void FishSpawn(FishType type)
         {
-            switch(type)
+            switch (type)
             {
                 case FishType.Normal:
-                    Fish normalFish = new Normal("Legend_fish", 0.1f, this);
+                    Random r = new Random();
+
+                    int ranVal = r.Next(0, NormalFishPool.Count);
+
+                    Fish normalFish = new Normal(NormalFishPool[ranVal], fishScale, this);
                     fishInScreen.Add(normalFish);
                     break;
+                case FishType.Uncommon:
+                    Fish uncommonFish = new Uncommon(UncommonFishPool, fishScale, this);
+                    fishInScreen.Add(uncommonFish);
+                    break;
                 case FishType.Rare:
-                    Fish rareFish = new Rare("Legend_fish", .1f, this);
+                    Fish rareFish = new Rare(RareFishPool, fishScale, this);
                     fishInScreen.Add(rareFish);
                     break;
                 case FishType.Legend:
-                    Fish legendFish = new Legend("Legend_fish", .1f, this);
+                    Fish legendFish = new Legend(LegendFishPool, fishScale, this);
                     fishInScreen.Add(legendFish);
                     break;
             }
@@ -232,16 +334,21 @@ namespace Flooded_Soul.System.Fishing
 
             maxLCount = 0;
             maxRCount = 0;
+            maxUCount = 0;
             maxNCount = 0;
 
-            for(int i = 0; i< maxFish; i++)
-            {
-                int ranVal = new Random().Next(1, 101);
+            Random random = new Random();
 
-                if(ranVal <= 5)
+            for (int i = 0; i < maxFish; i++)
+            {
+                int ranVal = random.Next(1, 101);
+
+                if (ranVal <= 2)
                     maxLCount++;
-                else if(ranVal > 2 && ranVal <= 40)
+                else if (ranVal <= 20)
                     maxRCount++;
+                else if (ranVal <= 50)
+                    maxUCount++;
                 else
                     maxNCount++;
             }

@@ -34,7 +34,10 @@ namespace Flooded_Soul.System.Fishing
         int goDownSpeed = 50;
         protected float strength = 1;
         public float Strength { get => strength; set => strength = value; }
+
         public bool isClicked = false;
+        float resetClickTime = .5f;
+        float elasped = 0;
 
         protected int minSpawnHeight;
         protected int maxSpawnHeight;
@@ -48,8 +51,6 @@ namespace Flooded_Soul.System.Fishing
         int visionRange = 5;
 
         public bool isPause = false;
-
-        protected Color test = Color.White;
 
         RectangleF _bounds;
         RectangleF _seeRange;
@@ -90,7 +91,16 @@ namespace Flooded_Soul.System.Fishing
 
             pos.X += speed * Game1.instance.deltaTime;
 
-            if(fishingManager.isMinigame)
+            if (isClicked)
+                elasped += Game1.instance.deltaTime;
+
+            if(elasped >= resetClickTime)
+            {
+                isClicked = false;
+                elasped = 0;
+            }
+
+            if (fishingManager.isMinigame)
             {
                 if (fishingManager.targetFish == this)
                     if(!isClicked)
@@ -118,7 +128,7 @@ namespace Flooded_Soul.System.Fishing
 
         public void Draw()
         {
-            Game1.instance._spriteBatch.Draw(texture, pos, null, test, 0f, Vector2.Zero, new Vector2(scale), SetFaceDir(), 0f);
+            Game1.instance._spriteBatch.Draw(texture, pos, null, Color.White, 0f, Vector2.Zero, new Vector2(scale), SetFaceDir(), 0f);
 
             //if (Collider.Collideable)
             //    Game1.instance._spriteBatch.DrawRectangle(_bounds, Color.Green, 3);
