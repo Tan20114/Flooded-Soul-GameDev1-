@@ -78,12 +78,12 @@ namespace Flooded_Soul.System.BG
             layer.Add(new ParallaxLayer(textures[^2], posOffset, speed));
             layerCount++;
         } 
-        public void Update(GameTime gameTime, int speed)
+        public void Update(GameTime gameTime)
         {
             if(isStop) return;
 
             foreach (ParallaxLayer l in layer)
-                l.Update(gameTime, speed);
+                l.Update(gameTime);
         }
 
         public void Draw()

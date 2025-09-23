@@ -30,7 +30,7 @@ namespace Flooded_Soul.System.Fishing
         protected Texture2D texture;
         public Vector2 pos;
         protected float scale = 0.05f;
-        public int speed = 100;
+        public float speed = 100;
         int goDownSpeed = 50;
         protected float strength = 1;
         public float Strength { get => strength; set => strength = value; }
@@ -207,6 +207,7 @@ namespace Flooded_Soul.System.Fishing
 
         public void OnAlert()
         {
+            speed /= 1.05f;
             int ranVal = random.Next(1, 101);
 
             if (ranVal > 95)

@@ -134,7 +134,7 @@ namespace Flooded_Soul.System.BG
             }
         }
 
-        public void Update(GameTime gameTime, int speed)
+        public void Update(GameTime gameTime)
         {
             if (isStop) return;
 

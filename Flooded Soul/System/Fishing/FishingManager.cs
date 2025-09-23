@@ -225,8 +225,10 @@ namespace Flooded_Soul.System.Fishing
         {
             if (isMinigame) return;
 
+
             if (targetFish != null)
             {
+                targetFish.speed *= 2f;
                 foreach (Fish other in otherFishes)
                 {
                     other.Collider.DisableCollision();

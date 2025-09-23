@@ -159,13 +159,11 @@ namespace Flooded_Soul
                 {
                     "ParallaxBG/IceBiome/01_snow_biome_ice_igloo_1",
                     "ParallaxBG/115_trans",
-                    "ParallaxBG/115_trans",
                 },
                 new List<string>()
                 {
                     "ParallaxBG/IceBiome/02_snow_biome_ice_igloo_2",
                     "ParallaxBG/115_trans",
-                    "ParallaxBG/115_trans"
                 },
                 new List<string>()
                 {
@@ -177,7 +175,6 @@ namespace Flooded_Soul
                 {
                     "ParallaxBG/IceBiome/05_snow_biome_ice_bg_1",
                     "ParallaxBG/IceBiome/05_snow_biome_ice_bg_3",
-                    "ParallaxBG/115_trans"
                 },
                 new List<string>()
                 {
@@ -349,7 +346,7 @@ namespace Flooded_Soul
             fui.Update();
             #endregion
             #region Background
-            bg.Update(gameTime, player.speed);
+            bg.Update(gameTime);
             #endregion
             #region Entity
             fm.Update();

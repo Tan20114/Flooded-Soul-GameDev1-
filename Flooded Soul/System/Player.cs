@@ -176,7 +176,8 @@ namespace Flooded_Soul.System
                     1,
                     "stop",
                     1280, 230, level == 1? 4 : 3,
-                    .003f * speed
+                    .003f * speed,
+                    false
                 );
 
                 anims["sail"].controller.Play(0);
@@ -197,10 +198,10 @@ namespace Flooded_Soul.System
 
             return new List<ParallaxLayer> 
             {
-                currentAnim,
                 l4, 
                 l3,
                 l2, 
+                currentAnim,
                 l1,
             };
         }
@@ -215,11 +216,11 @@ namespace Flooded_Soul.System
 
             return new List<ParallaxLayer> 
             {
-                currentAnim,
                 l5,
                 l4, 
                 l3, 
                 l2, 
+                currentAnim,
                 l1, 
             };
         }
@@ -235,12 +236,12 @@ namespace Flooded_Soul.System
 
             return new List<ParallaxLayer> 
             { 
-                currentAnim,
                 l6,
                 l5, 
                 l4, 
                 l3, 
                 l2, 
+                currentAnim,
                 l1, 
             };
         }
