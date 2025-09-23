@@ -80,6 +80,8 @@ namespace Flooded_Soul.System
 
         public void Update(KeyboardState ks, GameTime gameTime)
         {
+            Debug.WriteLine(stopAtShop);
+
             TestBoat();
             LevelVisualize(gameTime);
             WaveMovement();
