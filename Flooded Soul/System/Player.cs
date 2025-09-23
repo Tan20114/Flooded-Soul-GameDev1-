@@ -42,7 +42,12 @@ namespace Flooded_Soul.System
         bool isStop = false;
 
         public int hookLevel = 1;
-        public int boatLevel = 1;
+        int boatLevel = 1;
+        public int BoatLevel
+        {
+            get => boatLevel;
+            set => MathHelper.Clamp(value, 1, 3);
+        }
 
         int ySpeed = 5;
         float yTravelled = 0;
@@ -69,7 +74,7 @@ namespace Flooded_Soul.System
             Texture2D tex = Game1.instance.Content.Load<Texture2D>("Boat/LV1/2_seperate_boat_LV1");
             float scaleX = Game1.instance.viewPortWidth / tex.Width;
             float scaleY = Game1.instance.viewPortHeight / tex.Height;
-            bound = new RectangleF(.13f * tex.Width * scaleX,0,.05f * tex.Width,Game1.instance.viewPortHeight);
+            bound = new RectangleF(.13f * tex.Width * scaleX, 0, .05f * tex.Width, Game1.instance.viewPortHeight);
 
             pos = Vector2.Zero;
 
@@ -80,8 +85,6 @@ namespace Flooded_Soul.System
 
         public void Update(KeyboardState ks, GameTime gameTime)
         {
-            Debug.WriteLine(stopAtShop);
-
             TestBoat();
             LevelVisualize(gameTime);
             WaveMovement();
@@ -94,11 +97,11 @@ namespace Flooded_Soul.System
 
         public void Draw(SpriteFont font)
         {
-            for (int i = 0; i< currentTex.Count; i++)
+            for (int i = 0; i < currentTex.Count; i++)
             {
                 currentTex[i].Draw(pos);
             }
-            Game1.instance._spriteBatch.DrawRectangle(bound,Color.White);
+            Game1.instance._spriteBatch.DrawRectangle(bound, Color.White);
         }
 
         public void Sail()
@@ -117,7 +120,7 @@ namespace Flooded_Soul.System
 
         void LevelVisualize(GameTime gt)
         {
-            switch(boatLevel)
+            switch (boatLevel)
             {
                 case 1:
                     currentTex = LV1Draw(gt);
@@ -140,7 +143,7 @@ namespace Flooded_Soul.System
 
             int RestrictArea = isStop ? 3 : 10;
 
-            if(yTravelled > RestrictArea)
+            if (yTravelled > RestrictArea)
             {
                 yTravelled = 0;
                 ySpeed *= -1;
@@ -150,7 +153,7 @@ namespace Flooded_Soul.System
         private void UpdateCurrentAnimation()
         {
             string state = isStop ? "stop" : "sail";
-            currentAnim = boatAnimations[boatLevel][state];
+            currentAnim = boatAnimations[BoatLevel][state];
         }
 
         private void InitBoatAnimations()
@@ -175,7 +178,7 @@ namespace Flooded_Soul.System
                     0,
                     1,
                     "stop",
-                    1280, 230, level == 1? 4 : 3,
+                    1280, 230, level == 1 ? 4 : 3,
                     .003f * speed,
                     false
                 );
@@ -191,16 +194,16 @@ namespace Flooded_Soul.System
 
         List<ParallaxLayer> LV1Draw(GameTime gt)
         {
-            ParallaxLayer l1 = new ParallaxLayer("Boat/LV1/1_seperate_anchor_LV1",Vector2.Zero,0);
-            ParallaxLayer l2 = new ParallaxLayer("Boat/LV1/2_seperate_boat_LV1",Vector2.Zero,0);
-            ParallaxLayer l3 = new ParallaxLayer("Boat/LV1/3_seperate_front_home_LV1",Vector2.Zero,0);
-            ParallaxLayer l4 = new ParallaxLayer("Boat/LV1/4_seperate_home_LV1",Vector2.Zero,0);
+            ParallaxLayer l1 = new ParallaxLayer("Boat/LV1/1_seperate_anchor_LV1", Vector2.Zero, 0);
+            ParallaxLayer l2 = new ParallaxLayer("Boat/LV1/2_seperate_boat_LV1", Vector2.Zero, 0);
+            ParallaxLayer l3 = new ParallaxLayer("Boat/LV1/3_seperate_front_home_LV1", Vector2.Zero, 0);
+            ParallaxLayer l4 = new ParallaxLayer("Boat/LV1/4_seperate_home_LV1", Vector2.Zero, 0);
 
-            return new List<ParallaxLayer> 
+            return new List<ParallaxLayer>
             {
-                l4, 
+                l4,
                 l3,
-                l2, 
+                l2,
                 currentAnim,
                 l1,
             };
@@ -208,50 +211,50 @@ namespace Flooded_Soul.System
 
         List<ParallaxLayer> LV2Draw(GameTime gt)
         {
-            ParallaxLayer l1 = new ParallaxLayer("Boat/LV2/1_seperate_anchor_LV2",Vector2.Zero,0);
+            ParallaxLayer l1 = new ParallaxLayer("Boat/LV2/1_seperate_anchor_LV2", Vector2.Zero, 0);
             ParallaxLayer l2 = new ParallaxLayer("Boat/LV2/2_seperate_boat_LV2", Vector2.Zero, 0);
             ParallaxLayer l3 = new ParallaxLayer("Boat/LV2/3_seperate_front_sailing_LV2", Vector2.Zero, 0);
             ParallaxLayer l4 = new ParallaxLayer("Boat/LV2/4_seperate_sailing_LV2", Vector2.Zero, 0);
             ParallaxLayer l5 = new ParallaxLayer("Boat/LV2/5_seperate_things_LV2", Vector2.Zero, 0);
 
-            return new List<ParallaxLayer> 
+            return new List<ParallaxLayer>
             {
                 l5,
-                l4, 
-                l3, 
-                l2, 
+                l4,
+                l3,
+                l2,
                 currentAnim,
-                l1, 
+                l1,
             };
         }
 
         List<ParallaxLayer> LV3Draw(GameTime gt)
         {
-            ParallaxLayer l1 = new ParallaxLayer("Boat/LV3/1_seperate_anchor_LV3",Vector2.Zero,0);
+            ParallaxLayer l1 = new ParallaxLayer("Boat/LV3/1_seperate_anchor_LV3", Vector2.Zero, 0);
             ParallaxLayer l2 = new ParallaxLayer("Boat/LV3/2_seperate_boat_LV3", Vector2.Zero, 0);
             ParallaxLayer l3 = new ParallaxLayer("Boat/LV3/3_seperate_front_sailing_LV3", Vector2.Zero, 0);
             ParallaxLayer l4 = new ParallaxLayer("Boat/LV3/4_seperate_front_home_LV3", Vector2.Zero, 0);
             ParallaxLayer l5 = new ParallaxLayer("Boat/LV3/5_seperate_home_LV3", Vector2.Zero, 0);
             ParallaxLayer l6 = new ParallaxLayer("Boat/LV3/6_seperate_sailing_LV3", Vector2.Zero, 0);
 
-            return new List<ParallaxLayer> 
-            { 
+            return new List<ParallaxLayer>
+            {
                 l6,
-                l5, 
-                l4, 
-                l3, 
-                l2, 
+                l5,
+                l4,
+                l3,
+                l2,
                 currentAnim,
-                l1, 
+                l1,
             };
         }
 
         void TestBoat()
         {
             if (Game1.instance.Input.IsKeyPressed(Keys.L))
-                boatLevel++;
+                BoatLevel++;
             else if (Game1.instance.Input.IsKeyPressed(Keys.O))
-                boatLevel--;
+                BoatLevel--;
 
             UpdateCurrentAnimation();
         }
@@ -260,7 +263,7 @@ namespace Flooded_Soul.System
 
         public void OnCollisionEnter(ICollisionActor other)
         {
-            if(other is ShopLayer && Game1.instance.autoStopAtShop)
+            if (other is ShopLayer && Game1.instance.autoStopAtShop)
             {
                 Game1.instance.sceneState = Scene.Default_Stop;
             }
