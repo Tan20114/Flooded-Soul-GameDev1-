@@ -77,8 +77,8 @@ namespace Flooded_Soul
         #endregion
 
         #region UI
-        DefaultUI dui;
-        FishingUI fui;
+        public DefaultUI dui;
+        public FishingUI fui;
         #endregion
 
         #region Game System
@@ -279,7 +279,7 @@ namespace Flooded_Soul
             Window.IsBorderless = true;
             Window.Position = new Point(0,monitorHeight -viewPortHeight);
 
-            //Activated += (s, e) => WindowAPI.SetTopMost(true);
+            Activated += (s, e) => WindowAPI.SetTopMost(true);
 
             base.Initialize();
         }
@@ -316,7 +316,7 @@ namespace Flooded_Soul
             #endregion
 
             #region Shop
-            sm = new ShopManager(ocean.overWater[5][0],shopPoint,player);
+            sm = new ShopManager(ocean.overWater[5][0],shopPoint);
             shop = new ShopLayer(ocean.overWater[5][0], shopPoint, 100);
             #endregion
 
@@ -342,8 +342,12 @@ namespace Flooded_Soul
             bs.Update(gameTime);
             #endregion
             #region UI
-            dui.Update();
-            fui.Update();
+            if (sceneState == Scene.Default || sceneState == Scene.Default_Stop)
+                dui.Update();
+            else if (sceneState == Scene.Fishing)
+                fui.Update();
+            else if (sceneState == Scene.Shop)
+                sm.Update();
             #endregion
             #region Background
             bg.Update(gameTime);
@@ -389,12 +393,14 @@ namespace Flooded_Soul
             #region Entity
             fm.Draw();
 
-            player.Draw(Content.Load<SpriteFont>("Fonts/fipps"));
+            player.Draw();
             #endregion
 
             #region UI
-            dui.Draw();
-            fui.Draw();
+            if (sceneState == Scene.Default || sceneState == Scene.Default_Stop)
+                dui.Draw();
+            else if (sceneState == Scene.Fishing)
+                fui.Draw();
             bs.Draw();
             #endregion
 

@@ -15,6 +15,7 @@ using Color = Microsoft.Xna.Framework.Color;
 using RectangleF = MonoGame.Extended.RectangleF;
 using SizeF = MonoGame.Extended.SizeF;
 using Flooded_Soul.System.Collision_System;
+using MonoGame.Extended.Graphics;
 
 namespace Flooded_Soul.System.Fishing
 {
@@ -24,9 +25,13 @@ namespace Flooded_Soul.System.Fishing
 
         FishingManager fishingManager;
 
-        Texture2D texture;
+        Texture2DAtlas atlas;
+        Texture2DRegion frameToDraw;
+        int frameColumn = 4;
+        int frameRow = 1;
+
         Vector2 pos;
-        float scale = 0.2f;
+        float scale = 5f;
         int followSpeed = 100;
 
         public int hookUpSpeed = 100;
@@ -38,19 +43,24 @@ namespace Flooded_Soul.System.Fishing
         {
             fishingManager = f;
 
+            Texture2D tex = Game1.instance.Content.Load<Texture2D>("fishing_hook");
+            atlas = Texture2DAtlas.Create("hook_atlas", tex, tex.Width/frameColumn, tex.Height/frameRow);
+
+            frameToDraw = atlas.CreateSprite(0).TextureRegion;
+
             Collider = new CollisionTracker();
 
             scale *= Game1.instance.screenRatio;
 
-            texture = Game1.instance.Content.Load<Texture2D>("hook_test");
-
             pos = new Vector2(Game1.instance.viewPortWidth / 2, Game1.instance.viewPortHeight);
-            _bounds = new RectangleF(pos, new SizeF(texture.Width * scale, texture.Height * scale));
+            _bounds = new RectangleF(pos, new SizeF(frameToDraw.Width * scale, frameToDraw.Height * scale));
         }
 
         public void Update()
         {
             PositionRestrict();
+            UpdateSpeed();
+            ChangeSprite(Game1.instance.player.HookLevel);
 
             _bounds.Position = pos;
 
@@ -77,7 +87,7 @@ namespace Flooded_Soul.System.Fishing
         {
             //if(Collider.Collideable)
             //    Game1.instance._spriteBatch.DrawRectangle(_bounds, Color.Red, 3);
-            Game1.instance._spriteBatch.Draw(texture, pos, null, Color.White, 0f, Vector2.Zero, new Vector2(scale), SpriteEffects.None, 0f);
+            Game1.instance._spriteBatch.Draw(frameToDraw, pos, Color.White, 0, Vector2.Zero, new Vector2(scale), SpriteEffects.None, 0);
         }
 
         public void ResetPosition() => pos = new Vector2(Game1.instance.viewPortWidth / 2, Game1.instance.viewPortHeight);
@@ -86,12 +96,16 @@ namespace Flooded_Soul.System.Fishing
         {
             if (pos.X < 0)
                 pos.X = 0;
-            else if (pos.X > Game1.instance.viewPortWidth - texture.Width * scale)
-                pos.X = Game1.instance.viewPortWidth - texture.Width * scale;
+            else if (pos.X > Game1.instance.viewPortWidth - frameToDraw.Width * scale)
+                pos.X = Game1.instance.viewPortWidth - frameToDraw.Width * scale;
             if (pos.Y < Game1.instance.viewPortHeight)
                 pos.Y = Game1.instance.viewPortHeight;
-            else if (pos.Y > 2 * Game1.instance.viewPortHeight - texture.Height * scale)
-                pos.Y = 2 * Game1.instance.viewPortHeight - texture.Height * scale;
+            else if (pos.Y > 2 * Game1.instance.viewPortHeight - frameToDraw.Height * scale)
+                pos.Y = 2 * Game1.instance.viewPortHeight - frameToDraw.Height * scale;
         }
+
+        void UpdateSpeed() => followSpeed = 100 + (Game1.instance.player.HookLevel * 50);
+
+        public void ChangeSprite(int index) => frameToDraw = atlas.CreateSprite(index).TextureRegion;
     }
 }

@@ -28,7 +28,7 @@ namespace Flooded_Soul.System.Shop
         RectangleF bound;
         public IShapeF Bounds => bound;
 
-        float shopSpawnTime = 60f;
+        float shopSpawnTime = 1f;
         float elasped = 0;
 
         public ShopLayer(string path, Vector2 posOffset, int speed) : base(path, posOffset, speed, 1)
@@ -38,6 +38,7 @@ namespace Flooded_Soul.System.Shop
             isStop = true;
 
             Collider.CollisionEnter += OnCollisionEnter;
+            Collider.CollisionExit += OnCollisionExit;
 
             texture = Game1.instance.Content.Load<Texture2D>(path);
 
@@ -72,9 +73,7 @@ namespace Flooded_Soul.System.Shop
             Collider.Update();
         }
 
-        public void Draw(int i)
-        {
-            Game1.instance._spriteBatch.Draw(
+        public void Draw(int i) => Game1.instance._spriteBatch.Draw(
                     texture,
                     pos,
                     null,
@@ -85,8 +84,6 @@ namespace Flooded_Soul.System.Shop
                     SpriteEffects.None,
                     0f
                 );
-            Game1.instance._spriteBatch.DrawRectangle(bound, Color.Red, 1);
-        }
 
         public void OnCollision(CollisionEventArgs collisionInfo) => Collider.RegisterCollision(collisionInfo.Other);
 
@@ -96,6 +93,18 @@ namespace Flooded_Soul.System.Shop
             {
                 TogglePause();
                 Game1.instance.player.stopAtShop = true;
+            }
+            else if (other is Player)
+            {
+                Game1.instance.dui.showShop = true;
+            }
+        }
+
+        void OnCollisionExit(ICollisionActor other)
+        {
+            if (other is Player)
+            {
+                Game1.instance.dui.showShop = false;
             }
         }
 

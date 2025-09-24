@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace Flooded_Soul.System.UI.Scene
 {
-    internal class FishingUI
+    public class FishingUI
     {
         Vector2 posOffset;
 
         #region Pause Button
         Button pauseButton;
-        Vector2 pauseButtPos = new Vector2(.02f * Game1.instance.viewPortWidth, .05f * Game1.instance.viewPortHeight);
+        Vector2 pauseButtPos = new Vector2(.01f * Game1.instance.viewPortWidth, .05f * Game1.instance.viewPortHeight);
         #endregion
         #region Back Button
         Button backButton;
-        Vector2 backButtPos = new Vector2(.02f * Game1.instance.viewPortWidth, .8f * Game1.instance.viewPortHeight);
+        Vector2 backButtPos = new Vector2(.01f * Game1.instance.viewPortWidth, .8f * Game1.instance.viewPortHeight);
         #endregion
 
         public FishingUI(Vector2 offset)
@@ -25,11 +25,11 @@ namespace Flooded_Soul.System.UI.Scene
             posOffset = offset;
 
             #region PauseButton
-            pauseButton = new Button("UI_Icon/ui_pause_mainmenu", pauseButtPos, posOffset, 7);
+            pauseButton = new Button("UI_Icon/ui_pause_mainmenu", pauseButtPos, posOffset, 8.5f);
             pauseButton.OnClick += PauseButtClick;
             #endregion
             #region BackButton
-            backButton = new Button("UI_Icon/ui_return", backButtPos, posOffset, 5);
+            backButton = new Button("UI_Icon/ui_return", backButtPos, posOffset, 5.5f);
             backButton.OnClick += BackButtClick;
             #endregion
         }

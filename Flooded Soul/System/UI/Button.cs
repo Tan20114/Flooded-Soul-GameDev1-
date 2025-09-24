@@ -36,6 +36,7 @@ namespace Flooded_Soul.System.UI
         Vector2 pos;
         float scale = 5f;
         float rotation = 0;
+        Vector2 origin;
 
         public bool canClick = false;
 
@@ -56,14 +57,12 @@ namespace Flooded_Soul.System.UI
             Game1.instance.collisionComponent.Insert(this);
         }
 
-        public Button(string texture,Vector2 pos,Vector2 posOffset, float scale , int frameColumn,int frameRow, float rotation = 0)
+        public Button(string texture, Vector2 pos, Vector2 posOffset, float scale, int frameColumn, int frameRow, float rotation = 0)
         {
             tex = Game1.instance.Content.Load<Texture2D>(texture);
             int frameHeight = tex.Height / frameRow;
             int frameWidth = tex.Width / frameColumn;
-            atlas = Texture2DAtlas.Create($"Atlas/{texture}",tex, frameWidth, frameHeight);
-
-            int allFrame = (tex.Width / frameWidth) * (tex.Height / frameHeight);
+            atlas = Texture2DAtlas.Create($"Atlas/{texture}", tex, frameWidth, frameHeight);
 
             frameToDraw = atlas.CreateSprite(0).TextureRegion;
 
@@ -75,22 +74,28 @@ namespace Flooded_Soul.System.UI
             Collider.CollisionStay += OnCollisionStay;
             Collider.CollisionExit += OnCollisionExit;
 
-            rect = new RectangleF(pos.X,pos.Y, tex.Width * this.scale / frameColumn,tex.Height * this.scale / frameRow);
+            rect = new RectangleF(pos.X, pos.Y, frameToDraw.Width * this.scale, frameToDraw.Height * this.scale);
 
             Game1.instance.collisionComponent.Insert(this);
         }
 
         public void Update()
         {
-            if(canClick && Game1.instance.Input.IsLeftMouse())
+            if (canClick && Game1.instance.Input.IsLeftMouse())
                 OnClick?.Invoke();
 
             Collider.Update();
         }
 
-        public void Draw() => Game1.instance._spriteBatch.Draw(tex, pos,null, buttonColor,rotation,Vector2.Zero,scale,SpriteEffects.None,0);
+        public void Draw()
+        {
+            //Game1.instance._spriteBatch.DrawRectangle(rect, Color.Red, 1);
 
-        public void Draw(int i) => Game1.instance._spriteBatch.Draw(frameToDraw,pos,buttonColor, rotation,Vector2.Zero,new Vector2(scale),SpriteEffects.None,0);
+            if (atlas == null)
+                Game1.instance._spriteBatch.Draw(tex, pos, null, buttonColor, rotation, Vector2.Zero, scale, SpriteEffects.None, 0);
+            else
+                Game1.instance._spriteBatch.Draw(frameToDraw, pos, buttonColor, rotation, Vector2.Zero, new Vector2(scale), SpriteEffects.None, 0);
+        }
 
         public void OnCollision(CollisionEventArgs collisionInfo) => Collider.RegisterCollision(collisionInfo.Other);
 

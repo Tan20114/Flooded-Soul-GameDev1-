@@ -26,7 +26,7 @@ namespace Flooded_Soul.System.Fishing
 
         public bool fishInArea = true;
 
-        int areaWidth = 1500;
+        int areaWidth = 1000 + (Game1.instance.player.HookLevel * 500);
         int heightOffset = 400;
 
         public FishingGameArea(Vector2 pos, FishingManager fishingManager)

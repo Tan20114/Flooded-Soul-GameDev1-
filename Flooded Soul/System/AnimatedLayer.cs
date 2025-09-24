@@ -13,7 +13,7 @@ using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace Flooded_Soul.System
 {
-    internal class AnimatedLayer : ParallaxLayer
+    public class AnimatedLayer : ParallaxLayer
     {
         SpriteSheet _sheet;
         public AnimationController controller;
