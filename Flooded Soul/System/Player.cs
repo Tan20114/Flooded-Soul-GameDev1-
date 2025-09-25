@@ -53,7 +53,13 @@ namespace Flooded_Soul.System
             get => boatLevel;
             set => boatLevel = MathHelper.Clamp(value, 1, 3);
         }
-        string lastState = "";
+        public Dictionary<int,bool> hasCat = new Dictionary<int, bool>()
+        {
+            { 1,false },
+            { 2,false },
+            { 3,false },
+        };
+
 
         int ySpeed = 5;
         float yTravelled = 0;

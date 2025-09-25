@@ -222,7 +222,7 @@ namespace Flooded_Soul.System.Fishing
             Collider.DisableCollision();
             vision.Collider.DisableCollision();
             if (Success)
-                Game1.instance.player.fishPoint += point;
+                Game1.instance.player.fishPoint += point + Game1.instance.fm.bonus;
         }
     }
 }

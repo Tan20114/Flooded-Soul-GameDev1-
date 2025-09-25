@@ -15,26 +15,48 @@ namespace Flooded_Soul.System.Shop
         ParallaxManager bg;
 
         Button upgradeBoatButton;
-        Vector2 boatPos = new Vector2(0.67f * Game1.instance.viewPortWidth,0.55f * Game1.instance.viewPortHeight);
+        Vector2 boatPos = new Vector2(0.67f * Game1.instance.viewPortWidth, 0.55f * Game1.instance.viewPortHeight);
         Button upgradeHookButton;
-        Vector2 hookPos = new Vector2(0.67f * Game1.instance.viewPortWidth,0.25f * Game1.instance.viewPortHeight);
+        Vector2 hookPos = new Vector2(0.67f * Game1.instance.viewPortWidth, 0.25f * Game1.instance.viewPortHeight);
+        Button cat1Button;
+        Vector2 cat1Pos = new Vector2(0.832f * Game1.instance.viewPortWidth, 0.36f * Game1.instance.viewPortHeight);
+        int cat1Cost = 1;
+        Button cat2Button;
+        Vector2 cat2Pos = new Vector2(0.882f * Game1.instance.viewPortWidth, 0.493f * Game1.instance.viewPortHeight);
+        int cat2Cost = 1;
+        Button cat3Button;
+        Vector2 cat3Pos = new Vector2(0.915f * Game1.instance.viewPortWidth, 0.395f * Game1.instance.viewPortHeight);
+        int cat3Cost = 1;
 
         int boatCost = 70;
         int hookCost = 50;
 
-        public ShopManager(string shop,Vector2 posOffset)
+        public ShopManager(string shop, Vector2 posOffset)
         {
             bg = new ParallaxManager("Shop/shop_inside", posOffset);
 
             #region Boat
-            upgradeBoatButton = new Button("Shop/ui_upgrade_items", boatPos,posOffset,7,4,1);
+            upgradeBoatButton = new Button("Shop/ui_upgrade_items", boatPos, posOffset, 7, 4, 1);
             upgradeBoatButton.OnClick += UpgradeBoat;
             upgradeBoatButton.ChangeSprite(1);
             #endregion
             #region Hook
-            upgradeHookButton = new Button("Shop/ui_upgrade_items", hookPos,posOffset,7,4,1);
+            upgradeHookButton = new Button("Shop/ui_upgrade_items", hookPos, posOffset, 7, 4, 1);
             upgradeHookButton.OnClick += UpgradeHook;
             upgradeHookButton.ChangeSprite(0);
+            #endregion
+            #region Cat
+            cat1Button = new Button("Shop/cat_1", cat1Pos, posOffset, 7, 2, 1);
+            cat1Button.OnClick += BuyCat1;
+            cat1Button.ChangeSprite(1);
+
+            cat2Button = new Button("Shop/cat_2", cat2Pos, posOffset, 7, 2, 1);
+            cat2Button.OnClick += BuyCat2;
+            cat2Button.ChangeSprite(1);
+
+            cat3Button = new Button("Shop/cat_3", cat3Pos, posOffset, 7, 2, 1);
+            cat3Button.OnClick += BuyCat3;
+            cat3Button.ChangeSprite(1);
             #endregion
         }
 
@@ -42,6 +64,9 @@ namespace Flooded_Soul.System.Shop
         {
             upgradeBoatButton.Update();
             upgradeHookButton.Update();
+            cat1Button.Update();
+            cat2Button.Update();
+            cat3Button.Update();
             UpgradeButtonVisualize();
             UpgradeCostUpdate();
         }
@@ -51,6 +76,9 @@ namespace Flooded_Soul.System.Shop
             bg.Draw(1);
             upgradeBoatButton.Draw();
             upgradeHookButton.Draw();
+            cat1Button.Draw();
+            cat3Button.Draw();
+            cat2Button.Draw();
         }
 
         void UpgradeBoat()
@@ -100,6 +128,39 @@ namespace Flooded_Soul.System.Shop
                 case 2:
                     hookCost = 400;
                     break;
+            }
+        }
+
+        void BuyCat1()
+        {
+            if (Game1.instance.player.fishPoint >= cat1Cost && !Game1.instance.player.hasCat[1])
+            {
+                Game1.instance.player.fishPoint -= cat1Cost;
+                Game1.instance.player.hasCat[1] = true;
+                cat1Button.ChangeSprite(0);
+                cat1Button.OnClick -= BuyCat1;
+            }
+        }
+
+        void BuyCat2()
+        {
+            if (Game1.instance.player.fishPoint >= cat2Cost && !Game1.instance.player.hasCat[2])
+            {
+                Game1.instance.player.fishPoint -= cat2Cost;
+                Game1.instance.player.hasCat[2] = true;
+                cat2Button.ChangeSprite(0);
+                cat2Button.OnClick -= BuyCat2;
+            }
+        }
+
+        void BuyCat3()
+        {
+            if (Game1.instance.player.fishPoint >= cat3Cost && !Game1.instance.player.hasCat[3])
+            {
+                Game1.instance.player.fishPoint -= cat3Cost;
+                Game1.instance.player.hasCat[3] = true;
+                cat3Button.ChangeSprite(0);
+                cat3Button.OnClick -= BuyCat3;
             }
         }
     }

@@ -134,6 +134,11 @@ namespace Flooded_Soul.System.Fishing
         public int lCount = 5;
         int maxLCount = 0;
 
+        public int bonus = 0;
+        bool plus1 = false;
+        bool plus2 = false;
+        bool plus3 = false;
+
         public List<Fish> fishInScreen = new List<Fish>();
 
         public bool isPause = false;
@@ -150,6 +155,8 @@ namespace Flooded_Soul.System.Fishing
         public void Update()
         {
             if (isPause) return;
+
+            UpdateFishBonus();
 
             hook.Update();
             if (Game1.instance.sceneState != Scene.Fishing && Game1.instance.scene.moveSuccess)
@@ -353,6 +360,25 @@ namespace Flooded_Soul.System.Fishing
                     maxUCount++;
                 else
                     maxNCount++;
+            }
+        }
+
+        void UpdateFishBonus()
+        {
+            if (Game1.instance.player.hasCat[1] && !plus1)
+            {
+                bonus++;
+                plus1 = true;
+            }
+            if (Game1.instance.player.hasCat[2] && !plus2)
+            {
+                bonus++;
+                plus2 = true;
+            }
+            if (Game1.instance.player.hasCat[3] && !plus3)
+            {
+                bonus++;
+                plus3 = true;
             }
         }
     }
