@@ -183,6 +183,10 @@ namespace Flooded_Soul.System.Shop
             }
         }
 
-        void BackButtClick() => Game1.instance.sceneState = Flooded_Soul.Scene.Default_Stop;
+        void BackButtClick()
+        { 
+            Game1.instance.dui.showShop = false;
+            Game1.instance.sceneState = Flooded_Soul.Scene.Default;
+        } 
     }
 }

@@ -39,17 +39,13 @@ namespace Flooded_Soul.System.UI.Scene
         Vector2 fishIconPos = new Vector2(.01f * Game1.instance.viewPortWidth, .2f * Game1.instance.viewPortHeight);
         #endregion
         #endregion
-        #region Sail/Stop Button
-        Button sailStopButton;
-        Vector2 sailStopPos = new Vector2(.01f * Game1.instance.viewPortWidth, .75f * Game1.instance.viewPortHeight);
-        #endregion
         #region Go Down Button
         Button goDownButton;
-        Vector2 goDownPos = new Vector2(.05f * Game1.instance.viewPortWidth, .75f * Game1.instance.viewPortHeight);
+        Vector2 goDownPos = new Vector2(.01f * Game1.instance.viewPortWidth, .75f * Game1.instance.viewPortHeight);
         #endregion
         #region Shop Button
         Button shopButton;
-        Vector2 shopButtPos = new Vector2(.05f * Game1.instance.viewPortWidth, .75f * Game1.instance.viewPortHeight);
+        Vector2 shopButtPos = new Vector2(.01f * Game1.instance.viewPortWidth, .75f * Game1.instance.viewPortHeight);
         #endregion
         #region Help Button
         Button helpButton;
@@ -77,11 +73,6 @@ namespace Flooded_Soul.System.UI.Scene
             #endregion
             #region Fish Point
             fishPointPos = new Vector2(.01f * Game1.instance.viewPortWidth + posOffset.X, .26f * Game1.instance.viewPortHeight + posOffset.Y);
-            #endregion
-            #region Sail/Stop Button
-            sailStopButton = new Button("UI_Icon/sprite_icon_test", sailStopPos, posOffset, 7,5,1);
-            sailStopButton.OnClick += SailStop;
-            sailStopButton.ChangeSprite(1);
             #endregion
             #region Go Down Button
             goDownButton = new Button("UI_Icon/sprite_icon_test", goDownPos, posOffset,7,5,1);
@@ -115,27 +106,16 @@ namespace Flooded_Soul.System.UI.Scene
             fishIconPos = new Vector2(fishPointPos.X + fontSize.X / 1.5f + padding, fishPointPos.Y + .125f * fontSize.Y);
             #endregion
             if (BiomeSystem.isTransition) return;
-            #region Sail/Stop Button
-            sailStopButton.Update();
-            if (Game1.instance.sceneState == Flooded_Soul.Scene.Default)
-                sailStopButton.ChangeSprite(1);
-            else if (Game1.instance.sceneState == Flooded_Soul.Scene.Default_Stop)
-                sailStopButton.ChangeSprite(2);
-            #endregion
-            if (Game1.instance.sceneState == Flooded_Soul.Scene.Default_Stop)
-            {
-                #region Go Down Button
-                if (!Game1.instance.player.stopAtShop)
-                    goDownButton.Update();
-                #endregion
-                #region Shop Button
-                else
-                    showShop = true;
-                #endregion
-            }
+
+            if (Game1.instance.player.stopAtShop)
+                showShop = true;
+
+            Debug.WriteLine($"ShowShop: {showShop}");
 
             if (showShop)
                 shopButton.Update();
+            else
+                goDownButton.Update();
 
             #region Help Button
             helpButton.Update();
@@ -153,17 +133,12 @@ namespace Flooded_Soul.System.UI.Scene
             Game1.instance._spriteBatch.Draw(fishPointIcon, fishIconPos, null, Color.White, 0, Vector2.Zero, 7f * Game1.instance.screenRatio, SpriteEffects.None, 0);
             #endregion
             if (BiomeSystem.isTransition) return;
-            sailStopButton.Draw();
-            if (Game1.instance.sceneState == Flooded_Soul.Scene.Default_Stop)
-            {
-                if (Game1.instance.player.stopAtShop)
-                    showShop = true;
-                else
-                    goDownButton.Draw();
-            }
 
             if (showShop)
                 shopButton.Draw();
+            else
+                goDownButton.Draw();
+
             helpButton.Draw();
         }
 
@@ -181,23 +156,6 @@ namespace Flooded_Soul.System.UI.Scene
                 Game1.instance.autoStopAtShop = true;
         }
 
-        void SailStop()
-        {
-            if (Game1.instance.sceneState == Flooded_Soul.Scene.Default)
-            {
-                Game1.instance.sceneState = Flooded_Soul.Scene.Default_Stop;
-                sailStopButton.ChangeSprite(2);
-            }
-            else if (Game1.instance.sceneState == Flooded_Soul.Scene.Default_Stop)
-            {
-                Game1.instance.sceneState = Flooded_Soul.Scene.Default;
-                sailStopButton.ChangeSprite(1);
-            }
-
-            Game1.instance.player.stopAtShop = false;
-            showShop = false;
-        }
-
         void GoDown()
         {
             Game1.instance.fm.EnterSea();
@@ -206,7 +164,6 @@ namespace Flooded_Soul.System.UI.Scene
 
         void OpenShop()
         {
-            Game1.instance.player.stopAtShop = true;
             Game1.instance.sceneState = Flooded_Soul.Scene.Default_Stop;
             Game1.instance.sceneState = Flooded_Soul.Scene.Shop;
         }

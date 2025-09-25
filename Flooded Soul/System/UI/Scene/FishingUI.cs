@@ -61,7 +61,7 @@ namespace Flooded_Soul.System.UI.Scene
 
         void BackButtClick()
         {
-            Game1.instance.sceneState = Flooded_Soul.Scene.Default_Stop;
+            Game1.instance.sceneState = Flooded_Soul.Scene.Default;
             Game1.instance.fm.ExitSea();
             Game1.instance.fm.isPause = false;
         }
