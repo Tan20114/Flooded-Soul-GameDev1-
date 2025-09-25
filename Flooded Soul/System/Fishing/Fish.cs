@@ -19,6 +19,8 @@ namespace Flooded_Soul.System.Fishing
 {
     public class Fish : ICollisionActor
     {
+        string fish_Id;
+
         protected Random random = new Random();
         Hook hook;
         public FishVision vision;
@@ -59,6 +61,8 @@ namespace Flooded_Soul.System.Fishing
 
         public Fish(string textureName, float scale,FishingManager manager)
         {
+            fish_Id = textureName;
+
             texture = Game1.instance.Content.Load<Texture2D>(textureName);
             fishingManager = manager;
 
@@ -222,7 +226,10 @@ namespace Flooded_Soul.System.Fishing
             Collider.DisableCollision();
             vision.Collider.DisableCollision();
             if (Success)
+            {
                 Game1.instance.player.fishPoint += point + Game1.instance.fm.bonus;
+                Game1.instance.collection.AddFish(fish_Id);
+            }
         }
     }
 }

@@ -110,8 +110,6 @@ namespace Flooded_Soul.System.UI.Scene
             if (Game1.instance.player.stopAtShop)
                 showShop = true;
 
-            Debug.WriteLine($"ShowShop: {showShop}");
-
             if (showShop)
                 shopButton.Update();
             else

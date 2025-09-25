@@ -20,6 +20,7 @@ using RectangleF = MonoGame.Extended.RectangleF;
 using Flooded_Soul.System.Shop;
 using Flooded_Soul.System.UI.Scene;
 using SizeF = MonoGame.Extended.SizeF;
+using Flooded_Soul.System.Collection;
 
 namespace Flooded_Soul
 {
@@ -98,6 +99,8 @@ namespace Flooded_Soul
         ShopManager sm;
         public bool autoStopAtShop = false;
         public ShopLayer shop;
+
+        public CollectionSystem collection;
         #endregion
 
         #region Background
@@ -297,6 +300,7 @@ namespace Flooded_Soul
             mouse = new System.UI.Mouse();
 
             bs = new BiomeSystem(transitionPoint);
+            collection = new CollectionSystem();
             #endregion
 
             #region UI

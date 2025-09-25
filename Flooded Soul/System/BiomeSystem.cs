@@ -55,6 +55,7 @@ namespace Flooded_Soul.System
             if (!isTransition)
             {
                 elapsedTime += Game1.instance.deltaTime;
+                Debug.WriteLine($"{(int)elapsedTime}/{changeInterval}");
 
                 if (elapsedTime > changeInterval)
                 {
