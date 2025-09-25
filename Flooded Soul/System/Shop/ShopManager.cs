@@ -14,19 +14,32 @@ namespace Flooded_Soul.System.Shop
     {
         ParallaxManager bg;
 
+        #region Upgrade Button
         Button upgradeBoatButton;
         Vector2 boatPos = new Vector2(0.67f * Game1.instance.viewPortWidth, 0.55f * Game1.instance.viewPortHeight);
+
         Button upgradeHookButton;
         Vector2 hookPos = new Vector2(0.67f * Game1.instance.viewPortWidth, 0.25f * Game1.instance.viewPortHeight);
+        #endregion
+
+        #region Cat
         Button cat1Button;
         Vector2 cat1Pos = new Vector2(0.832f * Game1.instance.viewPortWidth, 0.36f * Game1.instance.viewPortHeight);
-        int cat1Cost = 1;
+        int cat1Cost = 100;
+
         Button cat2Button;
         Vector2 cat2Pos = new Vector2(0.882f * Game1.instance.viewPortWidth, 0.493f * Game1.instance.viewPortHeight);
-        int cat2Cost = 1;
+        int cat2Cost = 200;
+
         Button cat3Button;
         Vector2 cat3Pos = new Vector2(0.915f * Game1.instance.viewPortWidth, 0.395f * Game1.instance.viewPortHeight);
-        int cat3Cost = 1;
+        int cat3Cost = 300;
+        #endregion
+
+        #region Back Button
+        Button backButton;
+        Vector2 backButtPos = new Vector2(.01f * Game1.instance.viewPortWidth, .8f * Game1.instance.viewPortHeight);
+        #endregion
 
         int boatCost = 70;
         int hookCost = 50;
@@ -58,6 +71,10 @@ namespace Flooded_Soul.System.Shop
             cat3Button.OnClick += BuyCat3;
             cat3Button.ChangeSprite(1);
             #endregion
+            #region BackButton
+            backButton = new Button("UI_Icon/ui_return", backButtPos, posOffset, 5.5f);
+            backButton.OnClick += BackButtClick;
+            #endregion
         }
 
         public void Update()
@@ -67,6 +84,7 @@ namespace Flooded_Soul.System.Shop
             cat1Button.Update();
             cat2Button.Update();
             cat3Button.Update();
+            backButton.Update();
             UpgradeButtonVisualize();
             UpgradeCostUpdate();
         }
@@ -79,6 +97,7 @@ namespace Flooded_Soul.System.Shop
             cat1Button.Draw();
             cat3Button.Draw();
             cat2Button.Draw();
+            backButton.Draw();
         }
 
         void UpgradeBoat()
@@ -163,5 +182,7 @@ namespace Flooded_Soul.System.Shop
                 cat3Button.OnClick -= BuyCat3;
             }
         }
+
+        void BackButtClick() => Game1.instance.sceneState = Flooded_Soul.Scene.Default_Stop;
     }
 }
