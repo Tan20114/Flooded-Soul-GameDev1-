@@ -9,7 +9,7 @@ namespace Flooded_Soul.System
 {
     public class SceneManager
     {
-        public bool moveSuccess = true;
+        public static bool moveSuccess = true;
 
         public void CamMoveTo(Vector2 point, int transitionSpeed)
         {

@@ -113,7 +113,10 @@ namespace Flooded_Soul.System.UI.Scene
             if (showShop)
                 shopButton.Update();
             else
-                goDownButton.Update();
+            {
+                if (SceneManager.moveSuccess)
+                    goDownButton.Update();
+            }
 
             #region Help Button
             helpButton.Update();
@@ -125,7 +128,7 @@ namespace Flooded_Soul.System.UI.Scene
             musicButton.Draw();
             collectionButton.Draw();
             toggleAutoSailButton.Draw();
-            Game1.instance._spriteBatch.DrawString(font, $"{Game1.instance.player.distanceTraveled} km",distancePointPos, Color.White, 0, Vector2.Zero, 1.5f * Game1.instance.screenRatio, SpriteEffects.None, 0);
+            Game1.instance._spriteBatch.DrawString(font, $"{(int)(Game1.instance.player.distanceTraveled / 1000)} km",distancePointPos, Color.White, 0, Vector2.Zero, 1.5f * Game1.instance.screenRatio, SpriteEffects.None, 0);
             #region Fish point
             Game1.instance._spriteBatch.DrawString(font, $"{Game1.instance.player.fishPoint}",fishPointPos, Color.White, 0, Vector2.Zero, 1.5f * Game1.instance.screenRatio, SpriteEffects.None, 0);
             Game1.instance._spriteBatch.Draw(fishPointIcon, fishIconPos, null, Color.White, 0, Vector2.Zero, 7f * Game1.instance.screenRatio, SpriteEffects.None, 0);
@@ -135,7 +138,10 @@ namespace Flooded_Soul.System.UI.Scene
             if (showShop)
                 shopButton.Draw();
             else
-                goDownButton.Draw();
+            {
+                if(SceneManager.moveSuccess)
+                    goDownButton.Draw();
+            }
 
             helpButton.Draw();
         }
@@ -149,9 +155,15 @@ namespace Flooded_Soul.System.UI.Scene
         void ToggleAutoSailButtClick()
         {
             if(Game1.instance.autoStopAtShop)
+            {
                 Game1.instance.autoStopAtShop = false;
+                toggleAutoSailButton.ChangeSprite(1);
+            }
             else
+            {
                 Game1.instance.autoStopAtShop = true;
+                toggleAutoSailButton.ChangeSprite(0);
+            }
         }
 
         void GoDown()

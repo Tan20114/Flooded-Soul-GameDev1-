@@ -15,7 +15,7 @@ namespace Flooded_Soul.System
 
     internal class BiomeSystem
     {
-        float changeInterval = 120f;
+        float changeInterval = 30f;
         float elapsedTime = 0f;
 
         public static bool isTransition = false;
@@ -45,10 +45,7 @@ namespace Flooded_Soul.System
         {
             transitionLayer?.Update(gt);
 
-            if (Game1.instance.sceneState == Scene.Default_Stop)
-                isStop = true;
-            else if (Game1.instance.sceneState == Scene.Default)
-                isStop = false;
+            if (Game1.instance.sceneState != Scene.Default) return;
 
             if (isStop) return;
 

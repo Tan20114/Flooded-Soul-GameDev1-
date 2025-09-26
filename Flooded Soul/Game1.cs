@@ -161,18 +161,15 @@ namespace Flooded_Soul
                 new List<string>()
                 {
                     "ParallaxBG/IceBiome/01_snow_biome_ice_igloo_1",
-                    "ParallaxBG/115_trans",
                 },
                 new List<string>()
                 {
                     "ParallaxBG/IceBiome/02_snow_biome_ice_igloo_2",
-                    "ParallaxBG/115_trans",
                 },
                 new List<string>()
                 {
                     "ParallaxBG/IceBiome/03_snow_biome_ice_float_1",
                     "ParallaxBG/IceBiome/03_snow_biome_ice_float_2",
-                    "ParallaxBG/115_trans",
                 },
                 new List<string>()
                 {

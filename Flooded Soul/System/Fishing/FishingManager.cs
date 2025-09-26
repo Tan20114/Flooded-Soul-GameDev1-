@@ -159,7 +159,7 @@ namespace Flooded_Soul.System.Fishing
             UpdateFishBonus();
 
             hook.Update();
-            if (Game1.instance.sceneState != Scene.Fishing && Game1.instance.scene.moveSuccess)
+            if (Game1.instance.sceneState != Scene.Fishing && SceneManager.moveSuccess)
             {
                 if (isMinigame)
                 {
@@ -302,7 +302,7 @@ namespace Flooded_Soul.System.Fishing
             }
             else
             {
-                targetFish.Destroy(success);
+                targetFish?.Destroy(false);
                 hook.Collider.EnableCollision();
             }
 

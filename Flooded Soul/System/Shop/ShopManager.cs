@@ -129,23 +129,23 @@ namespace Flooded_Soul.System.Shop
             switch (Game1.instance.player.BoatLevel)
             {
                 case 1:
-                    boatCost = 400;
+                    boatCost = 1;
                     break;
                 case 2:
-                    boatCost = 600;
+                    boatCost = 1;
                     break;
             }
 
             switch (Game1.instance.player.HookLevel)
             {
                 case 0:
-                    hookCost = 70;
+                    hookCost = 1;
                     break;
                 case 1:
-                    hookCost = 150;
+                    hookCost = 1;
                     break;
                 case 2:
-                    hookCost = 400;
+                    hookCost = 1;
                     break;
             }
         }
@@ -187,6 +187,7 @@ namespace Flooded_Soul.System.Shop
         { 
             Game1.instance.dui.showShop = false;
             Game1.instance.sceneState = Flooded_Soul.Scene.Default;
+            Game1.instance.player.stopAtShop = false;
         } 
     }
 }

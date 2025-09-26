@@ -44,7 +44,8 @@ namespace Flooded_Soul.System.UI.Scene
                 pauseButton.ChangeSprite("UI_Icon/ui_pause_mainmenu");
             #endregion
             #region BackButton
-            backButton.Update();
+            if (SceneManager.moveSuccess)
+                backButton.Update();
             #endregion
         }
 
