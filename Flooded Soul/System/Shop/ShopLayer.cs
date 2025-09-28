@@ -60,10 +60,8 @@ namespace Flooded_Soul.System.Shop
 
             if (!isSpawned) return;
 
-            if (Game1.instance.sceneState == Scene.Default_Stop)
+            if (Game1.instance.sceneState != Scene.Default)
                 isStop = true;
-            else if (Game1.instance.sceneState == Scene.Default)
-                isStop = false;
 
             if (isStop) return;
 

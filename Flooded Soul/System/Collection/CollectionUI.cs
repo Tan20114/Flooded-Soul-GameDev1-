@@ -10,11 +10,15 @@ namespace Flooded_Soul.System.Collection
 {
     public class CollectionUI
     {
-        ParallaxLayer bg;
+        Dictionary<string, int> fishPageList = new Dictionary<string, int>();
+        Dictionary<string, int> fishPageList2 = new Dictionary<string, int>();
+        Dictionary<bool, int> catPageList = new Dictionary<bool, int>();
+
+        ParallaxLayer currentPage;
 
         public CollectionUI(Vector2 posOffset) 
         {
-            bg = new ParallaxLayer("UI/collection_BG", new Vector2(0, 0), 0, 1);
+            currentPage = new ParallaxLayer("UI/collection_BG", posOffset, 0, 1);
         }
     }
 }

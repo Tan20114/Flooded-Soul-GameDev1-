@@ -355,11 +355,6 @@ namespace Flooded_Soul
             #endregion
             #region Entity
             fm.Update();
-            if(fm.fishToRemove.Count > 0)
-            {
-                Fish f = fm.fishToRemove.Dequeue();
-                collisionComponent.Remove(f);
-            }
 
             player.Update(keyboardState, gameTime);
             #endregion

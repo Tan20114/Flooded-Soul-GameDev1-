@@ -12,7 +12,7 @@ namespace Flooded_Soul.System.Fishing.Fishes
         public Uncommon(string textureName, float scale, FishingManager manager) : base(textureName, scale, manager)
         {
             Strength = 2;
-            speed = 125;
+            initialSpeed = 125;
             point = 2;
         }
 
@@ -32,6 +32,11 @@ namespace Flooded_Soul.System.Fishing.Fishes
         {
             base.Destroy(Success);
             fishingManager.lCount--;
+        }
+        public override void Reset()
+        {
+            base.Reset();
+            speed = initialSpeed;
         }
     }
 }

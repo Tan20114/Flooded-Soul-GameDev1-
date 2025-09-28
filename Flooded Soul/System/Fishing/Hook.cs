@@ -72,7 +72,7 @@ namespace Flooded_Soul.System.Fishing
 
             if (Game1.instance.sceneState == Scene.Fishing)
             {
-                if (fishingManager.isMinigame)
+                if (fishingManager.isMinigame && fishingManager.targetFish != null && fishingManager.targetFish.IsActive)
                     pos = fishingManager.targetFish.pos;
                 else
                     if (distance.Length() > 10)

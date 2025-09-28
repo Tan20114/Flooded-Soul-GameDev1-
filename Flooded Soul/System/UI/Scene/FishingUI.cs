@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace Flooded_Soul.System.UI.Scene
 {
@@ -19,6 +21,12 @@ namespace Flooded_Soul.System.UI.Scene
         Button backButton;
         Vector2 backButtPos = new Vector2(.01f * Game1.instance.viewPortWidth, .8f * Game1.instance.viewPortHeight);
         #endregion
+        SpriteFont font => Game1.instance.Content.Load<SpriteFont>("Fonts/fipps");
+        #region Fish Point
+        Vector2 fishPointPos = new Vector2(.01f * Game1.instance.viewPortWidth, .1f * Game1.instance.viewPortHeight);
+        Texture2D fishPointIcon => Game1.instance.Content.Load<Texture2D>("UI_Icon/ui_fishunit_mainmenu");
+        Vector2 fishIconPos = new Vector2(.01f * Game1.instance.viewPortWidth, .2f * Game1.instance.viewPortHeight);
+        #endregion
 
         public FishingUI(Vector2 offset)
         {
@@ -32,6 +40,9 @@ namespace Flooded_Soul.System.UI.Scene
             backButton = new Button("UI_Icon/ui_return", backButtPos, posOffset, 5.5f);
             backButton.OnClick += BackButtClick;
             #endregion
+            #region Fish Point
+            fishPointPos = new Vector2(.01f * Game1.instance.viewPortWidth + posOffset.X, .17f * Game1.instance.viewPortHeight + posOffset.Y);
+            #endregion
         }
 
         public void Update()
@@ -43,6 +54,11 @@ namespace Flooded_Soul.System.UI.Scene
             else
                 pauseButton.ChangeSprite("UI_Icon/ui_pause_mainmenu");
             #endregion
+            #region Fish Point
+            Vector2 fontSize = font.MeasureString($"{Game1.instance.player.fishPoint}");
+            float padding = 3f * Game1.instance.screenRatio;
+            fishIconPos = new Vector2(fishPointPos.X + fontSize.X / 1.5f + padding, fishPointPos.Y + .125f * fontSize.Y);
+            #endregion
             #region BackButton
             if (SceneManager.moveSuccess)
                 backButton.Update();
@@ -52,6 +68,10 @@ namespace Flooded_Soul.System.UI.Scene
         public void Draw()
         {
             pauseButton.Draw();
+            #region Fish point
+            Game1.instance._spriteBatch.DrawString(font, $"{Game1.instance.player.fishPoint}", fishPointPos, Color.White, 0, Vector2.Zero, 1.5f * Game1.instance.screenRatio, SpriteEffects.None, 0);
+            Game1.instance._spriteBatch.Draw(fishPointIcon, fishIconPos, null, Color.White, 0, Vector2.Zero, 7f * Game1.instance.screenRatio, SpriteEffects.None, 0);
+            #endregion
             backButton.Draw();
         }
 

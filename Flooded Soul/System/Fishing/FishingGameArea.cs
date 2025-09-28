@@ -44,6 +44,9 @@ namespace Flooded_Soul.System.Fishing
 
             Vector2 spawnPos = new Vector2(pos.X - (spawnWidth / 2), Game1.instance.viewPortHeight - heightOffset);
 
+            if (fishingManager.targetFish.speed > 0)
+                spawnPos.X += fishingManager.targetFish.GetTexWidth;
+
             bound = new RectangleF(spawnPos.X, spawnPos.Y, spawnWidth, spawnHeight);
 
             boundToCreate = this;
@@ -64,18 +67,21 @@ namespace Flooded_Soul.System.Fishing
         public void OnCollision(CollisionEventArgs collisionInfo) => Collider.RegisterCollision(collisionInfo.Other);
         private void OnCollisionEnter(ICollisionActor other)
         {
-            if (other == fishingManager.targetFish)
+            if (fishingManager.targetFish != null && other == fishingManager.targetFish && fishingManager.targetFish.IsActive)
                 fishInArea = true;
         }
+
         private void OnCollisionStay(ICollisionActor other)
         {
-            if(other == fishingManager.targetFish)
+            if (fishingManager.targetFish != null && other == fishingManager.targetFish && fishingManager.targetFish.IsActive)
                 fishInArea = true;
         }
+
         private void OnCollisionExit(ICollisionActor other)
         {
-            if (other == fishingManager.targetFish)
+            if (fishingManager.targetFish != null && other == fishingManager.targetFish)
                 fishInArea = false;
         }
+
     }
 }

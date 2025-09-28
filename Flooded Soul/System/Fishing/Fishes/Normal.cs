@@ -16,7 +16,7 @@ namespace Flooded_Soul.System.Fishing.Fishes
         public Normal(string textureName, float scale, FishingManager manager) : base(textureName, scale, manager)
         {
             Strength = 1f;
-            speed = 100;
+            initialSpeed = 100;
             point = 1;
         }
 
@@ -36,6 +36,12 @@ namespace Flooded_Soul.System.Fishing.Fishes
         {
             base.Destroy(Success);
             fishingManager.nCount--;
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            speed = initialSpeed;
         }
     }
 }

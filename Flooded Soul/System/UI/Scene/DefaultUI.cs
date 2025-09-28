@@ -133,6 +133,7 @@ namespace Flooded_Soul.System.UI.Scene
             Game1.instance._spriteBatch.DrawString(font, $"{Game1.instance.player.fishPoint}",fishPointPos, Color.White, 0, Vector2.Zero, 1.5f * Game1.instance.screenRatio, SpriteEffects.None, 0);
             Game1.instance._spriteBatch.Draw(fishPointIcon, fishIconPos, null, Color.White, 0, Vector2.Zero, 7f * Game1.instance.screenRatio, SpriteEffects.None, 0);
             #endregion
+            helpButton.Draw();
             if (BiomeSystem.isTransition) return;
 
             if (showShop)
@@ -143,7 +144,6 @@ namespace Flooded_Soul.System.UI.Scene
                     goDownButton.Draw();
             }
 
-            helpButton.Draw();
         }
 
         void CollectionButtClick()
@@ -169,6 +169,7 @@ namespace Flooded_Soul.System.UI.Scene
         void GoDown()
         {
             Game1.instance.fm.EnterSea();
+            Game1.instance.sceneState = Flooded_Soul.Scene.Default_Stop;
             Game1.instance.sceneState = Flooded_Soul.Scene.Fishing;
         }
 

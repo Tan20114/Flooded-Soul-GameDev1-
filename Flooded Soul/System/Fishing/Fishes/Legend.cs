@@ -13,8 +13,9 @@ namespace Flooded_Soul.System.Fishing.Fishes
     {
         public Legend(string textureName, float scale, FishingManager manager) : base(textureName, scale, manager)
         {
+            point = 4;
             Strength = 3;
-            speed = 200;
+            initialSpeed = 200;
         }
 
         protected override void RandomPos()
@@ -33,6 +34,12 @@ namespace Flooded_Soul.System.Fishing.Fishes
         {
             base.Destroy(Success);
             fishingManager.lCount--;
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            speed = initialSpeed;
         }
     }
 }

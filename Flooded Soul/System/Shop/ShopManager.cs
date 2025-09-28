@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Button = Flooded_Soul.System.UI.Button;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace Flooded_Soul.System.Shop
 {
@@ -23,57 +24,51 @@ namespace Flooded_Soul.System.Shop
         #endregion
 
         #region Cat
-        Button cat1Button;
-        Vector2 cat1Pos = new Vector2(0.832f * Game1.instance.viewPortWidth, 0.36f * Game1.instance.viewPortHeight);
-        int cat1Cost = 100;
-
-        Button cat2Button;
-        Vector2 cat2Pos = new Vector2(0.882f * Game1.instance.viewPortWidth, 0.493f * Game1.instance.viewPortHeight);
-        int cat2Cost = 200;
-
-        Button cat3Button;
-        Vector2 cat3Pos = new Vector2(0.915f * Game1.instance.viewPortWidth, 0.395f * Game1.instance.viewPortHeight);
-        int cat3Cost = 300;
+        Button catUpgradeButton;
+        Vector2 catUpgradePos = new Vector2(.81f * Game1.instance.viewPortWidth, .35f * Game1.instance.viewPortHeight);
         #endregion
 
         #region Back Button
         Button backButton;
-        Vector2 backButtPos = new Vector2(.01f * Game1.instance.viewPortWidth, .8f * Game1.instance.viewPortHeight);
+        Vector2 backButtPos = new Vector2(.02f * Game1.instance.viewPortWidth, .8f * Game1.instance.viewPortHeight);
         #endregion
 
         int boatCost = 70;
         int hookCost = 50;
+        int catCost = 50;
+
+        SpriteFont font => Game1.instance.Content.Load<SpriteFont>("Fonts/fipps");
+        #region Fish Point
+        Vector2 fishPointPos = new Vector2(.2f * Game1.instance.viewPortWidth, .1f * Game1.instance.viewPortHeight);
+        Texture2D fishPointIcon => Game1.instance.Content.Load<Texture2D>("UI_Icon/ui_fishunit_mainmenu");
+        Vector2 fishIconPos = new Vector2(.01f * Game1.instance.viewPortWidth, .2f * Game1.instance.viewPortHeight);
+        #endregion
 
         public ShopManager(string shop, Vector2 posOffset)
         {
             bg = new ParallaxManager("Shop/shop_inside", posOffset);
 
             #region Boat
-            upgradeBoatButton = new Button("Shop/ui_upgrade_items", boatPos, posOffset, 7, 4, 1);
+            upgradeBoatButton = new Button("Shop/ui_upgrade_items_boat", boatPos, posOffset, 7, 4, 1);
             upgradeBoatButton.OnClick += UpgradeBoat;
             upgradeBoatButton.ChangeSprite(1);
             #endregion
             #region Hook
-            upgradeHookButton = new Button("Shop/ui_upgrade_items", hookPos, posOffset, 7, 4, 1);
+            upgradeHookButton = new Button("Shop/ui_upgrade_items_fishrod", hookPos, posOffset, 7, 4, 1);
             upgradeHookButton.OnClick += UpgradeHook;
             upgradeHookButton.ChangeSprite(0);
-            #endregion
-            #region Cat
-            cat1Button = new Button("Shop/cat_1", cat1Pos, posOffset, 7, 2, 1);
-            cat1Button.OnClick += BuyCat1;
-            cat1Button.ChangeSprite(1);
-
-            cat2Button = new Button("Shop/cat_2", cat2Pos, posOffset, 7, 2, 1);
-            cat2Button.OnClick += BuyCat2;
-            cat2Button.ChangeSprite(1);
-
-            cat3Button = new Button("Shop/cat_3", cat3Pos, posOffset, 7, 2, 1);
-            cat3Button.OnClick += BuyCat3;
-            cat3Button.ChangeSprite(1);
             #endregion
             #region BackButton
             backButton = new Button("UI_Icon/ui_return", backButtPos, posOffset, 5.5f);
             backButton.OnClick += BackButtClick;
+            #endregion
+            #region Fish Point
+            fishPointPos = new Vector2(.022f * Game1.instance.viewPortWidth + posOffset.X, .01f * Game1.instance.viewPortHeight + posOffset.Y);
+            fishIconPos = new Vector2(.01f * Game1.instance.viewPortWidth + posOffset.X, .17f * Game1.instance.viewPortHeight + posOffset.Y);
+            #endregion
+            #region Cat Button
+            catUpgradeButton = new Button("Shop/shop_cat_sheet",catUpgradePos,posOffset,7f,4,1);
+            catUpgradeButton.OnClick += CatClick;
             #endregion
         }
 
@@ -81,10 +76,13 @@ namespace Flooded_Soul.System.Shop
         {
             upgradeBoatButton.Update();
             upgradeHookButton.Update();
-            cat1Button.Update();
-            cat2Button.Update();
-            cat3Button.Update();
             backButton.Update();
+            #region Fish Point
+            Vector2 fontSize = font.MeasureString($"{Game1.instance.player.fishPoint}");
+            float padding = 3f * Game1.instance.screenRatio;
+            fishIconPos = new Vector2(fishPointPos.X + fontSize.X / 1.5f + padding, fishPointPos.Y + .125f * fontSize.Y);
+            #endregion
+            catUpgradeButton.Update();
             UpgradeButtonVisualize();
             UpgradeCostUpdate();
         }
@@ -94,10 +92,12 @@ namespace Flooded_Soul.System.Shop
             bg.Draw(1);
             upgradeBoatButton.Draw();
             upgradeHookButton.Draw();
-            cat1Button.Draw();
-            cat3Button.Draw();
-            cat2Button.Draw();
             backButton.Draw();
+            #region Fish point
+            Game1.instance._spriteBatch.DrawString(font, $"{Game1.instance.player.fishPoint}", fishPointPos, Color.White, 0, Vector2.Zero, 1.5f * Game1.instance.screenRatio, SpriteEffects.None, 0);
+            Game1.instance._spriteBatch.Draw(fishPointIcon, fishIconPos, null, Color.White, 0, Vector2.Zero, 7f * Game1.instance.screenRatio, SpriteEffects.None, 0);
+            #endregion
+            catUpgradeButton.Draw();
         }
 
         void UpgradeBoat()
@@ -122,6 +122,7 @@ namespace Flooded_Soul.System.Shop
         {
             upgradeBoatButton.ChangeSprite(Game1.instance.player.BoatLevel);
             upgradeHookButton.ChangeSprite(Game1.instance.player.HookLevel);
+            catUpgradeButton.ChangeSprite(Game1.instance.player.CatLevel);
         }
 
         void UpgradeCostUpdate()
@@ -129,57 +130,39 @@ namespace Flooded_Soul.System.Shop
             switch (Game1.instance.player.BoatLevel)
             {
                 case 1:
-                    boatCost = 1;
+                    boatCost = 50;
                     break;
                 case 2:
-                    boatCost = 1;
+                    boatCost = 75;
                     break;
             }
 
             switch (Game1.instance.player.HookLevel)
             {
                 case 0:
-                    hookCost = 1;
+                    hookCost = 15;
                     break;
                 case 1:
-                    hookCost = 1;
+                    hookCost = 40;
                     break;
                 case 2:
-                    hookCost = 1;
+                    hookCost = 70;
                     break;
             }
+
+            if (Game1.instance.player.hasCat[1])
+                catCost = 100;
+            else if (Game1.instance.player.hasCat[2])
+                catCost = 150;
         }
 
-        void BuyCat1()
+        void CatClick()
         {
-            if (Game1.instance.player.fishPoint >= cat1Cost && !Game1.instance.player.hasCat[1])
+            if (Game1.instance.player.fishPoint >= catCost)
             {
-                Game1.instance.player.fishPoint -= cat1Cost;
-                Game1.instance.player.hasCat[1] = true;
-                cat1Button.ChangeSprite(0);
-                cat1Button.OnClick -= BuyCat1;
-            }
-        }
-
-        void BuyCat2()
-        {
-            if (Game1.instance.player.fishPoint >= cat2Cost && !Game1.instance.player.hasCat[2])
-            {
-                Game1.instance.player.fishPoint -= cat2Cost;
-                Game1.instance.player.hasCat[2] = true;
-                cat2Button.ChangeSprite(0);
-                cat2Button.OnClick -= BuyCat2;
-            }
-        }
-
-        void BuyCat3()
-        {
-            if (Game1.instance.player.fishPoint >= cat3Cost && !Game1.instance.player.hasCat[3])
-            {
-                Game1.instance.player.fishPoint -= cat3Cost;
-                Game1.instance.player.hasCat[3] = true;
-                cat3Button.ChangeSprite(0);
-                cat3Button.OnClick -= BuyCat3;
+                Game1.instance.player.fishPoint -= catCost;
+                Game1.instance.player.CatLevel++;
+                Game1.instance.player.hasCat[Game1.instance.player.CatLevel] = true;
             }
         }
 

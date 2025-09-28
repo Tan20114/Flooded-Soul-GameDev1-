@@ -14,7 +14,7 @@ namespace Flooded_Soul.System.Fishing.Fishes
         public Rare(string textureName, float scale, FishingManager manager) : base(textureName, scale, manager)
         {
             Strength = 2.5f;
-            speed = 150;
+            initialSpeed = 150;
             point = 3;
         }
 
@@ -34,6 +34,12 @@ namespace Flooded_Soul.System.Fishing.Fishes
         {
             base.Destroy(S);
             fishingManager.rCount--;
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            speed = initialSpeed;
         }
     }
 }
