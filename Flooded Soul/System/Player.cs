@@ -15,6 +15,7 @@ using MonoGame.Extended;
 using RectangleF = MonoGame.Extended.RectangleF;
 using Flooded_Soul.System.Collision_System;
 using Flooded_Soul.System.Shop;
+using Flooded_Soul.System.Fishing;
 
 namespace Flooded_Soul.System
 {
@@ -245,12 +246,15 @@ namespace Flooded_Soul.System
             if (hasCat[3] && BoatLevel >= 3)
                 fishPerSec = 3;
 
+            if (fishPerSec <= 0) return;
+
             getFishElasped += Game1.instance.deltaTime;
 
             if (getFishElasped >= getFistTime)
             {
                 getFishElasped = 0;
                 fishPoint += fishPerSec;
+                FishPoint.Spawn(fishPerSec, new Vector2(.3f * Game1.instance.viewPortWidth, .4f * Game1.instance.viewPortHeight));
             }
         }
 

@@ -136,8 +136,7 @@ namespace Flooded_Soul.System.Fishing
                 hook = hookOther;
                 fishingManager.targetFish = this;
 
-                fishingManager.otherFishes = fishingManager.fishInScreen
-                    .Where(f => f != this && f.IsActive).ToList();
+                fishingManager.otherFishes = fishingManager.fishInScreen.Where(f => f != this && f.IsActive).ToList();
 
                 Collider.DisableCollision();
 
@@ -182,6 +181,7 @@ namespace Flooded_Soul.System.Fishing
 
             RandomDir();
             RandomPos();
+            speed = initialSpeed;
 
             _bounds = new RectangleF(pos, new SizeF(texture.Width * this.scale, texture.Height * this.scale));
             _seeRange = new RectangleF(_bounds.Position.X, _bounds.Position.Y, _bounds.Width * visionRange, _bounds.Height);

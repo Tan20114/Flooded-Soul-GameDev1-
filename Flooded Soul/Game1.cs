@@ -398,6 +398,7 @@ namespace Flooded_Soul
             else if (sceneState == Scene.Fishing)
                 fui.Draw();
             bs.Draw();
+            FishPoint.DrawAll();
             #endregion
 
             _spriteBatch.End();
@@ -407,41 +408,11 @@ namespace Flooded_Soul
         void SceneState()
         {
             if (sceneState == Scene.Default)
-            {
-                player.Sail();
-
-                if (Input.IsKeyPressed(Keys.A))
-                    sceneState = Scene.Default_Stop;
-                if (Input.IsKeyPressed(Keys.D))
-                    sceneState = Scene.Collection;
-            }    
+                player.Sail();  
             else if (sceneState == Scene.Default_Stop)
-            {
                 player.Stop();
-
-                if (Input.IsKeyPressed(Keys.A))
-                    sceneState = Scene.Default;
-                if (Input.IsKeyPressed(Keys.B))
-                {
-                    sceneState = Scene.Fishing;
-                    fm.EnterSea();
-                }
-                if (Input.IsKeyPressed(Keys.C))
-                    sceneState = Scene.Shop;
-                if (Input.IsKeyPressed(Keys.D))
-                    sceneState = Scene.Collection;
-            }
-            else if (sceneState == Scene.Fishing)
-            {
-                if (Input.IsKeyPressed(Keys.B))
-                    sceneState = Scene.Default_Stop;
-            }
-            else if (sceneState == Scene.Shop)
-            {
-                if (Input.IsKeyPressed(Keys.C))
-                    sceneState = Scene.Default_Stop;
-            }
-            else if (sceneState == Scene.Collection)
+            
+            if (sceneState == Scene.Collection)
             {
                 if (Input.IsKeyPressed(Keys.D))
                     sceneState = Scene.Default;

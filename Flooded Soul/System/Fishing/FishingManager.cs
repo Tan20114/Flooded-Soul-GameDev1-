@@ -81,8 +81,6 @@ namespace Flooded_Soul.System.Fishing
         {
             hook.Draw();
 
-            FishPoint.DrawAll();
-
             foreach (Fish fish in fishInScreen)
                 if (fish.IsActive) fish.Draw();
 
