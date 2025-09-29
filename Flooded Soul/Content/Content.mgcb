@@ -1532,6 +1532,30 @@
 /processorParam:TextureFormat=Color
 /build:UI_Icon/ui_autodrive_mainmenu.png
 
+#begin UI_Icon/UI_collection_Downbutton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI_Icon/UI_collection_Downbutton.png
+
+#begin UI_Icon/UI_collection_Leftbutton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI_Icon/UI_collection_Leftbutton.png
+
 #begin UI_Icon/ui_collection_mainmenu.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1543,6 +1567,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:UI_Icon/ui_collection_mainmenu.png
+
+#begin UI_Icon/UI_collection_Rightbutton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI_Icon/UI_collection_Rightbutton.png
+
+#begin UI_Icon/UI_collection_Upbutton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI_Icon/UI_collection_Upbutton.png
 
 #begin UI_Icon/ui_fishunit_mainmenu.png
 /importer:TextureImporter

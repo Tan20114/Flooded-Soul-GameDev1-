@@ -80,6 +80,7 @@ namespace Flooded_Soul
         #region UI
         public DefaultUI dui;
         public FishingUI fui;
+        CollectionUI cui;
         #endregion
 
         #region Game System
@@ -252,7 +253,6 @@ namespace Flooded_Soul
 
         public Player player;
 
-        ParallaxLayer mockCollection;
 
         public Game1()
         {
@@ -303,6 +303,7 @@ namespace Flooded_Soul
             #region UI
             dui = new DefaultUI(defaultPoint);
             fui = new FishingUI(fishingPoint);
+            cui = new CollectionUI(CollectionPoint);
             #endregion
 
             #region Background
@@ -320,8 +321,6 @@ namespace Flooded_Soul
             sm = new ShopManager(ocean.overWater[5][0],shopPoint);
             shop = new ShopLayer(ocean.overWater[5][0], shopPoint, 100);
             #endregion
-
-            mockCollection = new ParallaxLayer("mockup_Collection",CollectionPoint,0,1);
         }
 
         protected override void Update(GameTime gameTime)
@@ -349,6 +348,8 @@ namespace Flooded_Soul
                 fui.Update();
             else if (sceneState == Scene.Shop)
                 sm.Update();
+            else if (sceneState == Scene.Collection)
+                cui.Update();
             #endregion
             #region Background
             bg.Update(gameTime);
@@ -383,7 +384,7 @@ namespace Flooded_Soul
             shop.Draw(1);
             underSeaBg.Draw(1);
             sm.Draw();
-            mockCollection.Draw(1);
+            cui.Draw();
             #endregion
 
             #region Entity

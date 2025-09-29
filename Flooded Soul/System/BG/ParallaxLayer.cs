@@ -11,6 +11,7 @@ using System.Diagnostics;
 using MonoGame.Extended.Collisions.Layers;
 using Microsoft.Xna.Framework.Content;
 using MonoGame.Extended.Content;
+using MonoGame.Extended.Graphics;
 
 namespace Flooded_Soul.System.BG
 {
@@ -25,6 +26,7 @@ namespace Flooded_Soul.System.BG
         private List<Texture2D> textures = new List<Texture2D>();
         private int screenWidth;
         private int screenHeight;
+        Texture2DAtlas atlas;
 
         protected Vector2 posOffset;
 
@@ -35,6 +37,16 @@ namespace Flooded_Soul.System.BG
         public bool isStop = false;
 
         void Initialize(Vector2 posOffset,int speed,Texture2D texture)
+        {
+            screenWidth = Game1.instance.viewPortWidth;
+            screenHeight = Game1.instance.viewPortHeight;
+            this.posOffset = posOffset;
+            this.speed = speed;
+            scale = screenHeight / (float)texture.Height;
+            GeneratePositions();
+        }
+
+        void Initialize(Vector2 posOffset, int speed, Texture2DRegion texture)
         {
             screenWidth = Game1.instance.viewPortWidth;
             screenHeight = Game1.instance.viewPortHeight;
@@ -79,6 +91,22 @@ namespace Flooded_Soul.System.BG
             scaleY = scale;
         }
 
+        public ParallaxLayer(string tex,Vector2 posOffset, int speed, int count, int frameWidth, int frameHeight)
+        {
+            texture = Game1.instance.Content.Load<Texture2D>(tex);
+            atlas = Texture2DAtlas.Create("atlas",texture, frameWidth, frameHeight);
+
+            Texture2DRegion firstRegion = atlas.GetRegion(0);
+
+            Initialize(posOffset, speed, firstRegion);
+            positions.Clear();
+            slotTextures.Clear();
+            GeneratePositions(count);
+
+            scaleX = screenWidth / (float)firstRegion.Width;
+            scaleY = scale;
+        }
+
         void GeneratePositions()
         {
             positions.Clear();
@@ -101,9 +129,7 @@ namespace Flooded_Soul.System.BG
                     slotTextures.Add(textures[index]);
                 }
                 else
-                {
                     slotTextures.Add(texture);
-                }
             }
         }
 
@@ -128,9 +154,7 @@ namespace Flooded_Soul.System.BG
                     slotTextures.Add(textures[index]);
                 }
                 else
-                {
                     slotTextures.Add(texture);
-                }
             }
         }
 
@@ -219,6 +243,20 @@ namespace Flooded_Soul.System.BG
                     pos,
                     null,
                     color,
+                    0f,
+                    Vector2.Zero,
+                    new Vector2(scaleX, scaleY),
+                    SpriteEffects.None,
+                    0f
+                );
+        }
+
+        public void Draw(bool isRegion,int regionIndex)
+        {
+            Game1.instance._spriteBatch.Draw(
+                    atlas.GetRegion(regionIndex),
+                    posOffset,
+                    Color.White,
                     0f,
                     Vector2.Zero,
                     new Vector2(scaleX, scaleY),
