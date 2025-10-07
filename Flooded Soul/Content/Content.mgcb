@@ -385,7 +385,7 @@
 /processorParam:TextureFormat=Color
 /build:Boat/LV3/Wave_boat_LV3_stop.png
 
-#begin Collection/collection_cat-Sheet-export.png
+#begin Collection/collection_cat-Sheet.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -395,7 +395,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Collection/collection_cat-Sheet-export.png
+/build:Collection/collection_cat-Sheet.png
 
 #begin Collection/collection_story.png
 /importer:TextureImporter
@@ -631,42 +631,6 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/fipps.spritefont
-
-#begin hook_test.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:hook_test.png
-
-#begin Legend_fish.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Legend_fish.png
-
-#begin mockup_Collection.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:mockup_Collection.png
 
 #begin ParallaxBG/115_trans.png
 /importer:TextureImporter
@@ -1496,6 +1460,60 @@
 /processorParam:TextureFormat=Color
 /build:Shop/ui_upgrade_items_fishrod.png
 
+#begin Sound/BGM/Coral Groove.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sound/BGM/Coral Groove.mp3
+
+#begin Sound/BGM/Frozen Waves.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sound/BGM/Frozen Waves.mp3
+
+#begin Sound/BGM/Sunken Rebirth.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sound/BGM/Sunken Rebirth.mp3
+
+#begin Sound/SFX/ArrowClick.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/SFX/ArrowClick.wav
+
+#begin Sound/SFX/ButtonClick.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/SFX/ButtonClick.wav
+
+#begin Sound/SFX/CatIdle.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/SFX/CatIdle.wav
+
+#begin Sound/SFX/GoFish.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/SFX/GoFish.wav
+
+#begin Sound/SFX/Reeling.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/SFX/Reeling.wav
+
+#begin Sound/SFX/Upgrade.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/SFX/Upgrade.wav
+
 #begin UI_Icon/numberlist.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1592,6 +1610,18 @@
 /processorParam:TextureFormat=Color
 /build:UI_Icon/UI_collection_Upbutton.png
 
+#begin UI_Icon/ui_exit.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI_Icon/ui_exit.png
+
 #begin UI_Icon/ui_fishunit_mainmenu.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1615,6 +1645,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:UI_Icon/ui_help_botton.png
+
+#begin UI_Icon/ui_hover_on_game.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI_Icon/ui_hover_on_game.png
 
 #begin UI_Icon/ui_music_mainmenu.png
 /importer:TextureImporter

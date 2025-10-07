@@ -255,6 +255,7 @@ namespace Flooded_Soul.System.Fishing
 
             if (Success)
             {
+                AudioManager.Instance.PlaySfx("point_up");
                 Game1.instance.player.fishPoint += point;
                 FishPoint.Spawn(point, new Vector2(pos.X + GetTexWidth,pos.Y));
                 Game1.instance.collection.AddFish(fish_Id);

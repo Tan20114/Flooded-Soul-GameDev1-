@@ -36,6 +36,8 @@ namespace Flooded_Soul.System
         {
             type = BiomeType.Ocean; 
 
+            AudioManager.Instance.PlayBgm("ocean_bgm");
+
             pos = Vector2.Zero;
 
             transitionLayer = new AnimatedLayer("ParallaxBG/transition_SpriteSheet", posOffset, 0, 1,"trans",1280,230,10);
@@ -52,7 +54,6 @@ namespace Flooded_Soul.System
             if (!isTransition)
             {
                 elapsedTime += Game1.instance.deltaTime;
-                Debug.WriteLine($"{(int)elapsedTime}/{changeInterval}");
 
                 if (elapsedTime > changeInterval)
                 {
@@ -122,6 +123,7 @@ namespace Flooded_Soul.System
                 {
                     Game1.instance.bg.ChangeBiome(Game1.ocean.overWater);
                     Game1.instance.underSeaBg.ChangeBiome(Game1.ocean.underWater);
+                    AudioManager.Instance.FadeToBgm("ocean_bgm",1);
                     type = BiomeType.Ocean;
                     break;
                 }
@@ -129,6 +131,7 @@ namespace Flooded_Soul.System
                 {
                     Game1.instance.bg.ChangeBiome(Game1.ice.overWater);
                     Game1.instance.underSeaBg.ChangeBiome(Game1.ice.underWater);
+                    AudioManager.Instance.FadeToBgm("ice_bgm",1);
                     type = BiomeType.Ice;
                     break;
                 }
@@ -136,6 +139,7 @@ namespace Flooded_Soul.System
                 {
                     Game1.instance.bg.ChangeBiome(Game1.forest.overWater);
                     Game1.instance.underSeaBg.ChangeBiome(Game1.forest.underWater);
+                    AudioManager.Instance.FadeToBgm("forest_bgm",1);
                     type = BiomeType.Forest;
                     break;
                 }

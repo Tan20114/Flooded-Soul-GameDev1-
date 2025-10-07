@@ -27,6 +27,8 @@ namespace Flooded_Soul.System.UI.Scene
         #region Toggle Button
         Button toggleAutoSailButton;
         Vector2 toggleAutoSailButtPos = new Vector2(.067f * Game1.instance.viewPortWidth, .06f * Game1.instance.viewPortHeight);
+        Button toggleOnTopButton;
+        Vector2 toggleOnTopPos = new Vector2(.9f * Game1.instance.viewPortWidth, .06f * Game1.instance.viewPortHeight);
         #endregion
         #region TextSection
         SpriteFont font => Game1.instance.Content.Load<SpriteFont>("Fonts/fipps");
@@ -51,6 +53,10 @@ namespace Flooded_Soul.System.UI.Scene
         Button helpButton;
         Vector2 helpButtPos = new Vector2(.04f * Game1.instance.viewPortWidth, .05f * Game1.instance.viewPortHeight);
         #endregion
+        #region Exit Button
+        Button exitButton;
+        Vector2 exitPos = new Vector2(.95f * Game1.instance.viewPortWidth, .06f * Game1.instance.viewPortHeight);
+        #endregion
 
         public DefaultUI(Vector2 offset)
         {
@@ -58,6 +64,7 @@ namespace Flooded_Soul.System.UI.Scene
 
             #region Music Button
             musicButton = new Button("UI_Icon/ui_music_mainmenu", musicButtPos, posOffset, 8.5f);
+            musicButton.OnClick += MusicButtClick;    
             #endregion
             #region Collection Button
             collectionButton = new Button("UI_Icon/ui_collection_mainmenu", collectionButtPos, posOffset, 6);
@@ -67,6 +74,9 @@ namespace Flooded_Soul.System.UI.Scene
             toggleAutoSailButton = new Button("UI_Icon/ui_autodrive_mainmenu", toggleAutoSailButtPos, posOffset,7,2,1);
             toggleAutoSailButton.OnClick += ToggleAutoSailButtClick;
             toggleAutoSailButton.ChangeSprite(1);
+            toggleOnTopButton = new Button("UI_Icon/ui_hover_on_game", toggleOnTopPos, posOffset, 7, 2, 1);
+            toggleOnTopButton.OnClick += ToggleOnTopClick;
+            toggleOnTopButton.ChangeSprite(0);
             #endregion
             #region Distance Text
             distancePointPos = new Vector2(.01f * Game1.instance.viewPortWidth + posOffset.X, .155f * Game1.instance.viewPortHeight + posOffset.Y);
@@ -86,6 +96,14 @@ namespace Flooded_Soul.System.UI.Scene
             #endregion
             #region Help Button
             helpButton = new Button("UI_Icon/ui_help_botton", helpButtPos, posOffset, 8.5f);
+            helpButton.OnClick += HelpClick;
+            #endregion
+            #region Exit Button
+            exitButton = new Button("UI_Icon/ui_exit", exitPos, posOffset, 7);
+            exitButton.OnClick += () => { 
+                AudioManager.Instance.PlaySfx("button_click");
+                Game1.instance.Exit();
+            };
             #endregion
         }
 
@@ -99,6 +117,7 @@ namespace Flooded_Soul.System.UI.Scene
             #endregion
             #region Toggle Button
             toggleAutoSailButton.Update();
+            toggleOnTopButton.Update();
             #endregion
             #region Fish Point
             Vector2 fontSize = font.MeasureString($"{Game1.instance.player.fishPoint}");
@@ -121,6 +140,9 @@ namespace Flooded_Soul.System.UI.Scene
             #region Help Button
             helpButton.Update();
             #endregion
+            #region Exit Button
+            exitButton.Update();
+            #endregion
         }
 
         public void Draw()
@@ -128,12 +150,14 @@ namespace Flooded_Soul.System.UI.Scene
             musicButton.Draw();
             collectionButton.Draw();
             toggleAutoSailButton.Draw();
+            toggleOnTopButton.Draw();
             Game1.instance._spriteBatch.DrawString(font, $"{(int)(Game1.instance.player.distanceTraveled / 1000)} km",distancePointPos, Color.White, 0, Vector2.Zero, 1.5f * Game1.instance.screenRatio, SpriteEffects.None, 0);
             #region Fish point
             Game1.instance._spriteBatch.DrawString(font, $"{Game1.instance.player.fishPoint}",fishPointPos, Color.White, 0, Vector2.Zero, 1.5f * Game1.instance.screenRatio, SpriteEffects.None, 0);
             Game1.instance._spriteBatch.Draw(fishPointIcon, fishIconPos, null, Color.White, 0, Vector2.Zero, 7f * Game1.instance.screenRatio, SpriteEffects.None, 0);
             #endregion
             helpButton.Draw();
+            exitButton.Draw();
             if (BiomeSystem.isTransition) return;
 
             if (showShop)
@@ -146,14 +170,24 @@ namespace Flooded_Soul.System.UI.Scene
 
         }
 
+        void MusicButtClick()
+        {
+            AudioManager.Instance.PlaySfx("button_click");
+            Game1.instance.isSound = !Game1.instance.isSound;
+            musicButton.ChangeColor(Game1.instance.isSound ? Color.White : Color.DarkGray);
+            AudioManager.Instance.IsMuted = Game1.instance.isSound ? false : true;
+        }
+
         void CollectionButtClick()
         {
+            AudioManager.Instance.PlaySfx("button_click");
             if(Game1.instance.sceneState == Flooded_Soul.Scene.Default || Game1.instance.sceneState == Flooded_Soul.Scene.Default_Stop)
                 Game1.instance.sceneState = Flooded_Soul.Scene.Collection;
         }
 
         void ToggleAutoSailButtClick()
         {
+            AudioManager.Instance.PlaySfx("collection_arrow");
             if(Game1.instance.autoStopAtShop)
             {
                 Game1.instance.autoStopAtShop = false;
@@ -166,8 +200,25 @@ namespace Flooded_Soul.System.UI.Scene
             }
         }
 
+        void ToggleOnTopClick()
+        {
+            AudioManager.Instance.PlaySfx("collection_arrow");
+            if (Game1.instance.alwaysOnTop)
+            {
+                Game1.instance.alwaysOnTop = false;
+                toggleOnTopButton.ChangeSprite(1);
+            }
+            else
+            {
+                Game1.instance.alwaysOnTop = true;
+                toggleOnTopButton.ChangeSprite(0);
+            }
+            WindowAPI.SetTopMost(Game1.instance.alwaysOnTop);
+        }
+
         void GoDown()
         {
+            AudioManager.Instance.PlaySfx("between_water");
             Game1.instance.fm.EnterSea();
             Game1.instance.sceneState = Flooded_Soul.Scene.Default_Stop;
             Game1.instance.sceneState = Flooded_Soul.Scene.Fishing;
@@ -175,8 +226,16 @@ namespace Flooded_Soul.System.UI.Scene
 
         void OpenShop()
         {
+            AudioManager.Instance.PlaySfx("button_click");
             Game1.instance.sceneState = Flooded_Soul.Scene.Default_Stop;
             Game1.instance.sceneState = Flooded_Soul.Scene.Shop;
+        }
+
+        void HelpClick()
+        {
+            AudioManager.Instance.PlaySfx("button_click");
+            Game1.instance.cui.Category = 3;
+            Game1.instance.sceneState = Flooded_Soul.Scene.Collection;
         }
     }
 }

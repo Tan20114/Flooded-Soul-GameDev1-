@@ -252,6 +252,7 @@ namespace Flooded_Soul.System
 
             if (getFishElasped >= getFistTime)
             {
+                AudioManager.Instance.PlaySfx("point_up");
                 getFishElasped = 0;
                 fishPoint += fishPerSec;
                 FishPoint.Spawn(fishPerSec, new Vector2(.3f * Game1.instance.viewPortWidth, .4f * Game1.instance.viewPortHeight));

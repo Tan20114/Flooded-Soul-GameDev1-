@@ -102,6 +102,7 @@ namespace Flooded_Soul.System.Shop
 
         void UpgradeBoat()
         {
+            AudioManager.Instance.PlaySfx("buy_upgrade_shop");
             if (Game1.instance.player.fishPoint >= boatCost)
             {
                 Game1.instance.player.fishPoint -= boatCost;
@@ -111,6 +112,7 @@ namespace Flooded_Soul.System.Shop
 
         void UpgradeHook()
         {
+            AudioManager.Instance.PlaySfx("buy_upgrade_shop");
             if (Game1.instance.player.fishPoint >= hookCost)
             {
                 Game1.instance.player.fishPoint -= hookCost;
@@ -158,6 +160,7 @@ namespace Flooded_Soul.System.Shop
 
         void CatClick()
         {
+            AudioManager.Instance.PlaySfx("buy_upgrade_shop");
             if (Game1.instance.player.fishPoint >= catCost)
             {
                 Game1.instance.player.fishPoint -= catCost;
@@ -167,7 +170,8 @@ namespace Flooded_Soul.System.Shop
         }
 
         void BackButtClick()
-        { 
+        {
+            AudioManager.Instance.PlaySfx("button_click");
             Game1.instance.dui.showShop = false;
             Game1.instance.sceneState = Flooded_Soul.Scene.Default;
             Game1.instance.player.stopAtShop = false;

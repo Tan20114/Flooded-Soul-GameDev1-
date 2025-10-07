@@ -31,6 +31,7 @@ namespace Flooded_Soul.System.UI
 
         public IShapeF Bounds => rect;
 
+        Color defaultColor = Color.White;
         Color buttonColor = Color.White;
 
         Vector2 pos;
@@ -81,6 +82,13 @@ namespace Flooded_Soul.System.UI
 
         public void Update()
         {
+            if (!Game1.instance.IsActive)
+            {
+                buttonColor = defaultColor;
+                canClick = false;
+                return;
+            }
+
             if (canClick && Game1.instance.Input.IsLeftMouse())
                 OnClick?.Invoke();
 
@@ -89,8 +97,6 @@ namespace Flooded_Soul.System.UI
 
         public void Draw()
         {
-            //Game1.instance._spriteBatch.DrawRectangle(rect, Color.Red, 1);
-
             if (atlas == null)
                 Game1.instance._spriteBatch.Draw(tex, pos, null, buttonColor, rotation, Vector2.Zero, scale, SpriteEffects.None, 0);
             else
@@ -121,7 +127,7 @@ namespace Flooded_Soul.System.UI
         {
             if (other is Mouse)
             {
-                buttonColor = Color.White;
+                buttonColor = defaultColor;
                 canClick = false;
             }
         }
@@ -129,5 +135,7 @@ namespace Flooded_Soul.System.UI
         public void ChangeSprite(string texture) => tex = Game1.instance.Content.Load<Texture2D>(texture);
 
         public void ChangeSprite(int index) => frameToDraw = atlas.CreateSprite(index).TextureRegion;
+
+        public void ChangeColor(Color c) => defaultColor = c;
     }
 }

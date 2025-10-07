@@ -20,7 +20,6 @@ namespace Flooded_Soul.System.Collection
             if (!fishCollection.ContainsKey(fishId))
             {
                 fishCollection[fishId] = true;
-                Console.WriteLine($"🐟 Added {fishId} to collection!");
             }
         }
 

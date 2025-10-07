@@ -87,7 +87,12 @@ namespace Flooded_Soul.System.Fishing
         {
             //if(Collider.Collideable)
             //    Game1.instance._spriteBatch.DrawRectangle(_bounds, Color.Red, 3);
+
+            float linePosX = pos.X + (frameToDraw.Width * scale * .8f);
+            float startPointY = pos.Y + (frameToDraw.Height * scale * .15f);
+
             Game1.instance._spriteBatch.Draw(frameToDraw, pos, Color.White, 0, Vector2.Zero, new Vector2(scale), SpriteEffects.None, 0);
+            Game1.instance._spriteBatch.DrawLine(linePosX,startPointY,linePosX, Game1.instance.viewPortHeight,Color.White);
         }
 
         public void ResetPosition() => pos = new Vector2(Game1.instance.viewPortWidth / 2, Game1.instance.viewPortHeight);

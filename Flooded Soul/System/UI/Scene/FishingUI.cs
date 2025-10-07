@@ -77,11 +77,13 @@ namespace Flooded_Soul.System.UI.Scene
 
         void PauseButtClick()
         {
+            AudioManager.Instance.PlaySfx("button_click");
             Game1.instance.fm.isPause = !Game1.instance.fm.isPause;
         }
 
         void BackButtClick()
         {
+            AudioManager.Instance.PlaySfx("between_water");
             Game1.instance.sceneState = Flooded_Soul.Scene.Default;
             Game1.instance.fm.ExitSea();
             Game1.instance.fm.isPause = false;

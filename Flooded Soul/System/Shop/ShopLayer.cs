@@ -28,7 +28,7 @@ namespace Flooded_Soul.System.Shop
         RectangleF bound;
         public IShapeF Bounds => bound;
 
-        float shopSpawnTime = 1f;
+        float shopSpawnTime = 5f;
         float elasped = 0;
 
         public ShopLayer(string path, Vector2 posOffset, int speed) : base(path, posOffset, speed, 1)
@@ -60,13 +60,15 @@ namespace Flooded_Soul.System.Shop
 
             if (!isSpawned) return;
 
-            if (Game1.instance.sceneState != Scene.Default)
+            if (Game1.instance.sceneState == Scene.Default)
+                isStop = false;
+            else
                 isStop = true;
 
             if (isStop) return;
 
-            pos -= new Vector2(speed * Game1.instance.deltaTime, 0);
-            bound.Position -= new Vector2(speed * Game1.instance.deltaTime,0);
+            pos -= new Vector2(speed * Game1.instance.deltaTime * 1.5f, 0);
+            bound.Position -= new Vector2(speed * Game1.instance.deltaTime*1.5f,0);
 
             Collider.Update();
         }

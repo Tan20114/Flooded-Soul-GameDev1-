@@ -236,6 +236,7 @@ namespace Flooded_Soul.System.Fishing
 
             if (mousePos.canClick && Game1.instance.Input.IsLeftMouse())
             {
+                AudioManager.Instance.PlaySfx("reeling_fish");
                 int targetY = (int)(targetFish.pos.Y - (hook.hookUpSpeed / targetFish.Strength));
                 targetFish.isClicked = true;
                 targetFish.MoveToY(targetY);
@@ -248,7 +249,6 @@ namespace Flooded_Soul.System.Fishing
             if (!isMinigame) return;
 
             isMinigame = false;
-            Debug.WriteLine(success ? "🎉 Caught the fish!" : "❌ The fish escaped...");
 
             foreach (Fish other in otherFishes)
             {

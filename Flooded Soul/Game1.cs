@@ -5,21 +5,21 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
+using MonoGame.Extended.Collisions;
 
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Point = Microsoft.Xna.Framework.Point;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 using Color = Microsoft.Xna.Framework.Color;
+using RectangleF = MonoGame.Extended.RectangleF;
+using SizeF = MonoGame.Extended.SizeF;
 
 using Flooded_Soul.Screens;
 using Flooded_Soul.System;
 using Flooded_Soul.System.BG;
 using Flooded_Soul.System.Fishing;
-using MonoGame.Extended.Collisions;
-using RectangleF = MonoGame.Extended.RectangleF;
 using Flooded_Soul.System.Shop;
 using Flooded_Soul.System.UI.Scene;
-using SizeF = MonoGame.Extended.SizeF;
 using Flooded_Soul.System.Collection;
 
 namespace Flooded_Soul
@@ -68,6 +68,7 @@ namespace Flooded_Soul
         public float screenRatio => MathF.Min(widthRatio, heightRatio);
         #endregion
 
+        #region Scene
         public Scene sceneState = Scene.Default;
         #region Scene Point
         Vector2 defaultPoint => Vector2.Zero;
@@ -76,11 +77,12 @@ namespace Flooded_Soul
         Vector2 shopPoint => new Vector2(viewPortWidth, 0);
         Vector2 CollectionPoint => new Vector2(-viewPortWidth, 0);
         #endregion
+        #endregion
 
         #region UI
         public DefaultUI dui;
         public FishingUI fui;
-        CollectionUI cui;
+        public CollectionUI cui;
         #endregion
 
         #region Game System
@@ -253,6 +255,8 @@ namespace Flooded_Soul
 
         public Player player;
 
+        public bool isSound = true;
+        public bool alwaysOnTop = true;
 
         public Game1()
         {
@@ -279,7 +283,7 @@ namespace Flooded_Soul
             Window.IsBorderless = true;
             Window.Position = new Point(0,monitorHeight -viewPortHeight);
 
-            Activated += (s, e) => WindowAPI.SetTopMost(true);
+            Activated += (s, e) => WindowAPI.SetTopMost(alwaysOnTop);
 
             base.Initialize();
         }
@@ -295,6 +299,22 @@ namespace Flooded_Soul
             mainCam = new OrthographicCamera(viewportAdaptor);
 
             mouse = new System.UI.Mouse();
+
+            #region Audio
+            #region BGM
+            AudioManager.Instance.LoadBgm("ocean_bgm", "Sound/BGM/Sunken Rebirth");
+            AudioManager.Instance.LoadBgm("ice_bgm", "Sound/BGM/Frozen Waves");
+            AudioManager.Instance.LoadBgm("forest_bgm", "Sound/BGM/Coral Groove");
+            #endregion
+            #region SFX
+            AudioManager.Instance.LoadSfx("collection_arrow","Sound/SFX/ArrowClick");
+            AudioManager.Instance.LoadSfx("button_click","Sound/SFX/ButtonClick");
+            AudioManager.Instance.LoadSfx("point_up","Sound/SFX/CatIdle");
+            AudioManager.Instance.LoadSfx("between_water","Sound/SFX/GoFish");
+            AudioManager.Instance.LoadSfx("reeling_fish","Sound/SFX/Reeling");
+            AudioManager.Instance.LoadSfx("buy_upgrade_shop","Sound/SFX/Upgrade");
+            #endregion
+            #endregion
 
             bs = new BiomeSystem(transitionPoint);
             collection = new CollectionSystem();
@@ -321,12 +341,11 @@ namespace Flooded_Soul
             sm = new ShopManager(ocean.overWater[5][0],shopPoint);
             shop = new ShopLayer(ocean.overWater[5][0], shopPoint, 100);
             #endregion
+
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
             keyboardState = Keyboard.GetState();
             mouseState = Mouse.GetState();
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -336,6 +355,7 @@ namespace Flooded_Soul
             #region System
             SceneState();
             SceneManagement();
+            AudioManager.Instance.Update(gameTime);
 
             mouse.Update();
 
@@ -412,12 +432,6 @@ namespace Flooded_Soul
                 player.Sail();  
             else if (sceneState == Scene.Default_Stop)
                 player.Stop();
-            
-            if (sceneState == Scene.Collection)
-            {
-                if (Input.IsKeyPressed(Keys.D))
-                    sceneState = Scene.Default;
-            }
         }
 
         void SceneManagement()

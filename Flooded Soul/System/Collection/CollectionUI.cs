@@ -77,7 +77,7 @@ namespace Flooded_Soul.System.Collection
             }
         }
         int category = 2;
-        int Category
+        public int Category
         {
             get => category;
             set
@@ -91,19 +91,19 @@ namespace Flooded_Soul.System.Collection
             }
         }
 
-        public CollectionUI(Vector2 posOffset) 
+        public CollectionUI(Vector2 posOffset)
         {
             Initialize(posOffset);
 
-            leftButton = new Button("UI_Icon/ui_collection_Leftbutton", leftPos, posOffset,7f);
+            leftButton = new Button("UI_Icon/ui_collection_Leftbutton", leftPos, posOffset, 7f);
             leftButton.OnClick += LeftButtClick;
-            rightButton = new Button("UI_Icon/ui_collection_Rightbutton", rightPos, posOffset,7f);
+            rightButton = new Button("UI_Icon/ui_collection_Rightbutton", rightPos, posOffset, 7f);
             rightButton.OnClick += RightButtClick;
-            upButton = new Button("UI_Icon/ui_collection_UpButton", upPos, posOffset,7f);
+            upButton = new Button("UI_Icon/ui_collection_UpButton", upPos, posOffset, 7f);
             upButton.OnClick += UpButtClick;
-            downButton = new Button("UI_Icon/ui_collection_DownButton", downPos, posOffset,7f);
+            downButton = new Button("UI_Icon/ui_collection_DownButton", downPos, posOffset, 7f);
             downButton.OnClick += DownButtClick;
-            backButton = new Button("UI_Icon/ui_return",backPos, posOffset, 5.5f);
+            backButton = new Button("UI_Icon/ui_return", backPos, posOffset, 5.5f);
             backButton.OnClick += BackButtClick;
 
             currentPage = tutorialPage;
@@ -111,9 +111,9 @@ namespace Flooded_Soul.System.Collection
 
         void Initialize(Vector2 posOffset)
         {
-            fishPage1 = new ParallaxLayer("Collection/set1_fish_collection", posOffset, 0, 1,1280,230);
-            fishPage2 = new ParallaxLayer("Collection/set2_fish_collection", posOffset, 0, 1,1280,230);
-            catPage = new ParallaxLayer("Collection/collection_cat-Sheet-export", posOffset, 0, 1,1280,230);
+            fishPage1 = new ParallaxLayer("Collection/set1_fish_collection", posOffset, 0, 1, 1280, 230);
+            fishPage2 = new ParallaxLayer("Collection/set2_fish_collection", posOffset, 0, 1, 1280, 230);
+            catPage = new ParallaxLayer("Collection/collection_cat-Sheet", posOffset, 0, 1, 1280, 230);
             tutorialPage = new ParallaxLayer("Collection/collection_tutorial", posOffset, 0, 1);
             storyPage = new ParallaxLayer("Collection/collection_story", posOffset, 0, 1);
         }
@@ -136,7 +136,7 @@ namespace Flooded_Soul.System.Collection
         {
             if (isSheet)
             {
-                if(isFish)
+                if (isFish)
                     currentPage.Draw(true, FishType);
                 else if (isCat)
                     currentPage.Draw(true, CatType);
@@ -190,6 +190,7 @@ namespace Flooded_Soul.System.Collection
 
         void LeftButtClick()
         {
+            AudioManager.Instance.PlaySfx("collection_arrow");
             if (isFish)
             {
                 if (FishType == 0)
@@ -207,6 +208,7 @@ namespace Flooded_Soul.System.Collection
 
         void RightButtClick()
         {
+            AudioManager.Instance.PlaySfx("collection_arrow");
             if (isFish)
             {
                 if (FishType == 6)
@@ -223,10 +225,22 @@ namespace Flooded_Soul.System.Collection
         }
 
 
-        void UpButtClick() => Category--;
+        void UpButtClick()
+        {
+            AudioManager.Instance.PlaySfx("collection_arrow");
+            Category--;
+        }
 
-        void DownButtClick() => Category++;
+        void DownButtClick()
+        {
+            AudioManager.Instance.PlaySfx("collection_arrow");
+            Category++;
+        }
 
-        void BackButtClick() => Game1.instance.sceneState = Scene.Default;
+        void BackButtClick()
+        {
+            AudioManager.Instance.PlaySfx("button_click");
+            Game1.instance.sceneState = Scene.Default;
+        }
     }
 }
