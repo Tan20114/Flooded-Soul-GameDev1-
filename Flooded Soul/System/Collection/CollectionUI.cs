@@ -114,8 +114,8 @@ namespace Flooded_Soul.System.Collection
             fishPage1 = new ParallaxLayer("Collection/set1_fish_collection", posOffset, 0, 1, 1280, 230);
             fishPage2 = new ParallaxLayer("Collection/set2_fish_collection", posOffset, 0, 1, 1280, 230);
             catPage = new ParallaxLayer("Collection/collection_cat-Sheet", posOffset, 0, 1, 1280, 230);
-            tutorialPage = new ParallaxLayer("Collection/collection_tutorial", posOffset, 0, 1);
-            storyPage = new ParallaxLayer("Collection/collection_story", posOffset, 0, 1);
+            tutorialPage = new ParallaxLayer("Collection/collection_tutorial", posOffset, 0, 1, 1280, 230);
+            storyPage = new ParallaxLayer("Collection/collection_story", posOffset, 0, 1, 1280, 230);
         }
 
         public void Update()
@@ -144,7 +144,7 @@ namespace Flooded_Soul.System.Collection
                 rightButton.Draw();
             }
             else
-                currentPage.Draw(1);
+                currentPage.Draw(true,0);
 
             upButton.Draw();
             downButton.Draw();
