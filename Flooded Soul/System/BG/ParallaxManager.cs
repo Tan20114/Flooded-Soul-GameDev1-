@@ -120,7 +120,7 @@ namespace Flooded_Soul.System.BG
         public void ChangeBiome(string texture)
         {
             layer.Clear();
-            layer.Add(new ParallaxLayer(texture, posOffset, 0));
+            layer.Add(new ParallaxLayer(texture, posOffset, 0, 1, 1280, 230));
         }
     }
 }
