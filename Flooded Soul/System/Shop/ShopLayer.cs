@@ -31,7 +31,7 @@ namespace Flooded_Soul.System.Shop
         float shopSpawnTime = 2f;
         float elasped = 0;
 
-        public ShopLayer(string path, Vector2 posOffset, int speed) : base(path, posOffset, speed, 1)
+        public ShopLayer(string path, Vector2 posOffset, int speed,int count , int frameWidth, int frameHeight) : base(path, posOffset, speed, 1, frameWidth,frameHeight)
         {
             Collider = new CollisionTracker();
 

@@ -339,7 +339,7 @@ namespace Flooded_Soul
 
             #region Shop
             sm = new ShopManager(ocean.overWater[5][0],shopPoint);
-            shop = new ShopLayer(ocean.overWater[5][0], shopPoint, 100);
+            shop = new ShopLayer(ocean.overWater[5][0], shopPoint, 100,1,1280,230);
             #endregion
 
         }
