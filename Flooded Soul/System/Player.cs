@@ -300,10 +300,10 @@ namespace Flooded_Soul.System
 
         List<ParallaxLayer> LV1Draw(GameTime gt)
         {
-            ParallaxLayer l1 = new ParallaxLayer("Boat/LV1/1_seperate_anchor_LV1", Vector2.Zero, 0);
-            ParallaxLayer l2 = new ParallaxLayer("Boat/LV1/2_seperate_boat_LV1", Vector2.Zero, 0);
-            ParallaxLayer l3 = new ParallaxLayer("Boat/LV1/3_seperate_front_home_LV1", Vector2.Zero, 0);
-            ParallaxLayer l4 = new ParallaxLayer("Boat/LV1/4_seperate_home_LV1", Vector2.Zero, 0);
+            ParallaxLayer l1 = new ParallaxLayer("Boat/LV1/1_seperate_anchor_LV1", Vector2.Zero, 0,1,1280,230);
+            ParallaxLayer l2 = new ParallaxLayer("Boat/LV1/2_seperate_boat_LV1", Vector2.Zero, 0, 1, 1280, 230);
+            ParallaxLayer l3 = new ParallaxLayer("Boat/LV1/3_seperate_front_home_LV1", Vector2.Zero, 0, 1, 1280, 230);
+            ParallaxLayer l4 = new ParallaxLayer("Boat/LV1/4_seperate_home_LV1", Vector2.Zero, 0, 1, 1280, 230);
 
             return new List<ParallaxLayer>
             {
@@ -319,11 +319,11 @@ namespace Flooded_Soul.System
 
         List<ParallaxLayer> LV2Draw(GameTime gt)
         {
-            ParallaxLayer l1 = new ParallaxLayer("Boat/LV2/1_seperate_anchor_LV2", Vector2.Zero, 0);
-            ParallaxLayer l2 = new ParallaxLayer("Boat/LV2/2_seperate_boat_LV2", Vector2.Zero, 0);
-            ParallaxLayer l3 = new ParallaxLayer("Boat/LV2/3_seperate_front_sailing_LV2", Vector2.Zero, 0);
-            ParallaxLayer l4 = new ParallaxLayer("Boat/LV2/4_seperate_sailing_LV2", Vector2.Zero, 0);
-            ParallaxLayer l5 = new ParallaxLayer("Boat/LV2/5_seperate_things_LV2", Vector2.Zero, 0);
+            ParallaxLayer l1 = new ParallaxLayer("Boat/LV2/1_seperate_anchor_LV2", Vector2.Zero, 0, 1, 1280, 230);
+            ParallaxLayer l2 = new ParallaxLayer("Boat/LV2/2_seperate_boat_LV2", Vector2.Zero, 0, 1, 1280, 230);
+            ParallaxLayer l3 = new ParallaxLayer("Boat/LV2/3_seperate_front_sailing_LV2", Vector2.Zero, 0, 1, 1280, 230);
+            ParallaxLayer l4 = new ParallaxLayer("Boat/LV2/4_seperate_sailing_LV2", Vector2.Zero, 0, 1, 1280, 230);
+            ParallaxLayer l5 = new ParallaxLayer("Boat/LV2/5_seperate_things_LV2", Vector2.Zero, 0, 1, 1280, 230);
 
             List<ParallaxLayer> layers = new List<ParallaxLayer>()
             {
@@ -346,12 +346,12 @@ namespace Flooded_Soul.System
 
         List<ParallaxLayer> LV3Draw(GameTime gt)
         {
-            ParallaxLayer l1 = new ParallaxLayer("Boat/LV3/1_seperate_anchor_LV3", Vector2.Zero, 0);
-            ParallaxLayer l2 = new ParallaxLayer("Boat/LV3/2_seperate_boat_LV3", Vector2.Zero, 0);
-            ParallaxLayer l3 = new ParallaxLayer("Boat/LV3/3_seperate_front_sailing_LV3", Vector2.Zero, 0);
-            ParallaxLayer l4 = new ParallaxLayer("Boat/LV3/4_seperate_front_home_LV3", Vector2.Zero, 0);
-            ParallaxLayer l5 = new ParallaxLayer("Boat/LV3/5_seperate_home_LV3", Vector2.Zero, 0);
-            ParallaxLayer l6 = new ParallaxLayer("Boat/LV3/6_seperate_sailing_LV3", Vector2.Zero, 0);
+            ParallaxLayer l1 = new ParallaxLayer("Boat/LV3/1_seperate_anchor_LV3", Vector2.Zero, 0, 1, 1280, 230);
+            ParallaxLayer l2 = new ParallaxLayer("Boat/LV3/2_seperate_boat_LV3", Vector2.Zero, 0, 1, 1280, 230);
+            ParallaxLayer l3 = new ParallaxLayer("Boat/LV3/3_seperate_front_sailing_LV3", Vector2.Zero, 0, 1, 1280, 230);
+            ParallaxLayer l4 = new ParallaxLayer("Boat/LV3/4_seperate_front_home_LV3", Vector2.Zero, 0, 1, 1280, 230);
+            ParallaxLayer l5 = new ParallaxLayer("Boat/LV3/5_seperate_home_LV3", Vector2.Zero, 0, 1, 1280, 230);
+            ParallaxLayer l6 = new ParallaxLayer("Boat/LV3/6_seperate_sailing_LV3", Vector2.Zero, 0, 1, 1280, 230);
 
             List<ParallaxLayer> layers = new List<ParallaxLayer>()
             {
