@@ -191,13 +191,13 @@ namespace Flooded_Soul.System
 
         void LoadCat()
         {
-            cat0_1 = new ParallaxLayer("Boat/LV1/lv1_whitecat_on_boat", Vector2.Zero, 0, 1);
-            cat0_2 = new ParallaxLayer("Boat/LV2/lv2_whitecat_on_boat", Vector2.Zero, 0, 1);
-            cat0_3 = new ParallaxLayer("Boat/LV3/lv3_whitecat_on_boat", Vector2.Zero, 0, 1);
-            cat1_2 = new ParallaxLayer("Boat/LV2/lv2_calicocat_on_boat", Vector2.Zero, 0, 1);
-            cat1_3 = new ParallaxLayer("Boat/LV3/lv3_calicocat_on_boat", Vector2.Zero, 0, 1);
-            cat2_3 = new ParallaxLayer("Boat/LV3/lv3_greycat_on_boat", Vector2.Zero, 0, 1);
-            cat3_3 = new ParallaxLayer("Boat/LV3/lv3_orangecat_on_boat", Vector2.Zero, 0, 1);
+            cat0_1 = new ParallaxLayer("Boat/LV1/lv1_whitecat_on_boat", Vector2.Zero, 0, 1, 1280, 230);
+            cat0_2 = new ParallaxLayer("Boat/LV2/lv2_whitecat_on_boat", Vector2.Zero, 0, 1, 1280, 230);
+            cat0_3 = new ParallaxLayer("Boat/LV3/lv3_whitecat_on_boat", Vector2.Zero, 0, 1, 1280, 230);
+            cat1_2 = new ParallaxLayer("Boat/LV2/lv2_calicocat_on_boat", Vector2.Zero, 0, 1, 1280, 230);
+            cat1_3 = new ParallaxLayer("Boat/LV3/lv3_calicocat_on_boat", Vector2.Zero, 0, 1, 1280, 230);
+            cat2_3 = new ParallaxLayer("Boat/LV3/lv3_greycat_on_boat", Vector2.Zero, 0, 1, 1280, 230);
+            cat3_3 = new ParallaxLayer("Boat/LV3/lv3_orangecat_on_boat", Vector2.Zero, 0, 1, 1280, 230);
 
             catLayer["cat0_1"] = cat0_1;
             catLayer["cat0_2"] = cat0_2;
