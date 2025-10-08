@@ -55,7 +55,7 @@ namespace Flooded_Soul.System.BG
         {
             Initialize(posOffset);
 
-            layer.Add(new ParallaxLayer(texture, posOffset, 0));
+            layer.Add(new ParallaxLayer(texture, posOffset, 0,1,1280,230));
         }
 
         void LoadWave(List<string> textures) 
@@ -95,7 +95,7 @@ namespace Flooded_Soul.System.BG
         public void Draw(int index)
         {
             for (int i = layer.Count - 1; i >= 0; i--)
-                layer[i].Draw(1);
+                layer[i].Draw(true,0);
         }
 
         public void Stop() => isStop = true;
