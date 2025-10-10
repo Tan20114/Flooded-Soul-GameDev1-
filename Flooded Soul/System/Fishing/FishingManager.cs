@@ -85,7 +85,8 @@ namespace Flooded_Soul.System.Fishing
                 if (fish.IsActive) fish.Draw();
 
             if (isMinigame)
-                minigameArea?.Draw();
+                if (Game1.instance.dui.showBorder)
+                    minigameArea?.Draw();
         }
 
         #region Pool & Spawn

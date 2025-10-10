@@ -116,7 +116,7 @@ namespace Flooded_Soul.System
             speed = maxSpeed;
 
             distanceTraveled = 0;
-            fishPoint = 0;
+            fishPoint = 50;
 
             Texture2D tex = Game1.instance.Content.Load<Texture2D>("Boat/LV1/2_seperate_boat_LV1");
             float scaleX = Game1.instance.viewPortWidth / tex.Width;

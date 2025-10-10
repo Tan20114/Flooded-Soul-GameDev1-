@@ -15,6 +15,7 @@ namespace Flooded_Soul.System.UI.Scene
         Vector2 posOffset;
 
         public bool showShop = false;
+        public bool showBorder = true;
 
         #region Music Button
         Button musicButton;
@@ -29,6 +30,8 @@ namespace Flooded_Soul.System.UI.Scene
         Vector2 toggleAutoSailButtPos = new Vector2(.067f * Game1.instance.viewPortWidth, .06f * Game1.instance.viewPortHeight);
         Button toggleOnTopButton;
         Vector2 toggleOnTopPos = new Vector2(.9f * Game1.instance.viewPortWidth, .06f * Game1.instance.viewPortHeight);
+        Button toggleFishBorder;
+        Vector2 toggleBorderPos = new Vector2(.86f * Game1.instance.viewPortWidth, .06f * Game1.instance.viewPortHeight);
         #endregion
         #region TextSection
         SpriteFont font => Game1.instance.Content.Load<SpriteFont>("Fonts/fipps");
@@ -36,7 +39,7 @@ namespace Flooded_Soul.System.UI.Scene
         Vector2 distancePointPos = new Vector2(.01f * Game1.instance.viewPortWidth, .1f * Game1.instance.viewPortHeight);
         #endregion
         #region Fish Point
-        Vector2 fishPointPos = new Vector2(.01f * Game1.instance.viewPortWidth , .1f * Game1.instance.viewPortHeight);
+        Vector2 fishPointPos = new Vector2(.01f * Game1.instance.viewPortWidth , .15f * Game1.instance.viewPortHeight);
         Texture2D fishPointIcon => Game1.instance.Content.Load<Texture2D>("UI_Icon/ui_fishunit_mainmenu");
         Vector2 fishIconPos = new Vector2(.01f * Game1.instance.viewPortWidth, .2f * Game1.instance.viewPortHeight);
         #endregion
@@ -63,44 +66,47 @@ namespace Flooded_Soul.System.UI.Scene
             posOffset = offset;
 
             #region Music Button
-            musicButton = new Button("UI_Icon/ui_music_mainmenu", musicButtPos, posOffset, 8.5f);
-            musicButton.OnClick += MusicButtClick;    
+            musicButton = new Button("UI_Icon/ui_music_mainmenu", musicButtPos, posOffset, 6.5f);
+            musicButton.OnClick += MusicButtClick;
             #endregion
             #region Collection Button
-            collectionButton = new Button("UI_Icon/ui_collection_mainmenu", collectionButtPos, posOffset, 6);
+            collectionButton = new Button("UI_Icon/ui_collection_mainmenu", collectionButtPos, posOffset, 4.5f);
             collectionButton.OnClick += CollectionButtClick;
             #endregion
             #region Toggle Button
-            toggleAutoSailButton = new Button("UI_Icon/ui_autodrive_mainmenu", toggleAutoSailButtPos, posOffset,7,2,1);
+            toggleAutoSailButton = new Button("UI_Icon/ui_autodrive_mainmenu", toggleAutoSailButtPos, posOffset, 5.5f, 2, 1);
             toggleAutoSailButton.OnClick += ToggleAutoSailButtClick;
             toggleAutoSailButton.ChangeSprite(1);
-            toggleOnTopButton = new Button("UI_Icon/ui_hover_on_game", toggleOnTopPos, posOffset, 7, 2, 1);
+            toggleOnTopButton = new Button("UI_Icon/ui_hover_on_game", toggleOnTopPos, posOffset, 5.5f, 2, 1);
             toggleOnTopButton.OnClick += ToggleOnTopClick;
             toggleOnTopButton.ChangeSprite(0);
+            toggleFishBorder = new Button("UI_Icon/ui_outline", toggleBorderPos, posOffset, 5.5f, 2, 1);
+            toggleFishBorder.OnClick += ToggleFishBorderClick;
+            toggleFishBorder.ChangeSprite(0);
             #endregion
             #region Distance Text
-            distancePointPos = new Vector2(.01f * Game1.instance.viewPortWidth + posOffset.X, .155f * Game1.instance.viewPortHeight + posOffset.Y);
+            distancePointPos = new Vector2(.01f * Game1.instance.viewPortWidth + posOffset.X, .175f * Game1.instance.viewPortHeight + posOffset.Y);
             #endregion
             #region Fish Point
-            fishPointPos = new Vector2(.01f * Game1.instance.viewPortWidth + posOffset.X, .26f * Game1.instance.viewPortHeight + posOffset.Y);
+            fishPointPos = new Vector2(.01f * Game1.instance.viewPortWidth + posOffset.X, .275f * Game1.instance.viewPortHeight + posOffset.Y);
             #endregion
             #region Go Down Button
-            goDownButton = new Button("UI_Icon/sprite_icon_test", goDownPos, posOffset,7,5,1);
+            goDownButton = new Button("UI_Icon/sprite_icon_test", goDownPos, posOffset, 5, 5, 1);
             goDownButton.OnClick += GoDown;
             goDownButton.ChangeSprite(4);
             #endregion
             #region Shop Button
-            shopButton = new Button("UI_Icon/sprite_icon_test", shopButtPos, posOffset, 7,5,1);
+            shopButton = new Button("UI_Icon/sprite_icon_test", shopButtPos, posOffset, 5, 5, 1);
             shopButton.OnClick += OpenShop;
             shopButton.ChangeSprite(0);
             #endregion
             #region Help Button
-            helpButton = new Button("UI_Icon/ui_help_botton", helpButtPos, posOffset, 8.5f);
+            helpButton = new Button("UI_Icon/ui_help_botton", helpButtPos, posOffset, 6.5f);
             helpButton.OnClick += HelpClick;
             #endregion
             #region Exit Button
-            exitButton = new Button("UI_Icon/ui_exit", exitPos, posOffset, 7);
-            exitButton.OnClick += () => { 
+            exitButton = new Button("UI_Icon/ui_exit", exitPos, posOffset, 5);
+            exitButton.OnClick += () => {
                 AudioManager.Instance.PlaySfx("button_click");
                 Game1.instance.Exit();
             };
@@ -118,6 +124,7 @@ namespace Flooded_Soul.System.UI.Scene
             #region Toggle Button
             toggleAutoSailButton.Update();
             toggleOnTopButton.Update();
+            toggleFishBorder.Update();
             #endregion
             #region Fish Point
             Vector2 fontSize = font.MeasureString($"{Game1.instance.player.fishPoint}");
@@ -151,10 +158,11 @@ namespace Flooded_Soul.System.UI.Scene
             collectionButton.Draw();
             toggleAutoSailButton.Draw();
             toggleOnTopButton.Draw();
+            toggleFishBorder.Draw();
             Game1.instance._spriteBatch.DrawString(font, $"{(int)(Game1.instance.player.distanceTraveled / 1000)} km",distancePointPos, Color.White, 0, Vector2.Zero, 1.5f * Game1.instance.screenRatio, SpriteEffects.None, 0);
             #region Fish point
             Game1.instance._spriteBatch.DrawString(font, $"{Game1.instance.player.fishPoint}",fishPointPos, Color.White, 0, Vector2.Zero, 1.5f * Game1.instance.screenRatio, SpriteEffects.None, 0);
-            Game1.instance._spriteBatch.Draw(fishPointIcon, fishIconPos, null, Color.White, 0, Vector2.Zero, 7f * Game1.instance.screenRatio, SpriteEffects.None, 0);
+            Game1.instance._spriteBatch.Draw(fishPointIcon, fishIconPos, null, Color.White, 0, Vector2.Zero, 4.5f * Game1.instance.screenRatio, SpriteEffects.None, 0);
             #endregion
             helpButton.Draw();
             exitButton.Draw();
@@ -214,6 +222,21 @@ namespace Flooded_Soul.System.UI.Scene
                 toggleOnTopButton.ChangeSprite(0);
             }
             WindowAPI.SetTopMost(Game1.instance.alwaysOnTop);
+        }
+
+        void ToggleFishBorderClick()
+        {
+            AudioManager.Instance.PlaySfx("collection_arrow");
+            if (showBorder)
+            {
+                showBorder = false;
+                toggleFishBorder.ChangeSprite(1);
+            }
+            else
+            {
+                showBorder = true;
+                toggleFishBorder.ChangeSprite(0);
+            }
         }
 
         void GoDown()

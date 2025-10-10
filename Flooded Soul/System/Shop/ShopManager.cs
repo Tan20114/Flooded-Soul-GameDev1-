@@ -25,7 +25,7 @@ namespace Flooded_Soul.System.Shop
 
         #region Cat
         Button catUpgradeButton;
-        Vector2 catUpgradePos = new Vector2(.81f * Game1.instance.viewPortWidth, .35f * Game1.instance.viewPortHeight);
+        Vector2 catUpgradePos = new Vector2(.805f * Game1.instance.viewPortWidth, .35f * Game1.instance.viewPortHeight);
         #endregion
 
         #region Back Button
@@ -49,17 +49,17 @@ namespace Flooded_Soul.System.Shop
             bg = new ParallaxManager("Shop/shop_inside", posOffset);
 
             #region Boat
-            upgradeBoatButton = new Button("Shop/ui_upgrade_items_boat", boatPos, posOffset, 7, 4, 1);
+            upgradeBoatButton = new Button("Shop/ui_upgrade_items_boat", boatPos, posOffset, 5, 4, 1);
             upgradeBoatButton.OnClick += UpgradeBoat;
             upgradeBoatButton.ChangeSprite(1);
             #endregion
             #region Hook
-            upgradeHookButton = new Button("Shop/ui_upgrade_items_fishrod", hookPos, posOffset, 7, 4, 1);
+            upgradeHookButton = new Button("Shop/ui_upgrade_items_fishrod", hookPos, posOffset, 5, 4, 1);
             upgradeHookButton.OnClick += UpgradeHook;
             upgradeHookButton.ChangeSprite(0);
             #endregion
             #region BackButton
-            backButton = new Button("UI_Icon/ui_return", backButtPos, posOffset, 5.5f);
+            backButton = new Button("UI_Icon/ui_return", backButtPos, posOffset, 4.5f);
             backButton.OnClick += BackButtClick;
             #endregion
             #region Fish Point
@@ -67,7 +67,7 @@ namespace Flooded_Soul.System.Shop
             fishIconPos = new Vector2(.01f * Game1.instance.viewPortWidth + posOffset.X, .17f * Game1.instance.viewPortHeight + posOffset.Y);
             #endregion
             #region Cat Button
-            catUpgradeButton = new Button("Shop/shop_cat_sheet",catUpgradePos,posOffset,7f,4,1);
+            catUpgradeButton = new Button("Shop/shop_cat_sheet", catUpgradePos, posOffset, 5.5f, 4, 1);
             catUpgradeButton.OnClick += CatClick;
             #endregion
         }
@@ -95,7 +95,7 @@ namespace Flooded_Soul.System.Shop
             backButton.Draw();
             #region Fish point
             Game1.instance._spriteBatch.DrawString(font, $"{Game1.instance.player.fishPoint}", fishPointPos, Color.White, 0, Vector2.Zero, 1.5f * Game1.instance.screenRatio, SpriteEffects.None, 0);
-            Game1.instance._spriteBatch.Draw(fishPointIcon, fishIconPos, null, Color.White, 0, Vector2.Zero, 7f * Game1.instance.screenRatio, SpriteEffects.None, 0);
+            Game1.instance._spriteBatch.Draw(fishPointIcon, fishIconPos, null, Color.White, 0, Vector2.Zero, 5.5f * Game1.instance.screenRatio, SpriteEffects.None, 0);
             #endregion
             catUpgradeButton.Draw();
         }

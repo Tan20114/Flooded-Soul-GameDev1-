@@ -127,7 +127,7 @@ public class AudioManager : IDisposable
             StopBgm();
             float finalVolume = _bgmVolume;
             PlayBgm(newKey, loop, startVolume: 0f);
-            StartFade(1f, seconds / 2f, null);
+            StartFade(IsMuted ? 0f : 1f, seconds / 2f, null);
         });
     }
 

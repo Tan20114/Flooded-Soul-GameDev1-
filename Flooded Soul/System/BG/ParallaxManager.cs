@@ -60,7 +60,7 @@ namespace Flooded_Soul.System.BG
 
         void LoadWave(List<string> textures) 
         {
-            int speed = (int)(startSpeed - decrement * layerCount);
+            int speed = (startSpeed);
             layer.Add(new ParallaxLayer(textures[^1], posOffset, speed));
             layerCount++;
         }
@@ -80,7 +80,12 @@ namespace Flooded_Soul.System.BG
         } 
         public void Update(GameTime gameTime)
         {
-            if(isStop) return;
+
+            if (isStop)
+            {
+                layer[^2].Update(gameTime);
+                return;
+            }
 
             foreach (ParallaxLayer l in layer)
                 l.Update(gameTime);
