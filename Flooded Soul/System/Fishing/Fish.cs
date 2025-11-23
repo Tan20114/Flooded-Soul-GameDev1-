@@ -30,6 +30,9 @@ namespace Flooded_Soul.System.Fishing
         Queue<Fish> fishToRemove = new Queue<Fish>();
 
         protected Texture2D texture;
+        float outlineOffset = 4.5f;
+        Color outlineColor = Color.Aquamarine;
+
         public Vector2 pos;
         protected float scale = 0.05f;
         protected float initialSpeed = 100;
@@ -116,8 +119,18 @@ namespace Flooded_Soul.System.Fishing
                 speed = -speed;
         }
 
-        public void Draw() => Game1.instance._spriteBatch.Draw(texture, pos, null, Color.White, 0f, Vector2.Zero, new Vector2(scale), SetFaceDir(), 0f);
+        public void Draw()
+        {
+            if (isHooked)
+            {
+                Game1.instance._spriteBatch.Draw(texture, new Vector2(pos.X + outlineOffset,pos.Y), null, outlineColor, 0f, Vector2.Zero, new Vector2(scale), SetFaceDir(), 0f);
+                Game1.instance._spriteBatch.Draw(texture, new Vector2(pos.X - outlineOffset,pos.Y), null, outlineColor, 0f, Vector2.Zero, new Vector2(scale), SetFaceDir(), 0f);
+                Game1.instance._spriteBatch.Draw(texture, new Vector2(pos.X,pos.Y + outlineOffset), null, outlineColor, 0f, Vector2.Zero, new Vector2(scale), SetFaceDir(), 0f);
+                Game1.instance._spriteBatch.Draw(texture, new Vector2(pos.X,pos.Y - outlineOffset), null, outlineColor, 0f, Vector2.Zero, new Vector2(scale), SetFaceDir(), 0f);
+            }
 
+            Game1.instance._spriteBatch.Draw(texture, pos, null, Color.White, 0f, Vector2.Zero, new Vector2(scale), SetFaceDir(), 0f);
+        }
         SpriteEffects SetFaceDir() => speed > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
         #region Collision
@@ -142,8 +155,6 @@ namespace Flooded_Soul.System.Fishing
 
                 if (vision?.Collider != null) vision.Collider.DisableCollision();
                 if (hook?.Collider != null) hook.Collider.DisableCollision();
-
-                Debug.WriteLine($"Hooked {fish_Id} at pos {pos} bounds {_bounds} (isActive={IsActive})");
             }
         }
 
